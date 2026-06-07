@@ -1,0 +1,328 @@
+/* =============================================================
+   shared.css — Design system cho App Khách Hàng (Mobile)
+   Load đầu tiên trong mọi trang HTML (trước CSS riêng)
+   -------------------------------------------------------------
+   QUY TẮC BẮT BUỘC CHO TOÀN NHÓM:
+   1. KHÔNG dùng emoji/icon Unicode trong HTML (&#128196; v.v.)
+      Dùng text thuần tiếng Việt hoặc SVG riêng.
+   2. KHÔNG sửa file này — nếu cần thêm style chung, thảo luận nhóm.
+   3. File CSS riêng của mỗi chức năng chỉ được thêm style MỚI,
+      không được override lại biến :root hay class có sẵn ở đây.
+   4. Đặt tên class riêng có prefix tên chức năng:
+      .thong-tin-row { } OK     .row { } KHÔNG OK
+   ============================================================= */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Màu chủ đạo — đỏ CarePoint */
+  --r:      #C94040;
+  --rm:     #B03232;
+  --rd:     #8F2020;
+  --rl:     #FAECEC;
+  --rll:    #FFF6F6;
+
+  /* Nền & bề mặt */
+  --cream:  #FFFBF8;
+  --bg:     #F8F4F0;
+  --surf:   #FFFFFF;
+  --b:      #EDE6E0;
+  --bd:     #D8CFCA;
+
+  /* Chữ */
+  --t:      #1C1815;
+  --t2:     #5A4F4A;
+  --t3:     #9E9080;
+
+  /* Màu bổ trợ */
+  --green:  #2D9462;
+  --gbg:    #EAF6F0;
+  --blue:   #2B6CB0;
+  --bbg:    #EBF4FF;
+  --gold:   #C8991A;
+  --goldbg: #FDF5D3;
+  --orange: #B86A00;
+  --obg:    #FFF4E6;
+
+  /* Bo góc */
+  --r3: 12px;
+  --r2: 10px;
+  --r1: 7px;
+
+  /* Font */
+  --fh: 'Lora', Georgia, serif;
+  --fb: 'DM Sans', 'Segoe UI', sans-serif;
+
+  /* Layout */
+  --nav: 62px;   /* chiều cao bottom nav */
+
+  /* Shadow */
+  --sh:  0 2px 12px rgba(201,64,64,.08);
+  --shm: 0 8px 32px rgba(201,64,64,.18);
+}
+
+html {
+  font-size: 15px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--fb);
+  background: var(--bg);
+  color: var(--t);
+  min-height: 100vh;
+  max-width: 430px;
+  margin: 0 auto;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ---- TOPBAR ĐỎ (mobile) ---- */
+.topbar {
+  background: var(--r);
+  padding: 12px 18px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.tb-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.tb-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.bmark {
+  width: 32px; height: 32px;
+  background: #fff;
+  border-radius: var(--r1);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--fh); font-weight: 700; font-size: 14px;
+  color: var(--r);
+}
+.bname {
+  font-family: var(--fh); font-weight: 700; font-size: 17px; color: #fff;
+}
+.bname em { font-style: normal; opacity: .65; }
+
+.tb-right {
+  display: flex; align-items: center; gap: 10px; margin-left: auto;
+}
+.tb-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--fh); font-weight: 700; font-size: 13px;
+  color: var(--r); cursor: pointer;
+}
+
+/* SUB-TOPBAR (trang con có nút back) */
+.sub-topbar {
+  background: #fff;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--b);
+  display: flex; align-items: center; gap: 12px;
+  position: sticky; top: 0; z-index: 50;
+}
+.back-btn {
+  font-size: 22px; cursor: pointer; color: var(--t2); line-height: 1;
+  text-decoration: none;
+}
+.sub-topbar-title {
+  font-family: var(--fh); font-size: 17px; font-weight: 700; color: var(--t);
+}
+
+/* ---- BOTTOM NAV ---- */
+.bottom-spacer { height: calc(var(--nav) + 12px); }
+.bottom-nav {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 430px;
+  height: var(--nav);
+  background: #fff; border-top: 1px solid var(--b);
+  display: flex; align-items: center;
+  z-index: 100;
+  box-shadow: 0 -2px 16px rgba(0,0,0,.08);
+}
+.nav-item {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  cursor: pointer; padding: 8px 4px; position: relative;
+}
+.nav-icon { font-size: 22px; line-height: 1; }
+.nav-label { font-size: 10px; font-weight: 600; color: var(--t3); }
+.nav-item.active .nav-label { color: var(--r); }
+.nav-badge {
+  position: absolute; top: 6px; right: calc(50% - 18px);
+  background: var(--r); color: #fff;
+  font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 10px;
+}
+
+/* ---- PAGES ---- */
+.page { display: none; animation: fadeUp .22s ease both; }
+.page.active { display: block; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- SECTION ---- */
+.sec { padding: 0 18px; margin-top: 22px; }
+.sec-h {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.sec-title {
+  font-family: var(--fh); font-size: 16px; font-weight: 700; color: var(--t);
+}
+.sec-more {
+  font-size: 12.5px; color: var(--r); font-weight: 600; cursor: pointer;
+}
+
+/* ---- PANEL (card trắng) ---- */
+.panel {
+  background: var(--surf);
+  border: 1px solid var(--b);
+  border-radius: var(--r2);
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.panel-h {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--b);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.panel-t {
+  font-family: var(--fh); font-size: 13.5px; font-weight: 600; color: var(--t);
+}
+
+/* ---- BADGES ---- */
+.badge {
+  display: inline-block; padding: 2px 8px;
+  border-radius: var(--r1); font-size: 11px; font-weight: 700;
+}
+.b-done  { background: var(--gbg);  color: var(--green); border: 1px solid #B5E0CB; }
+.b-err   { background: var(--rl);   color: var(--r);     border: 1px solid #F0BABA; }
+.b-new   { background: var(--goldbg); color: var(--gold); border: 1px solid #E8D58C; }
+.b-neu   { background: #F0F0F0; color: #666; border: 1px solid #D0D0D0; }
+.b-open  { background: var(--bbg);  color: var(--blue);  border: 1px solid #B8D4F5; }
+
+/* ---- BUTTONS ---- */
+.btn-full {
+  display: block; width: 100%; padding: 13px;
+  background: var(--r); color: #fff; border: none;
+  border-radius: var(--r2);
+  font-family: var(--fh); font-size: 15px; font-weight: 700;
+  cursor: pointer; text-align: center; margin-top: 4px;
+  transition: background .15s;
+}
+.btn-full:active { background: var(--rm); }
+.btn-outline-full {
+  display: block; width: 100%; padding: 12px;
+  background: #fff; color: var(--r);
+  border: 1.5px solid var(--r); border-radius: var(--r2);
+  font-family: var(--fh); font-size: 14px; font-weight: 700;
+  cursor: pointer; text-align: center; margin-top: 10px;
+}
+
+/* ---- TABS (exc-tab dùng chung) ---- */
+.tabs-row {
+  display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.tabs-row::-webkit-scrollbar { display: none; }
+.tab {
+  flex-shrink: 0; padding: 8px 16px; border-radius: var(--r1);
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  border: 1.5px solid var(--b); color: var(--t2);
+  transition: all .15s; white-space: nowrap;
+}
+.tab.active { border-color: var(--r); background: var(--r); color: #fff; }
+
+/* ---- FORM ---- */
+.form-group { margin-bottom: 13px; }
+.form-label {
+  font-size: 12.5px; font-weight: 600; color: var(--t2);
+  margin-bottom: 5px; display: block;
+}
+.form-input {
+  width: 100%; padding: 11px 13px;
+  border: 1.5px solid var(--b); border-radius: var(--r1);
+  font-family: var(--fb); font-size: 14px; color: var(--t);
+  outline: none; background: #fff; transition: border .15s;
+}
+.form-input:focus { border-color: var(--r); }
+select.form-input { appearance: none; }
+
+/* ---- MODALS (bottom sheet) ---- */
+.ov {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.45); z-index: 300;
+  display: flex; align-items: flex-end; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .25s;
+  max-width: 430px; left: 50%; transform: translateX(-50%);
+}
+.ov.open { opacity: 1; pointer-events: all; }
+.sheet {
+  background: #fff; border-radius: 20px 20px 0 0;
+  width: 100%; padding: 20px 20px 32px;
+  transform: translateY(30px); transition: transform .3s ease;
+  max-height: 92vh; overflow-y: auto;
+}
+.ov.open .sheet { transform: translateY(0); }
+.sheet-handle {
+  width: 40px; height: 4px; border-radius: 2px;
+  background: var(--b); margin: 0 auto 18px;
+}
+.sheet-title {
+  font-family: var(--fh); font-size: 18px; font-weight: 700;
+  color: var(--t); margin-bottom: 4px;
+}
+.sheet-sub { font-size: 13px; color: var(--t3); margin-bottom: 18px; }
+.sheet-close {
+  float: right; font-size: 24px; color: var(--t3);
+  cursor: pointer; margin-top: -6px; line-height: 1;
+}
+
+/* QR box dùng trong modal thẻ */
+.qr-box {
+  background: var(--rll); border-radius: var(--r2); padding: 20px;
+  text-align: center; margin-bottom: 14px;
+  border: 1px solid rgba(201,64,64,.1);
+}
+.qr-code {
+  width: 160px; height: 160px;
+  background: #fff; border-radius: var(--r2);
+  margin: 0 auto 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: var(--t3);
+  border: 2px solid var(--b);
+}
+.qr-id {
+  font-family: var(--fh); font-size: 20px; font-weight: 700;
+  color: var(--t); letter-spacing: 2px;
+}
+.qr-hint { font-size: 11.5px; color: var(--t3); margin-top: 5px; }
+
+/* ---- TOAST ---- */
+.toast-wrap {
+  position: fixed; bottom: 76px; left: 50%; transform: translateX(-50%);
+  z-index: 500; display: flex; flex-direction: column; align-items: center;
+  gap: 8px; width: 100%; max-width: 390px;
+  pointer-events: none; padding: 0 20px;
+}
+.toast {
+  background: #1C1815; color: #fff; padding: 10px 18px;
+  border-radius: var(--r2); font-size: 13px; font-weight: 500;
+  box-shadow: 0 4px 20px rgba(0,0,0,.2);
+  animation: toastIn .25s ease; max-width: 100%; text-align: center;
+}
+.toast.ok  { background: var(--green); }
+.toast.err { background: var(--r); }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

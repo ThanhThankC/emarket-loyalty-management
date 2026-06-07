@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>The thanh vien — CarePoint</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<link rel="stylesheet" href="cap_the_tv.css"/>
+</head>
+<body>
+
+<!-- SUB TOPBAR -->
+<div class="sub-topbar">
+  <a class="back-btn" href="app_kh.html">←</a>
+  <div class="sub-topbar-title">The thanh vien</div>
+</div>
+
+<!-- NOI DUNG CHINH — Thanh vien code vao day -->
+<div id="mainContent">
+  <!-- TODO: The thanh vien (hien thi thong tin the, QR code)
+       File: cap_the_tv.html / cap_the_tv.css / cap_the_tv.js -->
+  <div class="ph-placeholder">
+    <div class="ph-title">The thanh vien</div>
+    <div class="ph-sub">File: cap_the_tv.html / cap_the_tv.css / cap_the_tv.js</div>
+  </div>
+</div>
+
+<!-- Modal mau — xoa hoac nhan ban khi can -->
+<div class="ov" id="modal-qr-card">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <span class="sheet-close" onclick="closeModal('modal-qr-card')">x</span>
+    <div class="sheet-title">Ma QR the thanh vien</div>
+    <div class="sheet-sub">Cho thu ngan quet de tich diem</div>
+    <!-- TODO: them noi dung QR vao day -->
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script src="supabase_config.js"></script>
+<script src="supabase_api.js"></script>
+<script src="auth.js"></script>
+<script src="cap_the_tv.js"></script>
+</body>
+</html>

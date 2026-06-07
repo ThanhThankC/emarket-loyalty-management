@@ -1,0 +1,12 @@
+/* =============================================================
+   gia_han.css — Style riêng cho chức năng: Gia han the thanh vien
+   Phụ thuộc: shared.css (đã load trước)
+   -------------------------------------------------------------
+   QUY TẮC:
+   - KHÔNG dùng emoji/icon Unicode làm trang trí (&#...; hoặc text icon)
+   - Đặt tên class có prefix "gia_han-" để tránh trùng shared.css
+     Ví dụ: .gia_han-card { }  .gia_han-status { }
+   - KHÔNG override class đã có trong shared.css
+   ============================================================= */
+
+/* Viết style riêng của chức năng bên dưới */

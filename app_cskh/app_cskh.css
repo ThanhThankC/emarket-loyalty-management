@@ -1,0 +1,26 @@
+/* =============================================================
+   app_cskh.css — Dashboard CSKH
+   KHONG dung emoji/icon Unicode
+   ============================================================= */
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: var(--surf);
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: border .15s, box-shadow .15s;
+  box-shadow: var(--sh);
+}
+.stat-card:hover { border-color: var(--yd); box-shadow: var(--shm); }
+
+.stat-label { font-size: 11.5px; font-weight: 600; color: var(--t3); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 8px; }
+.stat-val   { font-family: var(--fh); font-size: 32px; font-weight: 700; color: var(--t); line-height: 1; margin-bottom: 6px; }
+.stat-hint  { font-size: 11px; color: var(--t3); }

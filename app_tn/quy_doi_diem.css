@@ -1,0 +1,13 @@
+/* =============================================================
+   quy_doi_diem.css — Style rieng cho chuc nang: Quy doi diem giam gia
+   Phu thuoc: shared.css va app_tn.css (da load truoc)
+   -------------------------------------------------------------
+   QUY TAC:
+   - KHONG dung emoji/icon Unicode lam trang tri
+   - Dat ten class co prefix "qd-" de tranh trung shared.css
+     Vi du: .qd-pts-widget { }  .qd-result { }
+   - KHONG override class da co trong shared.css hay app_tn.css
+   ============================================================= */
+
+/* Viet style rieng cua chuc nang ben duoi */
+/* prefix: qd- */

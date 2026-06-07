@@ -1,0 +1,19 @@
+/* =============================================
+   quan_ly_the.css — style riêng của trang này
+   Phụ thuộc: shared.css (load trước)
+   ============================================= */
+
+/* Badge hạng thẻ */
+.hang-Bronze  { background:#f0e8d8; color:#7a5c2e; border:1px solid #d4b896; }
+.hang-Silver  { background:#efefef; color:#555;    border:1px solid #c8c8c8; }
+.hang-Gold    { background:var(--yl); color:var(--yd); border:1px solid var(--y); }
+.hang-Platinum{ background:#e8edf8; color:#2b4a8c; border:1px solid #b0c0e0; }
+
+/* Điểm nổi bật */
+.diem-val { font-weight:700; color:var(--yd); font-size:14px; }
+
+/* Trạng thái thẻ */
+.ts-hoat_dong { color:var(--green); font-weight:600; }
+.ts-het_han   { color:var(--orange); font-weight:600; }
+.ts-bi_khoa   { color:var(--red); font-weight:600; }
+.ts-mat_the   { color:var(--t3); font-weight:600; }

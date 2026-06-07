@@ -1,0 +1,20 @@
+/* cap-the-tv.css — The thanh vien */
+/* KHONG dung emoji/icon Unicode */
+/* Prefix tat ca class: .cap-the-tv- */
+
+.ph-placeholder {
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--t3);
+}
+.ph-title {
+  font-family: var(--fh);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--t);
+  margin-bottom: 8px;
+}
+.ph-sub {
+  font-size: 12px;
+  color: var(--t3);
+}

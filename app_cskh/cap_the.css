@@ -1,0 +1,132 @@
+/* =============================================
+   cap_the.css — Cấp thẻ thành viên mới
+   Phụ thuộc: shared.css
+   ============================================= */
+
+/* Tab bar */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  margin-bottom: 20px;
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  overflow: hidden;
+  background: var(--surf);
+  width: fit-content;
+}
+.tab {
+  padding: 9px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--t2);
+  cursor: pointer;
+  transition: all .15s;
+  border-right: 1px solid var(--b);
+  user-select: none;
+}
+.tab:last-child { border-right: none; }
+.tab:hover  { background: var(--yl); color: var(--t); }
+.tab.active { background: var(--y); color: var(--t); font-weight: 600; }
+
+/* Preview thẻ vật lý */
+.card-preview {
+  margin-top: 20px;
+  width: 320px;
+  height: 190px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #1C1A15 60%, #3a3420 100%);
+  padding: 20px 22px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 28px rgba(0,0,0,.25);
+  transition: all .3s;
+}
+.card-preview::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(245,200,66,.12);
+}
+.card-preview::after {
+  content: '';
+  position: absolute;
+  bottom: -30px; left: 40px;
+  width: 120px; height: 120px;
+  border-radius: 50%;
+  background: rgba(245,200,66,.07);
+}
+.cp-brand {
+  font-family: var(--fh);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--y);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.cp-chip {
+  margin: 14px 0 10px;
+  font-size: 10px;
+  letter-spacing: 4px;
+  color: rgba(255,255,255,.5);
+}
+.cp-ma {
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+  color: rgba(255,255,255,.85);
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+}
+.cp-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cp-foot {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: rgba(255,255,255,.7);
+  position: absolute;
+  bottom: 18px; left: 22px; right: 22px;
+}
+
+/* Hạng thẻ màu sắc trên preview */
+.card-preview.bronze   { background: linear-gradient(135deg, #5c3d1e 60%, #8b5e2e 100%); }
+.card-preview.silver   { background: linear-gradient(135deg, #3a3a3a 60%, #6a6a6a 100%); }
+.card-preview.gold     { background: linear-gradient(135deg, #1C1A15 60%, #4a3c0a 100%); }
+.card-preview.platinum { background: linear-gradient(135deg, #1a2040 60%, #2d4080 100%); }
+
+/* Kết quả tìm kiếm khách hàng cũ */
+.kh-result-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  margin-bottom: 8px;
+  background: var(--bg);
+  transition: border .15s, background .15s;
+}
+.kh-result-item:hover {
+  border-color: var(--yd);
+  background: var(--yl);
+}
+
+/* Success info box */
+#success-info {
+  background: var(--gbg);
+  border: 1px solid #B5E0CB;
+  border-radius: var(--r);
+  padding: 12px 16px;
+  font-size: 13px;
+  color: var(--green);
+  font-weight: 500;
+}

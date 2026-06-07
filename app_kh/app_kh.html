@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>CarePoint — Khách hàng</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<link rel="stylesheet" href="app_kh.css"/>
+</head>
+<body>
+
+<!-- ====== PAGE: TRANG CHU (Home) ====== -->
+<div class="page active" id="page-home">
+
+  <div class="topbar">
+    <div class="tb-row">
+      <div class="tb-brand">
+        <div class="bmark">C</div>
+        <div class="bname">Care<em>Point</em></div>
+      </div>
+      <div class="tb-right">
+        <div class="tb-avatar" id="topAvatar" onclick="go('profile')">KH</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero: diem tich luy -->
+  <div class="hero">
+    <div class="hero-label">Diem tich luy cua ban</div>
+    <div class="hero-name" id="heroName">Dang tai...</div>
+    <div class="hero-pts">
+      <div class="hero-pts-num" id="heroPts">---</div>
+      <div class="hero-pts-unit">diem</div>
+    </div>
+    <div class="hero-tier" id="heroTier">
+      <div class="tier-dot"></div>
+      <span id="heroTierTxt">Thanh vien</span>
+    </div>
+    <div class="hero-prog">
+      <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+      <div class="prog-label">
+        <span id="progLeft">Dang tinh...</span>
+        <span id="progPct"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- The thanh vien (QR) -->
+  <div class="card-id-wrap">
+    <div class="card-id" onclick="openModal('modal-qr')">
+      <div class="card-id-left">
+        <div class="card-icon-box">TTV</div>
+        <div class="card-id-info">
+          <label>Ma thanh vien</label>
+          <p id="cardIdTxt">KH – -----</p>
+        </div>
+      </div>
+      <div class="card-id-qr">Hien QR</div>
+    </div>
+  </div>
+
+  <!-- Stats 3 o -->
+  <div class="sec">
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-num" id="statPts">---</div>
+        <div class="stat-label">Diem hien tai</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="statTotal">---</div>
+        <div class="stat-label">Tong tich luy</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num" id="statVoucher">---</div>
+        <div class="stat-label">Voucher kha dung</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tien ich nhanh -->
+  <div class="sec">
+    <div class="sec-h"><div class="sec-title">Tien ich nhanh</div></div>
+    <div class="qa-grid">
+      <div class="qa" onclick="go('exchange')">
+        <div class="qa-icon-box qa-red">Doi</div>
+        <div class="qa-label">Doi diem</div>
+      </div>
+      <div class="qa" onclick="go('vouchers')">
+        <div class="qa-icon-box qa-gold">VCH</div>
+        <div class="qa-label">Voucher</div>
+      </div>
+      <div class="qa" onclick="location.href='khuyen_mai.html'">
+        <div class="qa-icon-box qa-green">KM</div>
+        <div class="qa-label">Khuyen mai</div>
+      </div>
+      <div class="qa" onclick="go('profile')">
+        <div class="qa-icon-box qa-blue">TK</div>
+        <div class="qa-label">Tai khoan</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Giao dich gan day -->
+  <div class="sec">
+    <div class="sec-h">
+      <div class="sec-title">Giao dich gan day</div>
+      <div class="sec-more" onclick="go('history')">Xem tat ca</div>
+    </div>
+    <div class="tx-list" id="recentTx">
+      <div class="tx-placeholder">Dang tai giao dich...</div>
+    </div>
+  </div>
+
+  <div class="bottom-spacer"></div>
+</div>
+
+<!-- ====== PAGE: LICH SU GIAO DICH ====== -->
+<div class="page" id="page-history">
+  <div class="sub-topbar">
+    <span class="back-btn" onclick="go('home')">←</span>
+    <div class="sub-topbar-title">Lich su giao dich</div>
+  </div>
+  <div style="padding:16px 18px;">
+    <div class="tabs-row" style="margin-bottom:16px;">
+      <div class="tab active" onclick="setTab(this)">Tat ca</div>
+      <div class="tab" onclick="setTab(this)">Tich luy</div>
+      <div class="tab" onclick="setTab(this)">Doi diem</div>
+    </div>
+    <div class="tx-list" id="allTx">
+      <div class="tx-placeholder">Dang tai...</div>
+    </div>
+    <div class="bottom-spacer"></div>
+  </div>
+</div>
+
+<!-- ====== PAGE: DOI DIEM (Exchange) ====== -->
+<div class="page" id="page-exchange">
+  <div class="sub-topbar">
+    <span class="back-btn" onclick="go('home')">←</span>
+    <div class="sub-topbar-title">Doi diem lay qua</div>
+  </div>
+  <div class="exchange-hero">
+    <div class="exc-pts-big" id="excPts">---</div>
+    <div class="exc-pts-label">Diem kha dung cua ban</div>
+  </div>
+  <div class="tabs-row" style="padding:0 18px 0;margin-bottom:14px;">
+    <div class="tab active" onclick="setTab(this)">Voucher</div>
+    <div class="tab" onclick="setTab(this)">Qua tang</div>
+    <div class="tab" onclick="setTab(this)">Uu dai dich vu</div>
+  </div>
+  <div class="exc-grid" id="excGrid">
+    <div class="exc-placeholder">Dang tai danh sach qua...</div>
+  </div>
+  <div class="bottom-spacer"></div>
+</div>
+
+<!-- ====== PAGE: VOUCHER ====== -->
+<div class="page" id="page-vouchers">
+  <div class="sub-topbar">
+    <span class="back-btn" onclick="go('home')">←</span>
+    <div class="sub-topbar-title">Voucher cua toi</div>
+  </div>
+  <div style="padding:16px 18px;">
+    <div class="tabs-row" style="margin-bottom:16px;">
+      <div class="tab active" onclick="setTab(this)">Kha dung</div>
+      <div class="tab" onclick="setTab(this)">Da dung</div>
+      <div class="tab" onclick="setTab(this)">Het han</div>
+    </div>
+    <div class="voucher-list" id="voucherList">
+      <div class="tx-placeholder">Dang tai voucher...</div>
+    </div>
+    <div class="bottom-spacer"></div>
+  </div>
+</div>
+
+<!-- ====== PAGE: HO SO (Profile) ====== -->
+<div class="page" id="page-profile">
+  <div class="profile-hero">
+    <div class="profile-av" id="profAv">KH</div>
+    <div class="profile-name" id="profName">Dang tai...</div>
+    <div class="profile-id-label" id="profId">---</div>
+    <div class="profile-tier-badge">
+      <div class="tier-dot"></div>
+      <span id="profTier">Thanh vien</span>
+    </div>
+  </div>
+
+  <div class="profile-section">
+    <div class="profile-sec-h">Thong tin ca nhan</div>
+    <div class="profile-row" onclick="location.href='thong_tin.html'">
+      <div class="profile-row-left">
+        <div class="profile-row-icon">TT</div>
+        <div class="profile-row-text"><label>Xem va cap nhat thong tin</label><p>Thong tin ca nhan</p></div>
+      </div>
+      <div class="profile-row-arrow">›</div>
+    </div>
+    <div class="profile-row" onclick="openModal('modal-changepass')">
+      <div class="profile-row-left">
+        <div class="profile-row-icon">MK</div>
+        <div class="profile-row-text"><label>Bao mat tai khoan</label><p>Doi mat khau</p></div>
+      </div>
+      <div class="profile-row-arrow">›</div>
+    </div>
+  </div>
+
+  <div class="profile-section">
+    <div class="profile-sec-h">Hang thanh vien &amp; Diem</div>
+    <div class="detail-row"><span class="detail-key">Hang hien tai</span><span class="detail-val" id="dRank">---</span></div>
+    <div class="detail-row"><span class="detail-key">Diem tich luy</span><span class="detail-val" id="dPts">---</span></div>
+    <div class="detail-row"><span class="detail-key">Tong diem da tich</span><span class="detail-val" id="dTotal">---</span></div>
+    <div class="detail-row"><span class="detail-key">Diem len hang sau</span><span class="detail-val" id="dNext" style="color:var(--r);">---</span></div>
+  </div>
+
+  <div class="profile-section">
+    <div class="profile-sec-h">Cai dat &amp; Ho tro</div>
+    <div class="profile-row" onclick="location.href='khuyen_mai.html'">
+      <div class="profile-row-left">
+        <div class="profile-row-icon">KM</div>
+        <div class="profile-row-text"><p>Khuyen mai &amp; Su kien</p></div>
+      </div>
+      <div class="profile-row-arrow">›</div>
+    </div>
+    <div class="profile-row" onclick="showToast('Tinh nang dang phat trien')">
+      <div class="profile-row-left">
+        <div class="profile-row-icon">HT</div>
+        <div class="profile-row-text"><p>Lien he ho tro</p></div>
+      </div>
+      <div class="profile-row-arrow">›</div>
+    </div>
+  </div>
+
+  <button class="btn-logout" onclick="dangXuat()">Dang xuat</button>
+  <div class="bottom-spacer"></div>
+</div>
+
+<!-- ====== BOTTOM NAV ====== -->
+<div class="bottom-nav">
+  <div class="nav-item active" id="nav-home"     onclick="go('home',this)">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Trang chu</div>
+  </div>
+  <div class="nav-item" id="nav-exchange"  onclick="go('exchange',this)">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Doi diem</div>
+  </div>
+  <div class="nav-item" id="nav-vouchers"  onclick="go('vouchers',this)">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Voucher</div>
+    <div class="nav-badge" id="voucherBadge" style="display:none">0</div>
+  </div>
+  <div class="nav-item" id="nav-profile"   onclick="go('profile',this)">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Ca nhan</div>
+  </div>
+</div>
+
+<!-- ====== MODALS ====== -->
+
+<!-- QR The thanh vien -->
+<div class="ov" id="modal-qr">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:14px;">
+      <div>
+        <div class="sheet-title">The thanh vien</div>
+        <div style="font-size:12.5px;color:var(--t3);">Cho thu ngan quet de tich diem</div>
+      </div>
+      <span class="sheet-close" onclick="closeModal('modal-qr')">x</span>
+    </div>
+    <div class="qr-box">
+      <div class="qr-code" id="qrCodeBox">QR</div>
+      <div class="qr-id" id="qrIdTxt">KH – -----</div>
+      <div class="qr-hint" id="qrHint">---</div>
+    </div>
+    <div style="text-align:center;padding:12px;background:var(--rl);border-radius:var(--r2);font-size:13px;color:var(--rm);font-weight:500;">
+      Ma het han sau: <strong id="qr-timer">05:00</strong>
+    </div>
+  </div>
+</div>
+
+<!-- Xac nhan doi diem -->
+<div class="ov" id="modal-confirm-exchange">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <span class="sheet-close" onclick="closeModal('modal-confirm-exchange')">x</span>
+    <div class="sheet-title">Xac nhan doi diem</div>
+    <div class="sheet-sub">Ban dang doi qua sau:</div>
+    <div id="confirmExcDetail" style="background:var(--rll);border-radius:var(--r2);padding:16px;margin-bottom:18px;border:1px solid rgba(201,64,64,.12);">
+      <div style="font-family:var(--fh);font-size:16px;font-weight:700;color:var(--t);margin-bottom:8px;" id="ceName">---</div>
+      <div style="font-size:12.5px;color:var(--t2);" id="ceDesc">---</div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px dashed var(--bd);display:flex;justify-content:space-between;">
+        <span style="font-size:13px;color:var(--t3);">Diem se tru</span>
+        <span style="font-size:15px;font-weight:700;color:var(--r);" id="cePts">---</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;">
+        <span style="font-size:13px;color:var(--t3);">Con lai sau khi doi</span>
+        <span style="font-size:14px;font-weight:700;color:var(--t);" id="ceAfter">---</span>
+      </div>
+    </div>
+    <button class="btn-full" id="btnConfirmExc">Xac nhan doi</button>
+    <button class="btn-outline-full" onclick="closeModal('modal-confirm-exchange')">Huy</button>
+  </div>
+</div>
+
+<!-- Dung voucher -->
+<div class="ov" id="modal-use-voucher">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <span class="sheet-close" onclick="closeModal('modal-use-voucher')">x</span>
+    <div class="sheet-title">Su dung voucher</div>
+    <div class="sheet-sub">Xuat trinh ma nay cho thu ngan</div>
+    <div class="qr-box">
+      <div class="qr-code" id="useVoucherQR">QR</div>
+      <div class="qr-id" id="useVoucherCode">---</div>
+      <div class="qr-hint" id="useVoucherHint">---</div>
+    </div>
+    <div id="useVoucherStatus" style="text-align:center;padding:12px;background:var(--gbg);border-radius:var(--r2);font-size:13px;color:var(--green);font-weight:500;">
+      Voucher hop le
+    </div>
+  </div>
+</div>
+
+<!-- Doi mat khau -->
+<div class="ov" id="modal-changepass">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <span class="sheet-close" onclick="closeModal('modal-changepass')">x</span>
+    <div class="sheet-title" style="margin-bottom:4px;">Doi mat khau</div>
+    <div class="sheet-sub">Nhap mat khau cu va mat khau moi</div>
+    <div class="form-group">
+      <label class="form-label">Mat khau hien tai</label>
+      <input class="form-input" id="oldPass" type="password" placeholder="Nhap mat khau cu"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Mat khau moi</label>
+      <input class="form-input" id="newPass" type="password" placeholder="Toi thieu 6 ky tu"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Xac nhan mat khau moi</label>
+      <input class="form-input" id="newPass2" type="password" placeholder="Nhap lai mat khau moi"/>
+    </div>
+    <button class="btn-full" onclick="handleChangePass()">Luu mat khau moi</button>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script src="supabase_config.js"></script>
+<script src="supabase_api.js"></script>
+<script src="auth.js"></script>
+<script src="app_kh.js"></script>
+</body>
+</html>

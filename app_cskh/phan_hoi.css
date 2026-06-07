@@ -1,0 +1,12 @@
+/* =============================================================
+   phan_hoi.css — Style riêng cho chức năng: Phan hoi va Khieu nai
+   Phụ thuộc: shared.css (đã load trước)
+   -------------------------------------------------------------
+   QUY TẮC:
+   - KHÔNG dùng emoji/icon Unicode làm trang trí (&#...; hoặc text icon)
+   - Đặt tên class có prefix "phan_hoi-" để tránh trùng shared.css
+     Ví dụ: .phan_hoi-card { }  .phan_hoi-status { }
+   - KHÔNG override class đã có trong shared.css
+   ============================================================= */
+
+/* Viết style riêng của chức năng bên dưới */

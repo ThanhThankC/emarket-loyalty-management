@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Khuyen mai &amp; Su kien — CarePoint</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<link rel="stylesheet" href="khuyen_mai.css"/>
+</head>
+<body>
+
+<!-- SUB TOPBAR -->
+<div class="sub-topbar">
+  <a class="back-btn" href="app_kh.html">←</a>
+  <div class="sub-topbar-title">Khuyen mai &amp; Su kien</div>
+</div>
+
+<!-- NOI DUNG CHINH — Thanh vien code vao day -->
+<div id="mainContent">
+  <!-- TODO: Khuyen mai & Su kien — File: khuyen_mai.html / khuyen_mai.css / khuyen_mai.js -->
+  <div class="ph-placeholder">
+    <div class="ph-title">Khuyen mai &amp; Su kien</div>
+    <div class="ph-sub">File: khuyen_mai.html / khuyen_mai.css / khuyen_mai.js</div>
+  </div>
+</div>
+
+<!-- Modal chi tiet khuyen mai -->
+<div class="ov" id="modal-km-detail">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <span class="sheet-close" onclick="closeModal('modal-km-detail')">x</span>
+    <div class="sheet-title" id="kmTitle">Chi tiet khuyen mai</div>
+    <div class="sheet-sub"  id="kmSub"></div>
+    <!-- TODO: them noi dung chi tiet vao day -->
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script src="supabase_config.js"></script>
+<script src="supabase_api.js"></script>
+<script src="auth.js"></script>
+<script src="khuyen_mai.js"></script>
+</body>
+</html>

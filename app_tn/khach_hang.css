@@ -1,0 +1,13 @@
+/* =============================================================
+   khach_hang.css — Style rieng cho chuc nang: Quan ly khach hang
+   Phu thuoc: shared.css va app_tn.css (da load truoc)
+   -------------------------------------------------------------
+   QUY TAC:
+   - KHONG dung emoji/icon Unicode lam trang tri
+   - Dat ten class co prefix "kh-" de tranh trung shared.css
+     Vi du: .kh-rank-badge { }  .kh-actions { }
+   - KHONG override class da co trong shared.css hay app_tn.css
+   ============================================================= */
+
+/* Viet style rieng cua chuc nang ben duoi */
+/* prefix: kh- */
