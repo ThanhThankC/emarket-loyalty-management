@@ -307,10 +307,9 @@
           <div class="fg ffull"><label class="fl">Địa chỉ</label><input class="fi" placeholder="123 Đường ABC, Quận 1, TP.HCM"/></div>
         </div>
         <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:14px;padding-top:14px;border-top:1px solid var(--b);">
-          <button class="btn btn-outline">Làm mới</button>
-          <button class="btn btn-outline" onclick="go('kh-ds',null)">Hủy</button>
-          <button class="btn btn-primary" onclick="showToast('Thêm khách hàng thành công! Mã: KH00613','ok');go('kh-ds',null)">Lưu thông tin</button>
-        </div>
+          <button class="btn btn-outline" type="button">Làm mới</button>
+          <button class="btn btn-outline" type="button" onclick="go('kh-ds',null)">Hủy</button>
+          <button id="save-customer" class="btn btn-primary" type="button">Lưu thông tin</button>
       </div>
     </div>
     <div class="ibox">Sau khi thêm thành công, bạn có thể cấp thẻ thành viên ngay cho khách tại mục <b>Cấp thẻ mới</b>.</div>
@@ -849,5 +848,7 @@ function calcQD() {
   document.getElementById('qd-remain').textContent  = (max - used).toLocaleString('vi') + ' điểm';
 }
 </script>
+<script src="auth.js"></script>
+<script src="app_tn.js"></script>
 </body>
 </html>
