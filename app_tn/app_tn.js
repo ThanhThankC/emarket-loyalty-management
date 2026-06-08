@@ -43,7 +43,7 @@ function onPhoneInput(e){
   }
 }
 
-function onSaveCustomer(e){
+async function onSaveCustomer(e){
   e.preventDefault();
   const page = document.getElementById('page-kh-them');
   if(!page) return;
@@ -64,14 +64,20 @@ function onSaveCustomer(e){
   const phoneDigits = phoneRaw;
   if(phoneDigits.length < 9 || phoneDigits.length > 11){ showToast('Số điện thoại không hợp lệ', 'err'); return; }
 
-  // Duplicate check against current table
-  const rows = document.querySelectorAll('#kh-tbody tr');
-  for(const r of rows){
-    const td = r.children[2];
-    if(!td) continue;
-    const existing = (td.textContent || '').replace(/\D/g,'');
-    if(existing === phoneDigits){ showToast('Số điện thoại đã tồn tại', 'err'); return; }
+  // Duplicate check by querying Supabase instead of checking local DOM
+  try {
+    const dup = await sbGet('khach_hang', `so_dien_thoai=eq.${phoneDigits}&limit=1`);
+    if (dup && dup.length > 0) {
+      showToast('Số điện thoại đã tồn tại', 'err');
+      return;
+    }
+  } catch (err) {
+    console.error('Lỗi kiểm tra số điện thoại trên Supabase:', err);
+    showToast('Không thể kiểm tra số điện thoại trên máy chủ. Vui lòng thử lại.', 'err');
+    return;
   }
+
+  const rows = document.querySelectorAll('#kh-tbody tr');
 
   // Generate new customer code (KHxxxxx)
   let max = 0;
