@@ -27,6 +27,20 @@ function initAddCustomer(){
     saveBtn.removeAttribute('onclick');
     saveBtn.addEventListener('click', onSaveCustomer);
   }
+
+  const phoneInput = page.querySelector('#kh-phone');
+  if(phoneInput){
+    phoneInput.addEventListener('input', onPhoneInput);
+  }
+}
+
+function onPhoneInput(e){
+  const input = e.target;
+  const raw = input.value;
+  if(/\D/.test(raw)){
+    input.value = raw.replace(/\D/g, '');
+    showToast('Số điện thoại chỉ được nhập số', 'err');
+  }
 }
 
 function onSaveCustomer(e){
@@ -45,8 +59,9 @@ function onSaveCustomer(e){
 
   // Validation
   if(!name){ showToast('Vui lòng nhập Họ và tên', 'err'); return; }
-  const phoneDigits = phoneRaw.replace(/\D/g,'');
-  if(!phoneDigits){ showToast('Vui lòng nhập Số điện thoại', 'err'); return; }
+  if(!phoneRaw){ showToast('Vui lòng nhập Số điện thoại', 'err'); return; }
+  if(/\D/.test(phoneRaw)){ showToast('Số điện thoại chỉ được nhập số', 'err'); return; }
+  const phoneDigits = phoneRaw;
   if(phoneDigits.length < 9 || phoneDigits.length > 11){ showToast('Số điện thoại không hợp lệ', 'err'); return; }
 
   // Duplicate check against current table
