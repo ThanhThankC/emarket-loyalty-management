@@ -9,5 +9,194 @@
    - KHONG override class da co trong shared.css hay app_tn.css
    ============================================================= */
 
-/* Viet style rieng cua chuc nang ben duoi */
-/* prefix: ls- */
+/* Form tìm kiếm */
+.ls-filter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ls-filter-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  align-items: flex-end;
+}
+
+.ls-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ls-field label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--t2);
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.ls-field .fi {
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.ls-field .fi:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: var(--bg-focus);
+}
+
+/* Trạng thái loading/searching */
+.ls-searching {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* Bảng kết quả */
+table tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.15s;
+}
+
+table tbody tr:hover {
+  background: var(--bg-hover);
+}
+
+table td {
+  padding: 12px;
+  font-size: 13px;
+}
+
+table tbody tr td:first-child {
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* Badge trạng thái */
+.ls-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ls-badge.hoan-thanh {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22c55e;
+}
+
+.ls-badge.da-huy {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+.ls-badge.dang-xu-ly {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.ls-badge.da-doi-tra {
+  background: rgba(168, 85, 247, 0.1);
+  color: #a855f7;
+}
+
+/* Phân trang */
+#ls-pagination {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.ls-pagination-btn {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.ls-pagination-btn:hover:not(:disabled) {
+  border-color: var(--primary);
+  background: var(--bg-hover);
+}
+
+.ls-pagination-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.ls-pagination-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ls-pagination-info {
+  font-size: 12px;
+  color: var(--t3);
+  margin: 0 8px;
+}
+
+/* Info khách hàng */
+#ls-customer-info {
+  background: var(--bg-light);
+  border-radius: 6px;
+  margin-bottom: 0;
+  margin-left: -22px;
+  margin-right: -22px;
+  margin-top: -16px;
+  margin-bottom: 0;
+}
+
+#ls-customer-info > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 24px;
+}
+
+#ls-customer-info .info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+#ls-customer-info .info-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--t3);
+  letter-spacing: 0.3px;
+}
+
+#ls-customer-info .info-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--t1);
+}
+
+/* Loading spinner (if needed) */
+.ls-loading {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--border);
+  border-top-color: var(--primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
