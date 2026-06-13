@@ -6,3 +6,4 @@ registerPage('dashboard', function(opts) {
   if (el) el.textContent = 'Xin chào, ' + nv.ho_ten + '! Chào mừng trở lại.';
   // TODO: load số liệu stat cards từ Supabase
 });
+
