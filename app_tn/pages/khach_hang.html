@@ -1,0 +1,76 @@
+<!-- pages/khach_hang.html — fragment -->
+
+<div class="ph">
+  <div>
+    <div class="ptitle">Quản lý khách hàng</div>
+    <div class="psub">UC-1 · Thêm, sửa, xóa, tìm kiếm hồ sơ khách hàng</div>
+  </div>
+  <!-- Nút thêm khách hàng -->
+</div>
+
+<!-- TODO UC-1.2: Thanh tìm kiếm + bộ lọc -->
+<!-- TODO UC-1.1.1: Nút "Thêm khách hàng" → mở modal -->
+
+<div class="panel">
+  <div class="panel-h">
+    <span class="panel-t">Danh sách khách hàng</span>
+  </div>
+  <div style="padding:48px;text-align:center;color:var(--t3);">
+    <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+    <div style="font-size:12px;">File: pages/khach_hang.html / khach_hang.css / pages/khach_hang.js</div>
+    <div style="font-size:11px;margin-top:10px;color:var(--t3);">
+      UC-1.1.1 Thêm KH &nbsp;·&nbsp; UC-1.1.2 Sửa KH &nbsp;·&nbsp; UC-1.1.3 Xóa KH &nbsp;·&nbsp; UC-1.2 Tìm kiếm
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Thêm / Sửa khách hàng -->
+<div class="ov" id="modal-kh-form">
+  <div class="modal" style="max-width:600px;">
+    <div class="mh">
+      <div class="mt" id="kh-form-title">Thêm khách hàng mới</div>
+      <button class="mc" onclick="closeModal('modal-kh-form')">X</button>
+    </div>
+    <div style="padding:18px 22px;">
+      <!-- TODO: Form nhập họ tên, SĐT, email, ngày sinh, giới tính, địa chỉ -->
+    </div>
+    <div class="mf">
+      <button class="btn btn-outline" onclick="closeModal('modal-kh-form')">Hủy</button>
+      <button class="btn btn-primary" id="btn-kh-save">Lưu thông tin</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Xem chi tiết khách hàng -->
+<div class="ov" id="modal-kh-view">
+  <div class="modal" style="max-width:520px;">
+    <div class="mh">
+      <div class="mt">Thông tin khách hàng</div>
+      <button class="mc" onclick="closeModal('modal-kh-view')">X</button>
+    </div>
+    <div style="padding:18px 22px;">
+      <!-- TODO: Hiển thị đầy đủ thông tin KH + trạng thái thẻ + điểm -->
+    </div>
+    <div class="mf">
+      <button class="btn btn-outline" onclick="closeModal('modal-kh-view')">Đóng</button>
+      <button class="btn btn-yellow" id="btn-cap-the-from-view">Cấp thẻ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Xác nhận xóa -->
+<div class="ov" id="modal-kh-delete">
+  <div class="modal" style="max-width:420px;">
+    <div class="mh">
+      <div class="mt">Xác nhận ẩn/xóa khách hàng</div>
+      <button class="mc" onclick="closeModal('modal-kh-delete')">X</button>
+    </div>
+    <div style="padding:18px 22px;">
+      <!-- TODO: Tên KH, cảnh báo -->
+    </div>
+    <div class="mf">
+      <button class="btn btn-outline" onclick="closeModal('modal-kh-delete')">Hủy</button>
+      <button class="btn" style="background:var(--red);color:#fff;" id="btn-kh-confirm-delete">Xác nhận ẩn</button>
+    </div>
+  </div>
+</div>

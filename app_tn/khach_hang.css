@@ -1,13 +1,13 @@
 /* =============================================================
-   khach_hang.css — Style rieng cho chuc nang: Quan ly khach hang
-   Phu thuoc: shared.css va app_tn.css (da load truoc)
+   khach_hang.css — Style riêng cho chức năng: Quản lý khách hàng
+   Phụ thuộc: shared.css và app_tn.css (đã load trước)
    -------------------------------------------------------------
-   QUY TAC:
-   - KHONG dung emoji/icon Unicode lam trang tri
-   - Dat ten class co prefix "kh-" de tranh trung shared.css
-     Vi du: .kh-rank-badge { }  .kh-actions { }
-   - KHONG override class da co trong shared.css hay app_tn.css
+   QUY TẮC:
+   - KHÔNG dùng emoji/icon Unicode làm trang trí
+   - Đặt tên class có prefix "kh-" để tránh trùng shared.css
+     Ví dụ: .kh-rank-badge { }  .kh-actions { }
+   - KHÔNG override class đã có trong shared.css hay app_tn.css
    ============================================================= */
 
-/* Viet style rieng cua chuc nang ben duoi */
+/* Viết style riêng của chức năng bên dưới */
 /* prefix: kh- */
