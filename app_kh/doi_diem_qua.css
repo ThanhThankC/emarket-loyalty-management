@@ -1,0 +1,44 @@
+/* =============================================================
+   doi_diem_qua.css — Doi diem lay qua/voucher
+   File: doi_diem_qua.html / doi_diem_qua.css / doi_diem_qua.js — UC-9
+   ============================================================= */
+
+/* EXCHANGE HERO */
+.exchange-hero {
+  background: #fff; border: 1px solid var(--b);
+  border-radius: var(--r2); margin: 14px 18px 0;
+  padding: 18px 20px; text-align: center;
+}
+.exc-pts-big   { font-family: var(--fh); font-size: 36px; font-weight: 700; color: var(--r); }
+.exc-pts-label { font-size: 12.5px; color: var(--t3); margin-top: 2px; }
+
+/* LUOI QUA DOI DIEM */
+.exc-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  padding: 0 18px;
+}
+.exc-placeholder { font-size: 12px; color: var(--t3); text-align: center; padding: 20px; }
+.exc-item {
+  background: #fff; border: 1px solid var(--b); border-radius: var(--r2);
+  overflow: hidden; cursor: pointer; transition: all .18s;
+}
+.exc-item:active { border-color: var(--r); box-shadow: var(--sh); }
+.exc-item-img {
+  height: 90px; display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: var(--t3);
+}
+.exc-c1 { background: linear-gradient(135deg, #FFF0F0, #FFD6D6); }
+.exc-c2 { background: linear-gradient(135deg, #FFF8E1, #FFE082); }
+.exc-c3 { background: linear-gradient(135deg, #E8F5E9, #A5D6A7); }
+.exc-c4 { background: linear-gradient(135deg, #E3F2FD, #90CAF9); }
+.exc-item-body  { padding: 10px 12px; }
+.exc-item-name  { font-size: 12.5px; font-weight: 600; color: var(--t); line-height: 1.3; }
+.exc-item-pts   { margin-top: 5px; font-size: 12px; color: var(--r); font-weight: 700; }
+.exc-item-stock { font-size: 10.5px; color: var(--t3); margin-top: 2px; }
+.exc-btn {
+  display: block; width: calc(100% - 24px); margin: 8px 12px;
+  padding: 7px; background: var(--r); color: #fff; border: none;
+  border-radius: var(--r1); font-size: 12px; font-weight: 700; cursor: pointer;
+}
+
+/* TODO: them style cho tab "Qua tang" va "Uu dai dich vu" tai day */

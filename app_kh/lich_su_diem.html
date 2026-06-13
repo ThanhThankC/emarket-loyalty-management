@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Lịch sử giao dịch — CarePoint</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<link rel="stylesheet" href="app_kh.css"/>
+<link rel="stylesheet" href="lich_su_diem.css"/>
+</head>
+<body>
+
+<!-- ====== TRANG: LỊCH SỬ GIAO DỊCH ====== -->
+<!-- File: lich_su_diem.html / lich_su_diem.css / lich_su_diem.js — UC-7.1 -->
+<div class="page active" id="page-history">
+  <div class="sub-topbar">
+    <a class="back-btn" href="app_kh.html">←</a>
+    <div class="sub-topbar-title">Lịch sử giao dịch</div>
+  </div>
+  <div id="mainContent" style="padding:16px 18px;">
+    <div class="tabs-row" style="margin-bottom:16px;">
+      <div class="tab active" onclick="setTab(this)">Tất cả</div>
+      <div class="tab" onclick="setTab(this)">Tích lũy</div>
+      <div class="tab" onclick="setTab(this)">Đổi điểm</div>
+    </div>
+
+    <!-- TODO: Thêm bộ lọc theo khoảng thời gian / trạng thái (AC UC-7.1) -->
+
+    <div class="tx-list" id="allTx">
+      <div class="tx-placeholder">Đang tải...</div>
+    </div>
+
+    <!-- TODO: Thêm phân trang danh sách giao dịch (20 dòng/trang) -->
+    <div class="ph-placeholder">
+      <div class="ph-title">Lịch sử giao dịch</div>
+      <div class="ph-sub">File: lich_su_diem.html / lich_su_diem.css / lich_su_diem.js</div>
+    </div>
+
+    <div class="bottom-spacer"></div>
+  </div>
+</div>
+
+<!-- ====== THANH ĐIỀU HƯỚNG DƯỚI CÙNG ====== -->
+<div class="bottom-nav">
+  <div class="nav-item" id="nav-home" onclick="location.href='app_kh.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Trang chủ</div>
+  </div>
+  <div class="nav-item" id="nav-exchange" onclick="location.href='doi_diem_qua.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Đổi điểm</div>
+  </div>
+  <div class="nav-item" id="nav-vouchers" onclick="location.href='voucher_cua_toi.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Voucher</div>
+    <div class="nav-badge" id="voucherBadge" style="display:none">0</div>
+  </div>
+  <div class="nav-item" id="nav-profile" onclick="location.href='ho_so.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Cá nhân</div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script src="supabase_config.js"></script>
+<script src="supabase_api.js"></script>
+<script src="auth.js"></script>
+<script src="lich_su_diem.js"></script>
+</body>
+</html>

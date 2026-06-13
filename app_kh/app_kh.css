@@ -1,5 +1,6 @@
 /* =============================================================
-   app_kh.css — Dashboard / Home
+   app_kh.css — Trang chu (Home) + Bottom Nav
+   File: app_kh.html / app_kh.css / app_kh.js — UC-7.2
    Mobile layout, mau do CarePoint
    KHONG dung emoji/icon Unicode lam trang tri
    ============================================================= */
@@ -44,7 +45,7 @@
   display: flex; justify-content: space-between;
 }
 
-/* THE THANH VIEN */
+/* THE THANH VIEN (dung chung cho modal-qr o app_kh.html) */
 .card-id-wrap { margin: 12px 18px 0; }
 .card-id {
   background: #fff; border: 1px solid var(--b); border-radius: var(--r2);
@@ -100,7 +101,7 @@
 .qa-blue  { background: var(--bbg);    color: var(--blue);  }
 .qa-label { font-size: 11px; font-weight: 600; color: var(--t2); line-height: 1.3; }
 
-/* DANH SACH GIAO DICH */
+/* DANH SACH GIAO DICH (giao dich gan day) */
 .tx-list   { display: flex; flex-direction: column; gap: 8px; }
 .tx-placeholder { font-size: 12px; color: var(--t3); text-align: center; padding: 20px; }
 .tx {
@@ -123,137 +124,7 @@
 .tx-pts.plus  { color: var(--green); }
 .tx-pts.minus { color: var(--r); }
 
-/* EXCHANGE HERO */
-.exchange-hero {
-  background: #fff; border: 1px solid var(--b);
-  border-radius: var(--r2); margin: 14px 18px 0;
-  padding: 18px 20px; text-align: center;
-}
-.exc-pts-big   { font-family: var(--fh); font-size: 36px; font-weight: 700; color: var(--r); }
-.exc-pts-label { font-size: 12.5px; color: var(--t3); margin-top: 2px; }
-
-/* LUOI QUA DOI DIEM */
-.exc-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-  padding: 0 18px;
-}
-.exc-placeholder { font-size: 12px; color: var(--t3); text-align: center; padding: 20px; }
-.exc-item {
-  background: #fff; border: 1px solid var(--b); border-radius: var(--r2);
-  overflow: hidden; cursor: pointer; transition: all .18s;
-}
-.exc-item:active { border-color: var(--r); box-shadow: var(--sh); }
-.exc-item-img {
-  height: 90px; display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 700; color: var(--t3);
-}
-.exc-c1 { background: linear-gradient(135deg, #FFF0F0, #FFD6D6); }
-.exc-c2 { background: linear-gradient(135deg, #FFF8E1, #FFE082); }
-.exc-c3 { background: linear-gradient(135deg, #E8F5E9, #A5D6A7); }
-.exc-c4 { background: linear-gradient(135deg, #E3F2FD, #90CAF9); }
-.exc-item-body  { padding: 10px 12px; }
-.exc-item-name  { font-size: 12.5px; font-weight: 600; color: var(--t); line-height: 1.3; }
-.exc-item-pts   { margin-top: 5px; font-size: 12px; color: var(--r); font-weight: 700; }
-.exc-item-stock { font-size: 10.5px; color: var(--t3); margin-top: 2px; }
-.exc-btn {
-  display: block; width: calc(100% - 24px); margin: 8px 12px;
-  padding: 7px; background: var(--r); color: #fff; border: none;
-  border-radius: var(--r1); font-size: 12px; font-weight: 700; cursor: pointer;
-}
-
-/* VOUCHER */
-.voucher-list { display: flex; flex-direction: column; gap: 10px; }
-.voucher {
-  background: #fff; border: 1.5px dashed var(--bd); border-radius: var(--r2);
-  padding: 14px 16px;
-  display: flex; align-items: center; gap: 14px;
-  cursor: pointer; position: relative; overflow: hidden;
-}
-.voucher::before {
-  content: ''; position: absolute; left: -8px; top: 50%;
-  transform: translateY(-50%); width: 16px; height: 16px;
-  border-radius: 50%; background: var(--bg);
-}
-.voucher::after {
-  content: ''; position: absolute; right: -8px; top: 50%;
-  transform: translateY(-50%); width: 16px; height: 16px;
-  border-radius: 50%; background: var(--bg);
-}
-.voucher-left {
-  background: var(--rl); border-radius: var(--r1);
-  padding: 10px 12px; text-align: center; flex-shrink: 0; min-width: 54px;
-}
-.voucher-val  { font-family: var(--fh); font-size: 17px; font-weight: 700; color: var(--r); line-height: 1; }
-.voucher-unit { font-size: 9.5px; color: var(--r); font-weight: 600; margin-top: 1px; }
-.voucher-body { flex: 1; }
-.voucher-name { font-size: 13px; font-weight: 600; color: var(--t); }
-.voucher-exp  { font-size: 11px; color: var(--t3); margin-top: 3px; }
-.voucher-use  {
-  background: var(--r); color: #fff; border: none;
-  border-radius: var(--r1); padding: 7px 14px; font-size: 12px; font-weight: 700;
-  cursor: pointer; white-space: nowrap; flex-shrink: 0;
-}
-
-/* PROFILE */
-.profile-hero {
-  background: linear-gradient(135deg, var(--r), var(--rm));
-  padding: 28px 20px 24px; text-align: center;
-}
-.profile-av {
-  width: 72px; height: 72px; border-radius: 50%; background: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--fh); font-weight: 700; font-size: 24px; color: var(--r);
-  margin: 0 auto 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,.2);
-}
-.profile-name { font-family: var(--fh); font-size: 20px; font-weight: 700; color: #fff; }
-.profile-id-label { font-size: 12px; color: rgba(255,255,255,.7); margin-top: 4px; }
-.profile-tier-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  background: rgba(255,255,255,.2); border-radius: 20px;
-  padding: 4px 12px; font-size: 12px; color: #fff; font-weight: 600; margin-top: 10px;
-}
-.profile-section {
-  background: #fff; border-radius: var(--r2);
-  margin: 14px 18px 0; border: 1px solid var(--b); overflow: hidden;
-}
-.profile-sec-h {
-  padding: 13px 16px; border-bottom: 1px solid var(--b);
-  font-family: var(--fh); font-size: 13.5px; font-weight: 600; color: var(--t);
-}
-.profile-row {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 13px 16px; border-bottom: 1px solid var(--b);
-  cursor: pointer; transition: background .12s;
-}
-.profile-row:last-child { border-bottom: none; }
-.profile-row:active { background: var(--rll); }
-.profile-row-left  { display: flex; align-items: center; gap: 11px; }
-.profile-row-icon  {
-  width: 32px; height: 32px; border-radius: var(--r1);
-  background: var(--rl);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 10px; font-weight: 700; color: var(--r);
-}
-.profile-row-text label { font-size: 11px; color: var(--t3); }
-.profile-row-text p     { font-size: 13.5px; font-weight: 500; color: var(--t); }
-.profile-row-arrow      { color: var(--t3); font-size: 18px; }
-.detail-row {
-  display: flex; justify-content: space-between;
-  padding: 12px 16px; border-bottom: 1px solid var(--b); font-size: 13px;
-}
-.detail-row:last-child { border-bottom: none; }
-.detail-key { color: var(--t3); font-weight: 500; }
-.detail-val { color: var(--t); font-weight: 600; }
-.btn-logout {
-  display: block; width: calc(100% - 36px); margin: 14px 18px 4px;
-  padding: 13px; background: #fff; border: 1.5px solid var(--r);
-  border-radius: var(--r2); color: var(--r);
-  font-family: var(--fh); font-size: 14px; font-weight: 700;
-  text-align: center; cursor: pointer;
-}
-
-/* NAV ICON text fallback */
+/* NAV ICON text fallback (dung chung cho Bottom Nav o moi trang) */
 .nav-icon {
   font-size: 10px; font-weight: 700; color: var(--t3);
   width: 24px; height: 24px;
