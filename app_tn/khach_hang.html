@@ -72,20 +72,25 @@
     <!-- Nut them khach hang — thanh vien dat vao day -->
   </div>
 
-  <!-- TODO UC-1.2: Thanh tim kiem (SĐT, ma KH, ten) + bo loc trang thai + hang -->
-  <!-- TODO UC-1.1.1: Nut "Them khach hang" → mo modal hoac chuyen trang -->
+  <!-- UC-1.2: Thanh tim kiem (SĐT, ma KH) -->
+  <div class="panel kh-search-panel">
+    <div class="kh-search-group">
+      <input type="text" id="searchInput" class="kh-search-input" 
+             placeholder="Tim kiem theo SĐT hoac ma KH..." onkeypress="if(event.key==='Enter') handleSearch()">
+      <button class="btn btn-primary" onclick="handleSearch()">Tim kiem</button>
+    </div>
+  </div>
 
   <!-- TODO: Render bang danh sach khach hang -->
   <div class="panel">
     <div class="panel-h">
       <span class="panel-t">Danh sach khach hang</span>
-      <!-- TODO: them so ket qua, phan trang BR5-3: 20 dong/trang -->
+      <span id="searchResultCount" style="font-size:12px;color:var(--t3);"></span>
     </div>
-    <div style="padding:48px;text-align:center;color:var(--t3);">
-      <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chuc nang dang duoc phat trien</div>
-      <div style="font-size:12px;">File: khach_hang.html / khach_hang.css / khach_hang.js</div>
-      <div style="font-size:11px;margin-top:10px;color:var(--t3);">
-        UC-1.1.1 Them KH &nbsp;·&nbsp; UC-1.1.2 Sua KH &nbsp;·&nbsp; UC-1.1.3 Xoa KH &nbsp;·&nbsp; UC-1.2 Tim kiem
+    <div id="khResultsContainer">
+      <div style="padding:48px;text-align:center;color:var(--t3);">
+        <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Nhap thong tin tim kiem</div>
+        <div style="font-size:12px;">Hay nhap so dien thoai hoac ma khach hang</div>
       </div>
     </div>
   </div>
@@ -120,16 +125,103 @@
 <div class="ov" id="modal-kh-view">
   <div class="modal" style="max-width:520px;">
     <div class="mh">
-      <div class="mt">Thong tin khach hang</div>
+      <div class="mt" id="modal-view-title">Thong tin khach hang</div>
       <button class="mc" onclick="closeModal('modal-kh-view')">X</button>
     </div>
     <div style="padding:18px 22px;">
-      <!-- TODO: Hien thi day du thong tin KH + trang thai the + diem -->
-      <!-- Chi xem, khong chinh sua (BR5-5) -->
+      <div class="kh-info-group">
+        <div class="kh-info-row">
+          <span class="kh-info-label">Ma khach hang</span>
+          <span class="kh-info-value" id="view-ma-kh">-</span>
+        </div>
+        <div class="kh-info-row">
+          <span class="kh-info-label">Ho va ten</span>
+          <span class="kh-info-value" id="view-ho-ten">-</span>
+        </div>
+        <div class="kh-info-row">
+          <span class="kh-info-label">So dien thoai</span>
+          <span class="kh-info-value" id="view-sdt">-</span>
+        </div>
+        <div class="kh-info-row">
+          <span class="kh-info-label">Email</span>
+          <span class="kh-info-value" id="view-email">-</span>
+        </div>
+        <div class="kh-info-row">
+          <span class="kh-info-label">Ngay sinh</span>
+          <span class="kh-info-value" id="view-ngay-sinh">-</span>
+        </div>
+        <div class="kh-info-row">
+          <span class="kh-info-label">Gioi tinh</span>
+          <span class="kh-info-value" id="view-gioi-tinh">-</span>
+        </div>
+        <div class="kh-info-row">
+          <span class="kh-info-label">Dia chi</span>
+          <span class="kh-info-value" id="view-dia-chi">-</span>
+        </div>
+        <div class="kh-info-row">
+          <span class="kh-info-label">Hang the</span>
+          <span class="kh-info-value kh-status-badge" id="view-hang-the">-</span>
+        </div>
+        <div class="kh-info-row">
+          <span class="kh-info-label">Diem tich luy</span>
+          <span class="kh-info-value" id="view-diem">0</span>
+        </div>
+        <div class="kh-info-row">
+          <span class="kh-info-label">Trang thai</span>
+          <span class="kh-info-value kh-status-badge" id="view-trang-thai">Dang hoat dong</span>
+        </div>
+      </div>
     </div>
     <div class="mf">
       <button class="btn btn-outline" onclick="closeModal('modal-kh-view')">Dong</button>
-      <button class="btn btn-yellow" id="btn-cap-the-from-view">Cap the</button>
+      <button class="btn btn-yellow" id="btn-sua-from-view" onclick="openSuaKHFromView()">Sua thong tin</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Sua khach hang (UC-1.1.2) -->
+<div class="ov" id="modal-kh-sua">
+  <div class="modal" style="max-width:600px;">
+    <div class="mh">
+      <div class="mt">Sua thong tin khach hang — <span id="sua-ma-kh">KH00001</span></div>
+      <button class="mc" onclick="closeModal('modal-kh-sua')">X</button>
+    </div>
+    <div style="padding:18px 22px;">
+      <div class="kh-form-group">
+        <div class="kh-form-row">
+          <label class="kh-form-label">Ho va ten *</label>
+          <input type="text" id="sua-ho-ten" class="kh-form-input" placeholder="Nhap ho va ten">
+        </div>
+        <div class="kh-form-row">
+          <label class="kh-form-label">So dien thoai *</label>
+          <input type="text" id="sua-sdt" class="kh-form-input" placeholder="Nhap so dien thoai" readonly>
+        </div>
+        <div class="kh-form-row">
+          <label class="kh-form-label">Email</label>
+          <input type="email" id="sua-email" class="kh-form-input" placeholder="Nhap email">
+        </div>
+        <div class="kh-form-row">
+          <label class="kh-form-label">Ngay sinh</label>
+          <input type="date" id="sua-ngay-sinh" class="kh-form-input">
+        </div>
+        <div class="kh-form-row">
+          <label class="kh-form-label">Gioi tinh</label>
+          <select id="sua-gioi-tinh" class="kh-form-input">
+            <option value="">-- Chon gioi tinh --</option>
+            <option value="Nam">Nam</option>
+            <option value="Nu">Nu</option>
+            <option value="Khac">Khac</option>
+          </select>
+        </div>
+        <div class="kh-form-row">
+          <label class="kh-form-label">Dia chi</label>
+          <input type="text" id="sua-dia-chi" class="kh-form-input" placeholder="Nhap dia chi">
+        </div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-outline" onclick="closeModal('modal-kh-sua')">Huy</button>
+      <button class="btn btn-primary" id="btn-sua-save" onclick="saveSuaKH()">Luu thong tin</button>
     </div>
   </div>
 </div>
