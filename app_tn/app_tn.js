@@ -17,7 +17,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   initAddCustomer();
+  handleHashNavigation();
 });
+
+window.addEventListener('hashchange', handleHashNavigation);
+
+function handleHashNavigation() {
+  const hash = window.location.hash.slice(1);
+  if (!hash) return;
+  const target = document.getElementById('page-' + hash);
+  if (target) {
+    go(hash, null);
+  }
+}
 
 function initAddCustomer(){
   const page = document.getElementById('page-kh-them');
