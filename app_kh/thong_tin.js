@@ -1,4 +1,4 @@
-// thong_tin.js — Thong tin ca nhan Khach Hang
+// thong_tin.js — Thông tin cá nhân Khách Hàng
 requireLogin();
 const kh = getCurrentNV();
 
@@ -17,5 +17,5 @@ function showToast(msg, type = '') {
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!kh) return;
-  // TODO: Load thong tin va render vao #mainContent
+  // TODO: Tải thông tin và hiển thị vào #mainContent
 });

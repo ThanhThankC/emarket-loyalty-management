@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Voucher của tôi — CarePoint</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<link rel="stylesheet" href="app_kh.css"/>
+<link rel="stylesheet" href="voucher_cua_toi.css"/>
+</head>
+<body>
+
+<!-- ====== TRANG: VOUCHER CỦA TÔI ====== -->
+<!-- File: voucher_cua_toi.html / voucher_cua_toi.css / voucher_cua_toi.js — UC-9 -->
+<div class="page active" id="page-vouchers">
+  <div class="sub-topbar">
+    <a class="back-btn" href="app_kh.html">←</a>
+    <div class="sub-topbar-title">Voucher của tôi</div>
+  </div>
+
+  <div id="mainContent" style="padding:16px 18px;">
+    <div class="tabs-row" style="margin-bottom:16px;">
+      <div class="tab active" onclick="setTab(this)">Khả dụng</div>
+      <div class="tab" onclick="setTab(this)">Đã dùng</div>
+      <div class="tab" onclick="setTab(this)">Hết hạn</div>
+    </div>
+
+    <!-- TODO: AC - Lọc danh sách theo tab (Khả dụng / Đã dùng / Hết hạn) -->
+    <div class="voucher-list" id="voucherList">
+      <div class="tx-placeholder">Đang tải voucher...</div>
+    </div>
+
+    <div class="bottom-spacer"></div>
+  </div>
+</div>
+
+<!-- ====== THANH ĐIỀU HƯỚNG DƯỚI CÙNG ====== -->
+<div class="bottom-nav">
+  <div class="nav-item" id="nav-home" onclick="location.href='app_kh.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Trang chủ</div>
+  </div>
+  <div class="nav-item" id="nav-exchange" onclick="location.href='doi_diem_qua.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Đổi điểm</div>
+  </div>
+  <div class="nav-item active" id="nav-vouchers" onclick="location.href='voucher_cua_toi.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Voucher</div>
+    <div class="nav-badge" id="voucherBadge" style="display:none">0</div>
+  </div>
+  <div class="nav-item" id="nav-profile" onclick="location.href='ho_so.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Cá nhân</div>
+  </div>
+</div>
+
+<!-- ====== MODAL: DÙNG VOUCHER ====== -->
+<div class="ov" id="modal-use-voucher">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <span class="sheet-close" onclick="closeModal('modal-use-voucher')">x</span>
+    <div class="sheet-title">Sử dụng voucher</div>
+    <div class="sheet-sub">Xuất trình mã này cho thu ngân</div>
+    <div class="qr-box">
+      <div class="qr-code" id="useVoucherQR">QR</div>
+      <div class="qr-id" id="useVoucherCode">---</div>
+      <div class="qr-hint" id="useVoucherHint">---</div>
+    </div>
+    <div id="useVoucherStatus" style="text-align:center;padding:12px;background:var(--gbg);border-radius:var(--r2);font-size:13px;color:var(--green);font-weight:500;">
+      Voucher hợp lệ
+    </div>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script src="supabase_config.js"></script>
+<script src="supabase_api.js"></script>
+<script src="auth.js"></script>
+<script src="voucher_cua_toi.js"></script>
+</body>
+</html>

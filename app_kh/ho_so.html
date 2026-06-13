@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Hồ sơ cá nhân — CarePoint</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<link rel="stylesheet" href="app_kh.css"/>
+<link rel="stylesheet" href="ho_so.css"/>
+</head>
+<body>
+
+<!-- ====== TRANG: HỒ SƠ (Profile) ====== -->
+<!-- File: ho_so.html / ho_so.css / ho_so.js — UC-6.2 (xem tài khoản), UC-7.2 (điểm/hạng) -->
+<div class="page active" id="page-profile">
+
+  <div class="sub-topbar">
+    <a class="back-btn" href="app_kh.html">←</a>
+    <div class="sub-topbar-title">Tài khoản</div>
+  </div>
+
+  <div id="mainContent">
+    <div class="profile-hero">
+      <div class="profile-av" id="profAv">KH</div>
+      <div class="profile-name" id="profName">Đang tải...</div>
+      <div class="profile-id-label" id="profId">---</div>
+      <div class="profile-tier-badge">
+        <div class="tier-dot"></div>
+        <span id="profTier">Thành viên</span>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-sec-h">Thông tin cá nhân</div>
+
+      <!-- AC UC-6.2: xem thông tin; nút chuyển sang UC-6.1 (sửa thông tin) -->
+      <div class="profile-row" onclick="location.href='thong_tin.html'">
+        <div class="profile-row-left">
+          <div class="profile-row-icon">TT</div>
+          <div class="profile-row-text">
+            <label>Xem và cập nhật thông tin</label>
+            <p>Thông tin cá nhân</p>
+          </div>
+        </div>
+        <div class="profile-row-arrow">›</div>
+      </div>
+
+      <div class="profile-row" onclick="openModal('modal-changepass')">
+        <div class="profile-row-left">
+          <div class="profile-row-icon">MK</div>
+          <div class="profile-row-text">
+            <label>Bảo mật tài khoản</label>
+            <p>Đổi mật khẩu</p>
+          </div>
+        </div>
+        <div class="profile-row-arrow">›</div>
+      </div>
+    </div>
+
+    <!-- AC UC-7.2: hiển thị tổng điểm khả dụng, hạng, ngưỡng lên hạng -->
+    <div class="profile-section">
+      <div class="profile-sec-h">Hạng thành viên &amp; Điểm</div>
+      <div class="detail-row"><span class="detail-key">Hạng hiện tại</span><span class="detail-val" id="dRank">---</span></div>
+      <div class="detail-row"><span class="detail-key">Điểm tích lũy</span><span class="detail-val" id="dPts">---</span></div>
+      <div class="detail-row"><span class="detail-key">Tổng điểm đã tích</span><span class="detail-val" id="dTotal">---</span></div>
+      <div class="detail-row"><span class="detail-key">Điểm lên hạng sau</span><span class="detail-val" id="dNext" style="color:var(--r);">---</span></div>
+    </div>
+
+    <div class="profile-section">
+      <div class="profile-sec-h">Cài đặt &amp; Hỗ trợ</div>
+
+      <div class="profile-row" onclick="location.href='khuyen_mai.html'">
+        <div class="profile-row-left">
+          <div class="profile-row-icon">KM</div>
+          <div class="profile-row-text">
+            <p>Khuyến mãi &amp; Sự kiện</p>
+          </div>
+        </div>
+        <div class="profile-row-arrow">›</div>
+      </div>
+
+      <div class="profile-row" onclick="showToast('Tính năng đang phát triển')">
+        <div class="profile-row-left">
+          <div class="profile-row-icon">HT</div>
+          <div class="profile-row-text">
+            <p>Liên hệ hỗ trợ</p>
+          </div>
+        </div>
+        <div class="profile-row-arrow">›</div>
+      </div>
+    </div>
+
+    <button class="btn-logout" onclick="dangXuat()">Đăng xuất</button>
+    <div class="bottom-spacer"></div>
+  </div>
+</div>
+
+<!-- ====== THANH ĐIỀU HƯỚNG DƯỚI CÙNG ====== -->
+<div class="bottom-nav">
+  <div class="nav-item" id="nav-home" onclick="location.href='app_kh.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Trang chủ</div>
+  </div>
+
+  <div class="nav-item" id="nav-exchange" onclick="location.href='doi_diem_qua.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Đổi điểm</div>
+  </div>
+
+  <div class="nav-item" id="nav-vouchers" onclick="location.href='voucher_cua_toi.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Voucher</div>
+    <div class="nav-badge" id="voucherBadge" style="display:none">0</div>
+  </div>
+
+  <div class="nav-item active" id="nav-profile" onclick="location.href='ho_so.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Cá nhân</div>
+  </div>
+</div>
+
+<!-- ====== MODAL: ĐỔI MẬT KHẨU (UC-6.1) ====== -->
+<div class="ov" id="modal-changepass">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <span class="sheet-close" onclick="closeModal('modal-changepass')">x</span>
+
+    <div class="sheet-title" style="margin-bottom:4px;">Đổi mật khẩu</div>
+    <div class="sheet-sub">Nhập mật khẩu cũ và mật khẩu mới</div>
+
+    <div class="form-group">
+      <label class="form-label">Mật khẩu hiện tại</label>
+      <input class="form-input" id="oldPass" type="password" placeholder="Nhập mật khẩu cũ"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Mật khẩu mới</label>
+      <input class="form-input" id="newPass" type="password" placeholder="Tối thiểu 6 ký tự"/>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Xác nhận mật khẩu mới</label>
+      <input class="form-input" id="newPass2" type="password" placeholder="Nhập lại mật khẩu mới"/>
+    </div>
+
+    <!-- TODO: AC - validate realtime, báo lỗi rõ từng trường -->
+    <button class="btn-full" onclick="handleChangePass()">Lưu mật khẩu mới</button>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script src="supabase_config.js"></script>
+<script src="supabase_api.js"></script>
+<script src="auth.js"></script>
+<script src="ho_so.js"></script>
+</body>
+</html>
