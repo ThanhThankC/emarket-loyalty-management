@@ -1,13 +1,13 @@
 /* =============================================================
-   quy_doi_diem.css — Style rieng cho chuc nang: Quy doi diem giam gia
-   Phu thuoc: shared.css va app_tn.css (da load truoc)
+   quy_doi_diem.css — Style riêng cho chức năng: Quy đổi điểm giảm giá
+   Phụ thuộc: shared.css và app_tn.css (đã load trước)
    -------------------------------------------------------------
-   QUY TAC:
-   - KHONG dung emoji/icon Unicode lam trang tri
-   - Dat ten class co prefix "qd-" de tranh trung shared.css
-     Vi du: .qd-pts-widget { }  .qd-result { }
-   - KHONG override class da co trong shared.css hay app_tn.css
+   QUY TẮC:
+   - KHÔNG dùng emoji/icon Unicode làm trang trí
+   - Đặt tên class có prefix "qd-" để tránh trùng shared.css
+     Ví dụ: .qd-pts-widget { }  .qd-result { }
+   - KHÔNG override class đã có trong shared.css hay app_tn.css
    ============================================================= */
 
-/* Viet style rieng cua chuc nang ben duoi */
+/* Viết style riêng của chức năng bên dưới */
 /* prefix: qd- */
