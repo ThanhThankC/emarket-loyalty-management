@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CarePoint — CSKH</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<link rel="stylesheet" href="app_cskh.css"/>
+<link rel="stylesheet" href="ho_tro.css"/>
+<link rel="stylesheet" href="phan_hoi.css"/>
+<link rel="stylesheet" href="doi_tra.css"/>
+<link rel="stylesheet" href="quan_ly_the.css"/>
+<link rel="stylesheet" href="cap_the.css"/>
+<link rel="stylesheet" href="gia_han.css"/>
+<link rel="stylesheet" href="qua_tang.css"/>
+<style>
+  .page-section { display: none; }
+  .page-section.active { display: contents; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-brand">
+    <div class="bmark">C</div>
+    <div class="bname">Care<em>Point</em></div>
+  </div>
+  <div class="tb-center">
+    <div class="sbox">
+      <input type="text" id="globalSearch" placeholder="Tìm kiếm khách hàng, mã thẻ..." oninput="onGlobalSearch(this.value)"/>
+    </div>
+  </div>
+  <div class="tb-right">
+    <div class="upill" onclick="dangXuat()">
+      <div class="uav" id="topAvatar">NV</div>
+      <div><div class="unm" id="topName">Đang tải...</div><div class="url">CSKH</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="nsec">
+      <div class="nslbl">Menu chính</div>
+      <div class="ni" data-page="dashboard" data-label="Dashboard" onclick="navigate('dashboard',this)">Dashboard</div>
+      <div class="ni" data-page="ho_tro" data-label="Hỗ trợ trực tiếp" onclick="navigate('ho_tro',this)">Hỗ trợ trực tiếp</div>
+      <div class="ni" data-page="phan_hoi" data-label="Phản hồi &amp; Khiếu nại" onclick="navigate('phan_hoi',this)">Phản hồi &amp; Khiếu nại</div>
+      <div class="ni" data-page="doi_tra" data-label="Đổi / Trả hàng" onclick="navigate('doi_tra',this)">Đổi / Trả hàng</div>
+    </div>
+    <div class="nsec">
+      <div class="nslbl">Thẻ thành viên</div>
+      <div class="ni" data-page="quan_ly_the" data-label="Quản lý thẻ" onclick="navigate('quan_ly_the',this)">Quản lý thẻ</div>
+      <div class="ni" data-page="cap_the" data-label="Cấp thẻ mới" onclick="navigate('cap_the',this)">Cấp thẻ mới</div>
+      <div class="ni" data-page="gia_han" data-label="Gia hạn thẻ" onclick="navigate('gia_han',this)">Gia hạn thẻ</div>
+    </div>
+    <div class="nsec">
+      <div class="nslbl">Khuyến mại</div>
+      <div class="ni" data-page="qua_tang" data-label="Quà tặng &amp; Sự kiện" onclick="navigate('qua_tang',this)">Quà tặng &amp; Sự kiện</div>
+    </div>
+    <div class="sfooter">
+      <div class="ni" onclick="dangXuat()" style="color:var(--red)">Đăng xuất</div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT SLOT -->
+  <div class="main" id="main-content">
+
+    <!-- ===================== DASHBOARD ===================== -->
+    <div class="page-section active" id="page-dashboard">
+      <div class="ph">
+        <div>
+          <div class="ptitle">Dashboard</div>
+          <div class="psub" id="dashSub">Xin chào, đang tải...</div>
+        </div>
+      </div>
+      <div class="dash-grid" id="dashStats">
+        <div class="stat-card" onclick="navigate('phan_hoi',document.querySelector('[data-page=phan_hoi]'))">
+          <div class="stat-label">Phản hồi chờ xử lý</div>
+          <div class="stat-val" id="stat-ph">--</div>
+          <div class="stat-hint">Nhấn để xem</div>
+        </div>
+        <div class="stat-card" onclick="navigate('cap_the',document.querySelector('[data-page=cap_the]'))">
+          <div class="stat-label">Thẻ cấp hôm nay</div>
+          <div class="stat-val" id="stat-the">--</div>
+          <div class="stat-hint">Nhấn để xem</div>
+        </div>
+        <div class="stat-card" onclick="navigate('doi_tra',document.querySelector('[data-page=doi_tra]'))">
+          <div class="stat-label">Đổi trả chờ xử lý</div>
+          <div class="stat-val" id="stat-dt">--</div>
+          <div class="stat-hint">Nhấn để xem</div>
+        </div>
+        <div class="stat-card" onclick="navigate('ho_tro',document.querySelector('[data-page=ho_tro]'))">
+          <div class="stat-label">Hỗ trợ hôm nay</div>
+          <div class="stat-val" id="stat-ht">--</div>
+          <div class="stat-hint">Nhấn để xem</div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:20px">
+        <div class="panel-h"><span class="panel-t">Hoạt động gần đây</span></div>
+        <div style="padding:40px;text-align:center;color:var(--t3)">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px">Dashboard đang được xây dựng</div>
+          <div style="font-size:12px">Sử dụng menu bên trái để truy cập các chức năng</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== HO TRO ===================== -->
+    <div class="page-section" id="page-ho_tro">
+      <div class="ph">
+        <div>
+          <div class="ptitle">Hỗ trợ trực tiếp</div>
+          <div class="psub"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><span class="panel-t">Hỗ trợ trực tiếp</span></div>
+        <div style="padding:48px;text-align:center;color:var(--t3);">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+          <div style="font-size:12px;">ho_tro.css / pages/ho_tro.js</div>
+        </div>
+      </div>
+      <div class="ov" id="modal-ho-tro">
+        <div class="modal">
+          <div class="mh"><div class="mt">Tiêu đề modal</div><button class="mc" onclick="closeModal('modal-ho-tro')">X</button></div>
+          <div style="padding:20px 22px"></div>
+          <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-ho-tro')">Hủy</button><button class="btn btn-primary">Xác nhận</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== PHAN HOI ===================== -->
+    <div class="page-section" id="page-phan_hoi">
+      <div class="ph">
+        <div>
+          <div class="ptitle">Phản hồi và Khiếu nại</div>
+          <div class="psub"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><span class="panel-t">Phản hồi và Khiếu nại</span></div>
+        <div style="padding:48px;text-align:center;color:var(--t3);">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+          <div style="font-size:12px;">phan_hoi.css / pages/phan_hoi.js</div>
+        </div>
+      </div>
+      <div class="ov" id="modal-phan-hoi">
+        <div class="modal">
+          <div class="mh"><div class="mt">Tiêu đề modal</div><button class="mc" onclick="closeModal('modal-phan-hoi')">X</button></div>
+          <div style="padding:20px 22px"></div>
+          <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-phan-hoi')">Hủy</button><button class="btn btn-primary">Xác nhận</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== DOI TRA ===================== -->
+    <div class="page-section" id="page-doi_tra">
+      <div class="ph">
+        <div>
+          <div class="ptitle">Đổi / Trả hàng</div>
+          <div class="psub"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><span class="panel-t">Đổi / Trả hàng</span></div>
+        <div style="padding:48px;text-align:center;color:var(--t3);">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+          <div style="font-size:12px;">doi_tra.css / pages/doi_tra.js</div>
+        </div>
+      </div>
+      <div class="ov" id="modal-doi-tra">
+        <div class="modal">
+          <div class="mh"><div class="mt">Tiêu đề modal</div><button class="mc" onclick="closeModal('modal-doi-tra')">X</button></div>
+          <div style="padding:20px 22px"></div>
+          <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-doi-tra')">Hủy</button><button class="btn btn-primary">Xác nhận</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== QUAN LY THE ===================== -->
+    <div class="page-section" id="page-quan_ly_the">
+      <div class="ph">
+        <div>
+          <div class="ptitle">Quản lý thẻ thành viên</div>
+          <div class="psub">Tra cứu, xem chi tiết và thao tác trên thẻ thành viên</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn btn-outline btn-sm" onclick="loadDanhSachThe()">Làm mới</button>
+          <button class="btn btn-primary btn-sm" onclick="navigate('cap_the',document.querySelector('[data-page=cap_the]'))">Cấp thẻ mới</button>
+        </div>
+      </div>
+      <!-- Bộ lọc -->
+      <div class="srow" style="margin-bottom:16px;">
+        <select class="fi" id="filterHang" style="width:160px" onchange="applyFilter()">
+          <option value="">Tất cả hạng</option>
+          <option value="Bronze">Đồng</option>
+          <option value="Silver">Bạc</option>
+          <option value="Gold">Vàng</option>
+          <option value="Platinum">Bạch Kim</option>
+        </select>
+        <select class="fi" id="filterTrang" style="width:160px" onchange="applyFilter()">
+          <option value="">Tất cả trạng thái</option>
+          <option value="hoat_dong">Hoạt động</option>
+          <option value="het_han">Hết hạn</option>
+          <option value="bi_khoa">Bị khóa</option>
+          <option value="mat_the">Mất thẻ</option>
+        </select>
+        <input class="fi" id="searchInput" type="text" placeholder="Tìm theo tên, SĐT, mã thẻ..." style="flex:1;max-width:280px" oninput="onSearch(this.value)"/>
+        <span id="countLabel" style="align-self:center;font-size:13px;color:var(--t3);margin-left:auto;"></span>
+      </div>
+      <!-- Bảng -->
+      <div class="panel">
+        <div class="panel-h">
+          <span class="panel-t">Danh sách thẻ thành viên</span>
+          <span class="panel-a" onclick="loadDanhSachThe()">Tải lại</span>
+        </div>
+        <div id="stateLoading" style="padding:40px;text-align:center;color:var(--t3);">
+          <div class="spinner"></div>
+          <div style="margin-top:10px;font-size:13px;">Đang tải dữ liệu...</div>
+        </div>
+        <div id="stateEmpty" style="display:none;padding:48px;text-align:center;color:var(--t3);">
+          <div style="font-weight:600;margin-bottom:4px;">Không tìm thấy kết quả</div>
+          <div style="font-size:12px;">Thử thay đổi bộ lọc hoặc từ khóa tìm kiếm</div>
+        </div>
+        <div id="stateError" style="display:none;padding:40px;text-align:center;">
+          <div style="font-size:13px;color:var(--red);margin-bottom:10px;" id="errorMsg"></div>
+          <button class="btn btn-outline btn-sm" onclick="loadDanhSachThe()">Thử lại</button>
+        </div>
+        <div id="stateTable" style="display:none;">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Khách hàng</th><th>Mã thẻ</th><th>Hạng</th>
+                <th>Điểm</th><th>Hết hạn</th><th>Trạng thái</th>
+                <th style="text-align:right">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Modal: Chi tiết thẻ -->
+      <div class="ov" id="modal-chitiet">
+        <div class="modal wide">
+          <div class="mh">
+            <div>
+              <div class="mt" id="m-title">Chi tiết thẻ</div>
+              <div style="font-size:12px;color:var(--t3);margin-top:3px;" id="m-sub"></div>
+            </div>
+            <button class="mc" onclick="closeModal('modal-chitiet')">Đóng</button>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 22px 4px;" id="m-info"></div>
+          <div style="padding:14px 22px 4px;">
+            <div class="panel-t" style="font-size:13px;margin-bottom:10px;">Lịch sử giao dịch điểm gần đây</div>
+            <div id="m-gd-loading" style="text-align:center;padding:16px;color:var(--t3);font-size:13px;">Đang tải...</div>
+            <table class="tbl" id="m-gd-table" style="display:none">
+              <thead><tr><th>Thời gian</th><th>Loại</th><th>Điểm</th><th>Số dư sau</th><th>Ghi chú</th></tr></thead>
+              <tbody id="m-gd-body"></tbody>
+            </table>
+            <div id="m-gd-empty" style="display:none;text-align:center;padding:14px;color:var(--t3);font-size:13px;">Chưa có giao dịch</div>
+          </div>
+          <div class="mf">
+            <button class="btn btn-outline" onclick="closeModal('modal-chitiet')">Đóng</button>
+            <button class="btn btn-yellow" id="btn-gia-han" onclick="chuyenGiaHan()">Gia hạn thẻ</button>
+            <button class="btn btn-danger btn-sm" id="btn-khoa" onclick="khoaThe()">Khóa thẻ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== CAP THE ===================== -->
+    <div class="page-section" id="page-cap_the">
+      <div class="ph">
+        <div>
+          <div class="ptitle">Cấp thẻ thành viên mới</div>
+          <div class="psub">Tạo hồ sơ khách hàng và cấp thẻ trong một bước</div>
+        </div>
+      </div>
+      <!-- Tab bar -->
+      <div class="tab-bar">
+        <div class="tab active" id="tab-moi" onclick="switchTab('moi')">Khách hàng mới</div>
+        <div class="tab"        id="tab-cu"  onclick="switchTab('cu')">Khách hàng có sẵn</div>
+      </div>
+      <!-- PANEL: Khách hàng MỚI -->
+      <div id="panel-moi">
+        <div class="panel">
+          <div class="panel-h"><span class="panel-t">Thông tin khách hàng</span></div>
+          <div style="padding:20px 22px">
+            <div class="fgrid">
+              <div class="fg"><label class="fl">Họ và tên <span class="req">*</span></label><input class="fi" id="new-hoten" type="text" placeholder="Nguyễn Văn A"/></div>
+              <div class="fg">
+                <label class="fl">Số điện thoại <span class="req">*</span></label>
+                <input class="fi" id="new-sdt" type="tel" placeholder="09xxxxxxxx" oninput="clearSdtError()"/>
+                <span class="fhint" id="sdt-hint" style="display:none;color:var(--red)">SĐT đã tồn tại trong hệ thống</span>
+              </div>
+              <div class="fg"><label class="fl">Email</label><input class="fi" id="new-email" type="email" placeholder="example@gmail.com"/></div>
+              <div class="fg"><label class="fl">Ngày sinh</label><input class="fi" id="new-ngaysinh" type="date"/></div>
+              <div class="fg"><label class="fl">Giới tính</label><select class="fi" id="new-gioitinh"><option value="">Chọn...</option><option value="Nam">Nam</option><option value="Nu">Nữ</option><option value="Khac">Khác</option></select></div>
+              <div class="fg ffull"><label class="fl">Địa chỉ</label><input class="fi" id="new-diachi" type="text" placeholder="Số nhà, đường, quận, thành phố"/></div>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><span class="panel-t">Thông tin thẻ thành viên</span></div>
+          <div style="padding:20px 22px">
+            <div class="fgrid">
+              <div class="fg">
+                <label class="fl">Hạng khởi tạo</label>
+                <select class="fi" id="new-hang" disabled><option value="Bronze">Đồng (mặc định)</option></select>
+                <span class="fhint">Khách hàng mới luôn bắt đầu ở hạng Đồng</span>
+              </div>
+              <div class="fg"><label class="fl">Thời hạn thẻ</label><select class="fi" id="new-thoihan"><option value="1">1 năm</option><option value="2" selected>2 năm</option><option value="3">3 năm</option></select></div>
+              <div class="fg ffull">
+                <label class="fl">Mật khẩu app khách hàng <span class="req">*</span></label>
+                <input class="fi" id="new-matkhau" type="password" placeholder="Tối thiểu 6 ký tự"/>
+                <span class="fhint">Khách hàng dùng mật khẩu này để đăng nhập app</span>
+              </div>
+            </div>
+            <!-- Preview thẻ -->
+            <div class="cap-the-preview" id="previewNew">
+              <div class="cp-brand">CarePoint eMarket</div>
+              <div class="cp-dots"><span></span><span></span><span></span></div>
+              <div class="cp-ma" id="prev-ma-new">THE — XXXXXX</div>
+              <div class="cp-name" id="prev-name-new">Họ tên khách hàng</div>
+              <div class="cp-foot"><span class="cp-hang" id="prev-hang-new">DONG</span><span id="prev-date-new">HH: —</span></div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:20px">
+              <button class="btn btn-outline" onclick="resetForm()">Nhập lại</button>
+              <button class="btn btn-primary" onclick="capTheMoi()" id="btn-cap-moi">Cấp thẻ</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- PANEL: Khách hàng CŨ -->
+      <div id="panel-cu" style="display:none">
+        <div class="panel">
+          <div class="panel-h"><span class="panel-t">Tìm khách hàng chưa có thẻ</span></div>
+          <div style="padding:20px 22px">
+            <div class="srow" style="margin-bottom:14px">
+              <input class="fi" id="search-cu" type="text" placeholder="Nhập SĐT hoặc tên..." style="flex:1"/>
+              <button class="btn btn-outline" onclick="timKhachHang()">Tìm kiếm</button>
+            </div>
+            <div id="cu-result"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal: Cấp thẻ thành công -->
+      <div class="ov" id="modal-success">
+        <div class="modal">
+          <div class="mh"><div class="mt">Cấp thẻ thành công</div><button class="mc" onclick="closeModal('modal-success')">Đóng</button></div>
+          <div style="padding:20px 22px">
+            <div id="success-info" style="margin-bottom:18px"></div>
+            <div class="cap-the-preview" id="success-card"></div>
+          </div>
+          <div class="mf">
+            <button class="btn btn-outline" onclick="closeModal('modal-success');resetForm()">Cấp thẻ khác</button>
+            <button class="btn btn-primary" onclick="navigate('quan_ly_the',document.querySelector('[data-page=quan_ly_the]'))">Về danh sách thẻ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== GIA HAN ===================== -->
+    <div class="page-section" id="page-gia_han">
+      <div class="ph">
+        <div>
+          <div class="ptitle">Gia hạn thẻ thành viên</div>
+          <div class="psub"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><span class="panel-t">Gia hạn thẻ thành viên</span></div>
+        <div style="padding:48px;text-align:center;color:var(--t3);">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+          <div style="font-size:12px;">gia_han.css / pages/gia_han.js</div>
+        </div>
+      </div>
+      <div class="ov" id="modal-gia-han-confirm">
+        <div class="modal">
+          <div class="mh"><div class="mt">Xác nhận gia hạn</div><button class="mc" onclick="closeModal('modal-gia-han-confirm')">X</button></div>
+          <div style="padding:20px 22px"></div>
+          <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-gia-han-confirm')">Hủy</button><button class="btn btn-primary">Xác nhận</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== QUA TANG ===================== -->
+    <div class="page-section" id="page-qua_tang">
+      <div class="ph">
+        <div>
+          <div class="ptitle">Quà tặng và Sự kiện</div>
+          <div class="psub"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-h"><span class="panel-t">Quà tặng và Sự kiện</span></div>
+        <div style="padding:48px;text-align:center;color:var(--t3);">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+          <div style="font-size:12px;">qua_tang.css / pages/qua_tang.js</div>
+        </div>
+      </div>
+      <div class="ov" id="modal-qua-tang">
+        <div class="modal">
+          <div class="mh"><div class="mt">Tiêu đề modal</div><button class="mc" onclick="closeModal('modal-qua-tang')">X</button></div>
+          <div style="padding:20px 22px"></div>
+          <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-qua-tang')">Hủy</button><button class="btn btn-primary">Xác nhận</button></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /layout -->
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script src="supabase_config.js"></script>
+<script src="supabase_api.js"></script>
+<script src="auth.js"></script>
+<script src="router.js"></script>
+<script src="pages/dashboard.js"></script>
+<script src="pages/ho_tro.js"></script>
+<script src="pages/phan_hoi.js"></script>
+<script src="pages/doi_tra.js"></script>
+<script src="pages/quan_ly_the.js"></script>
+<script src="pages/cap_the.js"></script>
+<script src="pages/gia_han.js"></script>
+<script src="pages/qua_tang.js"></script>
+</body>
+</html>

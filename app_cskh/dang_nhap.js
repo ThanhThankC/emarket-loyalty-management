@@ -3,7 +3,7 @@
 //  Chỉ đăng nhập, không đăng ký
 //  Phụ thuộc: supabase_config.js, supabase_api.js, auth.js
 // =============================================================
-(function(){ if(getCurrentNV()) window.location.href='app_cskh.html'; })();
+(function(){ if(getCurrentNV()) window.location.href='index.html'; })();
 
 async function handleLogin(e){
   e.preventDefault();
@@ -25,7 +25,7 @@ async function handleLogin(e){
     const btn = document.getElementById('btnLogin');
     btn.style.background='#2D9462';
     document.getElementById('btnText').textContent='Thành công';
-    setTimeout(()=>{ window.location.href='app_cskh.html'; }, 700);
+    setTimeout(()=>{ window.location.href='index.html'; }, 700);
   } catch(err){
     showAlert('Không thể kết nối hệ thống. Kiểm tra mạng và thử lại.');
     console.error(err);
