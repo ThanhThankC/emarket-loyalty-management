@@ -1,13 +1,178 @@
-/* =============================================================
-   khach_hang.css — Style riêng cho chức năng: Quản lý khách hàng
-   Phụ thuộc: shared.css và app_tn.css (đã load trước)
-   -------------------------------------------------------------
-   QUY TẮC:
-   - KHÔNG dùng emoji/icon Unicode làm trang trí
-   - Đặt tên class có prefix "kh-" để tránh trùng shared.css
-     Ví dụ: .kh-rank-badge { }  .kh-actions { }
-   - KHÔNG override class đã có trong shared.css hay app_tn.css
-   ============================================================= */
+/* Khach hang - UC-1 */
+.kh-panel-body {
+  padding: 14px 18px 12px;
+}
 
-/* Viết style riêng của chức năng bên dưới */
-/* prefix: kh- */
+.kh-search {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  max-width: 620px;
+}
+
+.kh-search-field {
+  flex: 0 1 360px;
+  margin-bottom: 0;
+}
+
+.kh-search .btn {
+  min-width: 70px;
+  justify-content: center;
+}
+
+.kh-hint {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--t3);
+}
+
+.kh-hint.ok {
+  color: var(--green);
+}
+
+.kh-hint.err {
+  color: var(--red);
+}
+
+.kh-hint.inf {
+  color: var(--blue);
+}
+
+.kh-hint.wrn {
+  color: var(--orange);
+}
+
+.kh-table-wrap {
+  overflow-x: auto;
+}
+
+.kh-table th:last-child,
+.kh-table td:last-child {
+  width: 200px;
+  text-align: right;
+}
+
+.kh-empty {
+  color: var(--t3);
+  padding: 24px 16px !important;
+  text-align: center;
+}
+
+.kh-row-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+.kh-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 12px 16px;
+  border-top: 1.5px solid var(--b);
+  background: var(--cream);
+  color: var(--t2);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.kh-detail-panel {
+  width: min(920px, calc(100vw - 40px));
+  max-height: calc(100vh - 48px);
+  margin: 0;
+  overflow-y: auto;
+}
+
+.kh-detail-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(28, 26, 21, .52);
+  backdrop-filter: blur(2px);
+}
+
+body.kh-modal-open {
+  overflow: hidden;
+}
+
+.kh-form {
+  padding: 16px 18px 0;
+}
+
+.kh-detail-panel .fi:disabled {
+  opacity: 1;
+  background: #f2efe7;
+  color: var(--t2);
+  border-color: var(--b);
+}
+
+.kh-current-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--cream);
+  border: 1.5px solid var(--b);
+  border-radius: var(--r);
+  padding: 13px 14px;
+  margin-bottom: 14px;
+}
+
+.kh-customer-name {
+  font-family: var(--fh);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--t);
+}
+
+.kh-updated {
+  color: var(--t3);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.kh-actions {
+  margin-left: -18px;
+  margin-right: -18px;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+@media (max-width: 760px) {
+  .kh-search {
+    max-width: none;
+  }
+
+  .kh-current-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .kh-search {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .kh-search .btn {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .kh-updated {
+    white-space: normal;
+  }
+
+  .kh-detail-overlay {
+    align-items: flex-start;
+    padding: 12px;
+  }
+
+  .kh-detail-panel {
+    width: 100%;
+    max-height: calc(100vh - 24px);
+  }
+}
