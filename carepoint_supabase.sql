@@ -442,6 +442,7 @@ CREATE INDEX idx_kh_email     ON khach_hang(email);
 CREATE INDEX idx_the_ma_kh    ON the_thanh_vien(ma_kh);
 CREATE INDEX idx_dh_ma_kh     ON don_hang(ma_kh);
 CREATE INDEX idx_dh_ngay      ON don_hang(ngay_mua DESC);
+CREATE INDEX idx_dh_ma_kh_ngay ON don_hang(ma_kh, ngay_mua DESC);
 CREATE INDEX idx_gd_ma_the    ON lich_su_giao_dich_diem(ma_the);
 CREATE INDEX idx_gd_ngay      ON lich_su_giao_dich_diem(ngay_gd DESC);
 CREATE INDEX idx_ph_trang_thai ON phan_hoi_khach_hang(trang_thai);
