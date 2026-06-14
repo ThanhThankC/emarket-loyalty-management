@@ -148,7 +148,6 @@ async function traCuuLichSuMuaHang(useLastFilters) {
     showLsValidation(validation);
     setLsMessage(validation.message, 'err');
     setLsSummary('Điều kiện không hợp lệ');
-    ghiLogTraCuu(filters, 'khong_hop_le', 0, Date.now() - startedAt, validation.message);
     return;
   }
 
@@ -174,7 +173,6 @@ async function traCuuLichSuMuaHang(useLastFilters) {
       setLsMessage('Tra cứu hoàn tất trong ' + elapsed + ' ms.', 'ok');
       setLsSummary(rows.length + ' đơn hàng trên trang ' + lsPage);
     }
-    ghiLogTraCuu(filters, rows.length ? 'thanh_cong' : 'khong_co_ket_qua', rows.length, elapsed, null);
   } catch (error) {
     if (sequence !== lsSearchSequence) return;
     console.error(error);
@@ -189,7 +187,6 @@ async function traCuuLichSuMuaHang(useLastFilters) {
     setLsMessage(message, 'err');
     setLsSummary(isTimeout ? 'Quá thời gian phản hồi' : 'Tra cứu thất bại');
     showToast(message, 'err');
-    ghiLogTraCuu(filters, isTimeout ? 'qua_thoi_gian' : 'loi', 0, Date.now() - startedAt, error && error.message);
   } finally {
     if (sequence === lsSearchSequence) setLsBusy(false);
   }
@@ -254,28 +251,6 @@ async function fetchLsOrders(filters, page) {
     return await response.json();
   } finally {
     clearTimeout(timeoutId);
-  }
-}
-
-async function ghiLogTraCuu(filters, ketQua, soKetQua, thoiGianMs, loi) {
-  var nv = getCurrentNV();
-  try {
-    await sbInsert('nhat_ky_tra_cuu_don_hang', {
-      ma_nv: nv && nv.ma_nv ? nv.ma_nv : null,
-      so_dien_thoai: filters.so_dien_thoai || null,
-      ma_kh: filters.ma_kh || null,
-      ma_don_hang: filters.ma_don_hang || null,
-      tu_ngay: filters.tu_ngay || null,
-      den_ngay: filters.den_ngay || null,
-      trang: lsPage,
-      so_ket_qua: soKetQua || 0,
-      ket_qua: ketQua,
-      thoi_gian_phan_hoi_ms: thoiGianMs,
-      thong_tin_loi: loi ? String(loi).slice(0, 500) : null
-    });
-  } catch (error) {
-    console.error('Không thể ghi nhật ký tra cứu đơn hàng:', error);
-    showToast('Không thể ghi nhật ký lần tra cứu này', 'err');
   }
 }
 
