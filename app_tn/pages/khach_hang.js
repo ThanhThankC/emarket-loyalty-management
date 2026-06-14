@@ -6,10 +6,301 @@ var khachHangPage = 1;
 var khachHangPageSize = 10;
 var khachHangKeyword = '';
 var khachHangMode = 'view';
+var themKhachHangHandlersReady = false;
 
 registerPage('khach_hang', function(opts) {
   initKhachHangPage();
 });
+
+registerPage('them_khach_hang', function() {
+  initThemKhachHangPage();
+});
+
+ensureThemKhachHangShell();
+
+function ensureThemKhachHangShell() {
+  var customerNav = document.querySelector('.sidebar .ni[data-page="khach_hang"]');
+  if (customerNav && !document.querySelector('.sidebar .ni[data-page="them_khach_hang"]')) {
+    var addNav = document.createElement('div');
+    addNav.className = 'ni';
+    addNav.dataset.page = 'them_khach_hang';
+    addNav.dataset.label = 'Thêm khách hàng';
+    addNav.textContent = 'Thêm khách hàng';
+    addNav.addEventListener('click', function() {
+      navigate('them_khach_hang', addNav);
+    });
+    customerNav.insertAdjacentElement('afterend', addNav);
+  }
+
+  var main = document.getElementById('main-content');
+  if (main && !document.getElementById('page-them_khach_hang')) {
+    var page = document.createElement('div');
+    page.className = 'page-section';
+    page.id = 'page-them_khach_hang';
+    main.appendChild(page);
+  }
+}
+
+function initThemKhachHangPage() {
+  ensureThemKhachHangShell();
+  renderThemKhachHangMarkup();
+  bindThemKhachHangEvents();
+  resetThemKhachHangForm(false);
+}
+
+function renderThemKhachHangMarkup() {
+  var pageEl = document.getElementById('page-them_khach_hang');
+  if (!pageEl || document.getElementById('kh-new-form')) return;
+
+  pageEl.innerHTML =
+    '<div class="ph">' +
+      '<div>' +
+        '<div class="ptitle">Thêm khách hàng</div>' +
+        '<div class="psub">Tạo hồ sơ khách hàng mới tại quầy thu ngân</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="panel kh-new-panel">' +
+      '<div class="panel-h"><span class="panel-t">Thông tin khách hàng mới</span></div>' +
+      '<form id="kh-new-form" class="kh-new-form" novalidate>' +
+        '<div class="kh-new-code-box">' +
+          '<div>' +
+            '<div class="kh-new-code-label">Mã khách hàng</div>' +
+            '<div class="kh-new-code-note">Hệ thống tự động sinh mã khi tạo hồ sơ.</div>' +
+          '</div>' +
+          '<input class="fi kh-new-code-input" id="kh-new-code" type="text" readonly/>' +
+        '</div>' +
+        '<div class="fgrid">' +
+          '<div class="fg">' +
+            '<label class="fl" for="kh-new-name">Họ tên <span class="req">*</span></label>' +
+            '<input class="fi" id="kh-new-name" type="text" maxlength="100" placeholder="Nguyễn Văn An" autocomplete="off"/>' +
+            '<div class="kh-new-field-error" id="kh-new-name-error"></div>' +
+          '</div>' +
+          '<div class="fg">' +
+            '<label class="fl" for="kh-new-phone">Số điện thoại <span class="req">*</span></label>' +
+            '<input class="fi" id="kh-new-phone" type="tel" inputmode="numeric" maxlength="15" placeholder="0912001009" autocomplete="off"/>' +
+            '<div class="kh-new-field-error" id="kh-new-phone-error"></div>' +
+          '</div>' +
+          '<div class="fg">' +
+            '<label class="fl" for="kh-new-email">Email</label>' +
+            '<input class="fi" id="kh-new-email" type="email" maxlength="100" placeholder="khachhang@email.com" autocomplete="off"/>' +
+            '<div class="kh-new-field-error" id="kh-new-email-error"></div>' +
+          '</div>' +
+          '<div class="fg">' +
+            '<label class="fl" for="kh-new-password">Mật khẩu tạm <span class="req">*</span></label>' +
+            '<input class="fi" id="kh-new-password" type="password" minlength="6" placeholder="Tối thiểu 6 ký tự" autocomplete="new-password"/>' +
+            '<div class="kh-new-field-error" id="kh-new-password-error"></div>' +
+          '</div>' +
+          '<div class="fg">' +
+            '<label class="fl" for="kh-new-birthday">Ngày sinh</label>' +
+            '<input class="fi" id="kh-new-birthday" type="date"/>' +
+            '<div class="kh-new-field-error" id="kh-new-birthday-error"></div>' +
+          '</div>' +
+          '<div class="fg">' +
+            '<label class="fl" for="kh-new-gender">Giới tính</label>' +
+            '<select class="fi" id="kh-new-gender">' +
+              '<option value="">Chưa cập nhật</option>' +
+              '<option value="Nam">Nam</option>' +
+              '<option value="Nu">Nữ</option>' +
+              '<option value="Khac">Khác</option>' +
+            '</select>' +
+            '<div class="kh-new-field-error"></div>' +
+          '</div>' +
+          '<div class="fg ffull">' +
+            '<label class="fl" for="kh-new-address">Địa chỉ</label>' +
+            '<textarea class="fi" id="kh-new-address" rows="3" placeholder="Địa chỉ liên hệ"></textarea>' +
+            '<div class="kh-new-field-error"></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="kh-new-message" id="kh-new-message">Các trường có dấu * là bắt buộc.</div>' +
+        '<div class="kh-new-actions">' +
+          '<button class="btn btn-outline" id="kh-new-reset" type="button">Nhập lại</button>' +
+          '<button class="btn btn-primary" id="kh-new-submit" type="submit">Thêm khách hàng</button>' +
+        '</div>' +
+      '</form>' +
+    '</div>';
+}
+
+function bindThemKhachHangEvents() {
+  if (themKhachHangHandlersReady) return;
+
+  document.getElementById('kh-new-phone').addEventListener('input', function() {
+    var originalValue = this.value;
+    var numericValue = originalValue.replace(/\D/g, '');
+    this.value = numericValue;
+    setThemKhachHangFieldError(
+      'kh-new-phone',
+      originalValue !== numericValue ? 'Chỉ được nhập chữ số.' : ''
+    );
+  });
+
+  ['kh-new-name', 'kh-new-email', 'kh-new-password', 'kh-new-birthday'].forEach(function(id) {
+    document.getElementById(id).addEventListener('input', function() {
+      setThemKhachHangFieldError(id, '');
+    });
+  });
+
+  document.getElementById('kh-new-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    themKhachHangMoi();
+  });
+
+  document.getElementById('kh-new-reset').addEventListener('click', function() {
+    resetThemKhachHangForm(true);
+  });
+
+  themKhachHangHandlersReady = true;
+}
+
+async function themKhachHangMoi() {
+  var payload = collectThemKhachHangPayload();
+  var validation = validateThemKhachHang(payload);
+  clearThemKhachHangErrors();
+
+  if (!validation.valid) {
+    Object.keys(validation.errors).forEach(function(id) {
+      setThemKhachHangFieldError(id, validation.errors[id]);
+    });
+    setThemKhachHangMessage('Vui lòng kiểm tra lại thông tin khách hàng.', 'err');
+    return;
+  }
+
+  var submitButton = document.getElementById('kh-new-submit');
+  setKhBusy(submitButton, true, 'Đang kiểm tra...');
+  setThemKhachHangMessage('Đang kiểm tra số điện thoại trên Supabase...', 'inf');
+
+  try {
+    var existing = await sbGet(
+      'khach_hang',
+      'so_dien_thoai=eq.' + encodeURIComponent(payload.so_dien_thoai) + '&select=ma_kh&limit=1'
+    );
+
+    if (existing && existing.length) {
+      setThemKhachHangFieldError('kh-new-phone', 'Số điện thoại này đã tồn tại.');
+      setThemKhachHangMessage('Số điện thoại này đã tồn tại.', 'err');
+      return;
+    }
+
+    setKhBusy(submitButton, true, 'Đang lưu...');
+    var created = await insertThemKhachHangWithRetry(payload, 3);
+    var maKh = created && created.ma_kh ? created.ma_kh : payload.ma_kh;
+
+    document.getElementById('kh-new-form').reset();
+    document.getElementById('kh-new-code').value = maKh;
+    setThemKhachHangMessage('Thêm khách hàng thành công. Mã khách hàng: ' + maKh, 'ok');
+    showToast('Thêm khách hàng thành công', 'ok');
+    khachHangPage = 1;
+    khachHangKeyword = '';
+  } catch (error) {
+    console.error(error);
+    var message = getThemKhachHangErrorMessage(error);
+    if (message === 'Số điện thoại này đã tồn tại.') {
+      setThemKhachHangFieldError('kh-new-phone', message);
+    } else if (message === 'Email này đã được sử dụng.') {
+      setThemKhachHangFieldError('kh-new-email', message);
+    }
+    setThemKhachHangMessage(message, 'err');
+    showToast(message, 'err');
+  } finally {
+    setKhBusy(submitButton, false, 'Thêm khách hàng');
+  }
+}
+
+async function insertThemKhachHangWithRetry(payload, attemptsLeft) {
+  if (!payload.ma_kh) payload.ma_kh = generateThemKhachHangCode();
+  document.getElementById('kh-new-code').value = payload.ma_kh;
+
+  try {
+    var rows = await sbInsert('khach_hang', payload);
+    return rows && rows.length ? rows[0] : payload;
+  } catch (error) {
+    var raw = error && error.message ? error.message.toLowerCase() : '';
+    var duplicatedCode = raw.indexOf('duplicate') >= 0 &&
+      (raw.indexOf('ma_kh') >= 0 || raw.indexOf('khach_hang_pkey') >= 0);
+    if (duplicatedCode && attemptsLeft > 1) {
+      payload.ma_kh = generateThemKhachHangCode();
+      return insertThemKhachHangWithRetry(payload, attemptsLeft - 1);
+    }
+    throw error;
+  }
+}
+
+function collectThemKhachHangPayload() {
+  return {
+    ma_kh: document.getElementById('kh-new-code').value,
+    ho_ten: document.getElementById('kh-new-name').value.trim(),
+    so_dien_thoai: document.getElementById('kh-new-phone').value.trim(),
+    email: document.getElementById('kh-new-email').value.trim() || null,
+    mat_khau_hash: document.getElementById('kh-new-password').value,
+    ngay_sinh: document.getElementById('kh-new-birthday').value || null,
+    gioi_tinh: document.getElementById('kh-new-gender').value || null,
+    dia_chi: document.getElementById('kh-new-address').value.trim() || null,
+    trang_thai: 'hoat_dong'
+  };
+}
+
+function validateThemKhachHang(payload) {
+  var errors = {};
+  if (!payload.ho_ten) errors['kh-new-name'] = 'Vui lòng nhập họ tên.';
+  if (!payload.so_dien_thoai) {
+    errors['kh-new-phone'] = 'Vui lòng nhập số điện thoại.';
+  } else if (!/^\d{8,15}$/.test(payload.so_dien_thoai)) {
+    errors['kh-new-phone'] = 'Số điện thoại phải gồm 8 đến 15 chữ số.';
+  }
+  if (payload.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email)) {
+    errors['kh-new-email'] = 'Email không đúng định dạng.';
+  }
+  if (!payload.mat_khau_hash || payload.mat_khau_hash.length < 6) {
+    errors['kh-new-password'] = 'Mật khẩu tạm phải có ít nhất 6 ký tự.';
+  }
+  if (payload.ngay_sinh && payload.ngay_sinh > new Date().toISOString().slice(0, 10)) {
+    errors['kh-new-birthday'] = 'Ngày sinh không được ở tương lai.';
+  }
+  return { valid: Object.keys(errors).length === 0, errors: errors };
+}
+
+function resetThemKhachHangForm(showMessage) {
+  var form = document.getElementById('kh-new-form');
+  if (!form) return;
+  form.reset();
+  clearThemKhachHangErrors();
+  document.getElementById('kh-new-code').value = generateThemKhachHangCode();
+  if (showMessage) setThemKhachHangMessage('Đã xóa thông tin vừa nhập.', 'inf');
+}
+
+function generateThemKhachHangCode() {
+  return 'KH' + Date.now().toString().slice(-5) + Math.random().toString(36).slice(2, 4).toUpperCase();
+}
+
+function clearThemKhachHangErrors() {
+  ['kh-new-name', 'kh-new-phone', 'kh-new-email', 'kh-new-password', 'kh-new-birthday'].forEach(function(id) {
+    setThemKhachHangFieldError(id, '');
+  });
+}
+
+function setThemKhachHangFieldError(id, message) {
+  var input = document.getElementById(id);
+  var error = document.getElementById(id + '-error');
+  if (input) input.classList.toggle('kh-new-input-invalid', Boolean(message));
+  if (error) error.textContent = message || '';
+}
+
+function setThemKhachHangMessage(message, type) {
+  var element = document.getElementById('kh-new-message');
+  if (!element) return;
+  element.className = 'kh-new-message ' + (type || 'inf');
+  element.textContent = message;
+}
+
+function getThemKhachHangErrorMessage(error) {
+  var raw = error && error.message ? error.message.toLowerCase() : '';
+  if (raw.indexOf('so_dien_thoai') >= 0 || raw.indexOf('phone') >= 0) {
+    return 'Số điện thoại này đã tồn tại.';
+  }
+  if (raw.indexOf('email') >= 0 && raw.indexOf('duplicate') >= 0) {
+    return 'Email này đã được sử dụng.';
+  }
+  return 'Không thể thêm khách hàng. Vui lòng thử lại.';
+}
 
 function initKhachHangPage() {
   renderKhachHangMarkup();
