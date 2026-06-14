@@ -1,0 +1,118 @@
+<!-- pages/the_thanh_vien.html — fragment -->
+
+<!-- TAB: CẤP THẺ MỚI -->
+<div class="ttv-tab active" id="tab-cap-the">
+  <div class="ph">
+    <div>
+      <div class="ptitle">Cấp thẻ thành viên mới</div>
+      <div class="psub">Kiểm tra điều kiện và tạo thẻ điện tử</div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div>
+      <!-- Bước 1: Tìm khách hàng -->
+      <div class="panel" style="margin-bottom:14px;">
+        <div class="panel-h">
+          <span class="panel-t">Bước 1 — Tìm kiếm khách hàng</span>
+        </div>
+        <div style="padding:48px 16px;text-align:center;color:var(--t3);">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+          <div style="font-size:12px;">File: pages/the_thanh_vien.html / the_thanh_vien.css / pages/the_thanh_vien.js</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <!-- Quy tắc cấp thẻ -->
+      <div class="panel">
+        <div class="panel-h"><span class="panel-t">Quy tắc cấp thẻ</span></div>
+        <div style="padding:14px;font-size:12.5px;color:var(--t2);line-height:1.9;">
+          <div style="margin-bottom:8px;">Mỗi khách chỉ có một thẻ duy nhất.</div>
+          <div style="margin-bottom:8px;">Thẻ mới luôn có hạng <b>Mới</b> và hệ số x1.0.</div>
+          <div style="margin-bottom:8px;">Luôn ghi log: thời gian, thu ngân, mã KH.</div>
+          <div>Tạo thẻ trong vòng 2 giây.</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-h"><span class="panel-t">Hạng thành viên</span></div>
+        <div style="padding:12px;">
+          <div class="tier-row"><span class="rank rank-new" style="width:90px;justify-content:center;">Mới</span><div class="tier-bar-wrap"><div class="tier-bar" style="width:20%;background:#ccc;"></div></div><span style="font-size:12px;color:var(--t3);">0 điểm</span></div>
+          <div class="tier-row"><span class="rank rank-bac" style="width:90px;justify-content:center;">Bạc</span><div class="tier-bar-wrap"><div class="tier-bar" style="width:40%;background:#1a56db;"></div></div><span style="font-size:12px;color:var(--t3);">5.000 trở lên</span></div>
+          <div class="tier-row"><span class="rank rank-vang" style="width:90px;justify-content:center;">Vàng</span><div class="tier-bar-wrap"><div class="tier-bar" style="width:65%;background:var(--yd);"></div></div><span style="font-size:12px;color:var(--t3);">20.000 trở lên</span></div>
+          <div class="tier-row"><span class="rank rank-kim" style="width:90px;justify-content:center;">Kim cương</span><div class="tier-bar-wrap"><div class="tier-bar" style="width:100%;background:#7C3AED;"></div></div><span style="font-size:12px;color:var(--t3);">50.000 trở lên</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TAB: GIA HẠN THẺ -->
+<div class="ttv-tab" id="tab-gia-han">
+  <div class="ph">
+    <div>
+      <div class="ptitle">Gia hạn thẻ thành viên</div>
+      <div class="psub">Gia hạn thêm 12 tháng kể từ ngày hiện tại</div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div>
+      <div class="panel" style="margin-bottom:14px;">
+        <div class="panel-h">
+          <span class="panel-t">Tìm khách hàng cần gia hạn</span>
+        </div>
+        <div style="padding:48px 16px;text-align:center;color:var(--t3);">
+          <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+          <div style="font-size:12px;">File: pages/the_thanh_vien.html / the_thanh_vien.css / pages/the_thanh_vien.js</div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel">
+        <div class="panel-h">
+          <span class="panel-t">Danh sách sắp hết hạn</span>
+        </div>
+        <div style="padding:32px 16px;text-align:center;color:var(--t3);font-size:12px;">
+          Đang tải danh sách...
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Xác nhận cấp thẻ -->
+<div class="ov" id="modal-cap-the">
+  <div class="modal" style="max-width:480px;">
+    <div class="mh">
+      <div class="mt">Xác nhận cấp thẻ mới</div>
+      <button class="mc" onclick="closeModal('modal-cap-the')">X</button>
+    </div>
+    <div style="padding:18px 22px;">
+      <!-- TODO: Hiển thị tóm tắt: tên KH, mã KH, hạng thẻ (Mới), hệ số x1.0 -->
+    </div>
+    <div class="mf">
+      <button class="btn btn-outline" onclick="closeModal('modal-cap-the')">Hủy</button>
+      <button class="btn btn-primary" id="btn-confirm-cap-the">Xác nhận cấp thẻ</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Xác nhận gia hạn -->
+<div class="ov" id="modal-gia-han">
+  <div class="modal" style="max-width:480px;">
+    <div class="mh">
+      <div class="mt">Xác nhận gia hạn thẻ</div>
+      <button class="mc" onclick="closeModal('modal-gia-han')">X</button>
+    </div>
+    <div style="padding:18px 22px;">
+      <!-- TODO: Hiển thị tóm tắt: tên KH, số thẻ, ngày hết hạn cũ → mới (+12 tháng) -->
+    </div>
+    <div class="mf">
+      <button class="btn btn-outline" onclick="closeModal('modal-gia-han')">Hủy</button>
+      <button class="btn btn-primary" id="btn-confirm-gia-han">Xác nhận gia hạn</button>
+    </div>
+  </div>
+</div>

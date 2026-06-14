@@ -1,0 +1,17 @@
+/* =============================================================
+   the_thanh_vien.css — Style riêng cho chức năng: Thẻ thành viên
+   (UC-2.1 Cấp thẻ mới, UC-2.3 Gia hạn thẻ)
+   Phụ thuộc: shared.css và app_tn.css (đã load trước)
+   -------------------------------------------------------------
+   QUY TẮC:
+   - KHÔNG dùng emoji/icon Unicode làm trang trí
+   - Đặt tên class có prefix "ttv-" để tránh trùng shared.css
+   - KHÔNG override class đã có trong shared.css hay app_tn.css
+   ============================================================= */
+
+/* Viết style riêng của chức năng bên dưới */
+/* prefix: ttv- */
+
+/* Chuyển đổi giữa 2 tab: Cấp thẻ mới (UC-2.1) và Gia hạn thẻ (UC-2.3) */
+.ttv-tab { display:none; }
+.ttv-tab.active { display:block; }

@@ -1,0 +1,36 @@
+/* =============================================================
+   voucher_cua_toi.css — Voucher cua toi
+   File: voucher_cua_toi.html / voucher_cua_toi.css / voucher_cua_toi.js — UC-9
+   ============================================================= */
+
+.voucher-list { display: flex; flex-direction: column; gap: 10px; }
+.voucher {
+  background: #fff; border: 1.5px dashed var(--bd); border-radius: var(--r2);
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 14px;
+  cursor: pointer; position: relative; overflow: hidden;
+}
+.voucher::before {
+  content: ''; position: absolute; left: -8px; top: 50%;
+  transform: translateY(-50%); width: 16px; height: 16px;
+  border-radius: 50%; background: var(--bg);
+}
+.voucher::after {
+  content: ''; position: absolute; right: -8px; top: 50%;
+  transform: translateY(-50%); width: 16px; height: 16px;
+  border-radius: 50%; background: var(--bg);
+}
+.voucher-left {
+  background: var(--rl); border-radius: var(--r1);
+  padding: 10px 12px; text-align: center; flex-shrink: 0; min-width: 54px;
+}
+.voucher-val  { font-family: var(--fh); font-size: 17px; font-weight: 700; color: var(--r); line-height: 1; }
+.voucher-unit { font-size: 9.5px; color: var(--r); font-weight: 600; margin-top: 1px; }
+.voucher-body { flex: 1; }
+.voucher-name { font-size: 13px; font-weight: 600; color: var(--t); }
+.voucher-exp  { font-size: 11px; color: var(--t3); margin-top: 3px; }
+.voucher-use  {
+  background: var(--r); color: #fff; border: none;
+  border-radius: var(--r1); padding: 7px 14px; font-size: 12px; font-weight: 700;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+}

@@ -1,0 +1,16 @@
+/* =============================================================
+   vip_config.css — Style riêng cho chức năng: Cấu hình ngưỡng VIP
+   (UC-15 — chỉ dành cho Thu ngân có quyền Quản lý)
+   Phụ thuộc: shared.css và app_tn.css (đã load trước)
+   -------------------------------------------------------------
+   QUY TẮC:
+   - KHÔNG dùng emoji/icon Unicode làm trang trí
+   - Đặt tên class có prefix "vip-" để tránh trùng shared.css
+   - KHÔNG override class đã có trong shared.css hay app_tn.css
+   ============================================================= */
+
+/* Viết style riêng của chức năng bên dưới */
+/* prefix: vip- */
+
+/* Khung cấu hình từng hạng thẻ (tái sử dụng từ app_tn.css cũ: .cfg-hng) */
+.cfg-hng { border:1.5px solid var(--b); border-radius:var(--r); padding:14px 16px; }

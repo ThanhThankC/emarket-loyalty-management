@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Đổi điểm lấy quà — CarePoint</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<link rel="stylesheet" href="app_kh.css"/>
+<link rel="stylesheet" href="doi_diem_qua.css"/>
+</head>
+<body>
+
+<!-- ====== TRANG: ĐỔI ĐIỂM LẤY QUÀ ====== -->
+<!-- File: doi_diem_qua.html / doi_diem_qua.css / doi_diem_qua.js — UC-9 -->
+<div class="page active" id="page-exchange">
+  <div class="sub-topbar">
+    <a class="back-btn" href="app_kh.html">←</a>
+    <div class="sub-topbar-title">Đổi điểm lấy quà</div>
+  </div>
+
+  <div id="mainContent">
+    <div class="exchange-hero">
+      <div class="exc-pts-big" id="excPts">---</div>
+      <div class="exc-pts-label">Điểm khả dụng của bạn</div>
+    </div>
+
+    <div class="tabs-row" style="padding:0 18px 0;margin-bottom:14px;">
+      <div class="tab active" onclick="setTab(this)">Voucher</div>
+      <div class="tab" onclick="setTab(this)">Quà tặng</div>
+      <div class="tab" onclick="setTab(this)">Ưu đãi dịch vụ</div>
+    </div>
+
+    <!-- AC: Xem danh sách voucher/quà có thể đổi -->
+    <div class="exc-grid" id="excGrid">
+      <div class="exc-placeholder">Đang tải danh sách quà...</div>
+    </div>
+
+    <!-- TODO: Thêm placeholder/nội dung cho tab "Quà tặng" và "Ưu đãi dịch vụ" -->
+
+    <div class="bottom-spacer"></div>
+  </div>
+</div>
+
+<!-- ====== THANH ĐIỀU HƯỚNG DƯỚI CÙNG ====== -->
+<div class="bottom-nav">
+  <div class="nav-item" id="nav-home" onclick="location.href='app_kh.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Trang chủ</div>
+  </div>
+  <div class="nav-item active" id="nav-exchange" onclick="location.href='doi_diem_qua.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Đổi điểm</div>
+  </div>
+  <div class="nav-item" id="nav-vouchers" onclick="location.href='voucher_cua_toi.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Voucher</div>
+    <div class="nav-badge" id="voucherBadge" style="display:none">0</div>
+  </div>
+  <div class="nav-item" id="nav-profile" onclick="location.href='ho_so.html'">
+    <div class="nav-icon">[ ]</div>
+    <div class="nav-label">Cá nhân</div>
+  </div>
+</div>
+
+<!-- ====== MODAL: XÁC NHẬN ĐỔI ĐIỂM ====== -->
+<div class="ov" id="modal-confirm-exchange">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <span class="sheet-close" onclick="closeModal('modal-confirm-exchange')">x</span>
+    <div class="sheet-title">Xác nhận đổi điểm</div>
+    <div class="sheet-sub">Bạn đang đổi quà sau:</div>
+    <div id="confirmExcDetail" style="background:var(--rll);border-radius:var(--r2);padding:16px;margin-bottom:18px;border:1px solid rgba(201,64,64,.12);">
+      <div style="font-family:var(--fh);font-size:16px;font-weight:700;color:var(--t);margin-bottom:8px;" id="ceName">---</div>
+      <div style="font-size:12.5px;color:var(--t2);" id="ceDesc">---</div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px dashed var(--bd);display:flex;justify-content:space-between;">
+        <span style="font-size:13px;color:var(--t3);">Điểm sẽ trừ</span>
+        <span style="font-size:15px;font-weight:700;color:var(--r);" id="cePts">---</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:6px;">
+        <span style="font-size:13px;color:var(--t3);">Còn lại sau khi đổi</span>
+        <span style="font-size:14px;font-weight:700;color:var(--t);" id="ceAfter">---</span>
+      </div>
+    </div>
+
+    <!-- TODO: AC - Kiểm tra đủ điểm trước khi cho xác nhận (vô hiệu hóa nút nếu không đủ) -->
+    <button class="btn-full" id="btnConfirmExc">Xác nhận đổi</button>
+    <button class="btn-outline-full" onclick="closeModal('modal-confirm-exchange')">Hủy</button>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script src="supabase_config.js"></script>
+<script src="supabase_api.js"></script>
+<script src="auth.js"></script>
+<script src="doi_diem_qua.js"></script>
+</body>
+</html>

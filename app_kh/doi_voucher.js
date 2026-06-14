@@ -1,4 +1,4 @@
-// doi_voucher.js — Doi diem lay voucher
+// doi_voucher.js — Đổi điểm lấy voucher
 requireLogin();
 const kh = getCurrentNV();
 
@@ -20,5 +20,6 @@ function closeModal(id) { document.getElementById(id).classList.remove('open'); 
 
 document.addEventListener('DOMContentLoaded', () => {
   if (!kh) return;
-  // TODO: Load danh sach voucher co the doi va render vao #mainContent
+
+  // TODO: Tải danh sách voucher có thể đổi và hiển thị vào #mainContent
 });

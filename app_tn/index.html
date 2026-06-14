@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CarePoint — Thu Ngân</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<link rel="stylesheet" href="app_tn.css"/>
+<link rel="stylesheet" href="the_thanh_vien.css"/>
+<link rel="stylesheet" href="khach_hang.css"/>
+<link rel="stylesheet" href="quy_doi_diem.css"/>
+<link rel="stylesheet" href="lich_su_ho.css"/>
+<link rel="stylesheet" href="vip_config.css"/>
+<style>
+  /* SPA: ẩn tất cả page-section, chỉ hiện cái được activate */
+  .page-section { display: none; }
+  .page-section.active { display: contents; }
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="tb-brand">
+    <div class="bmark">C</div>
+    <div class="bname">Care<em>Point</em></div>
+  </div>
+  <div class="tb-center">
+    <div class="tb-shift">
+      <div class="shift-dot"></div>
+      Thu Ngân &nbsp;·&nbsp; <span id="topPageName">Dashboard</span>
+    </div>
+  </div>
+  <div class="tb-right">
+    <div class="upill" onclick="dangXuat()">
+      <div class="uav" id="topAvatar">NV</div>
+      <div><div class="unm" id="topName">Đang tải...</div><div class="url">Thu ngân</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="nsec">
+    <div class="nslbl">Tổng quan</div>
+    <div class="ni" data-page="dashboard" data-label="Dashboard" onclick="navigate('dashboard',this)">Dashboard</div>
+  </div>
+  <div class="nsec">
+    <div class="nslbl">Khách hàng (UC-1)</div>
+    <div class="ni" data-page="khach_hang" data-label="Quản lý khách hàng" onclick="navigate('khach_hang',this)">Quản lý khách hàng</div>
+  </div>
+  <div class="nsec">
+    <div class="nslbl">Thẻ thành viên (UC-2)</div>
+    <div class="ni" data-page="the_thanh_vien" data-tab="cap-the" data-label="Cấp thẻ mới" onclick="navigate('the_thanh_vien',this,{tab:'cap-the'})">Cấp thẻ mới</div>
+    <div class="ni" data-page="the_thanh_vien" data-tab="gia-han" data-label="Gia hạn thẻ" onclick="navigate('the_thanh_vien',this,{tab:'gia-han'})">Gia hạn thẻ</div>
+  </div>
+  <div class="nsec">
+    <div class="nslbl">Thanh toán</div>
+    <div class="ni" data-page="quy_doi_diem" data-label="Quy đổi điểm giảm giá" onclick="navigate('quy_doi_diem',this)">Quy đổi điểm giảm giá</div>
+  </div>
+  <div class="nsec">
+    <div class="nslbl">Tra cứu</div>
+    <div class="ni" data-page="lich_su_ho" data-label="Lịch sử mua hàng" onclick="navigate('lich_su_ho',this)">Lịch sử mua hàng</div>
+  </div>
+  <div class="nsec">
+    <div class="nslbl">Quản trị (Quản lý)</div>
+    <div class="ni" data-page="vip_config" data-label="Cấu hình ngưỡng VIP" onclick="navigate('vip_config',this)">Cấu hình ngưỡng VIP</div>
+  </div>
+  <div class="sfooter">
+    <div class="ni" onclick="dangXuat()" style="color:var(--red)">Đăng xuất</div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT SLOT -->
+<main class="main" id="main-content">
+
+  <!-- ===================== DASHBOARD ===================== -->
+  <div class="page-section active" id="page-dashboard">
+    <div class="ph">
+      <div>
+        <div class="ptitle">Dashboard</div>
+        <div class="psub" id="dashSub">Xin chào</div>
+      </div>
+    </div>
+    <div class="gband">
+      <div>
+        <div class="gtxt">Chào mừng trở lại!</div>
+        <div class="gsub" id="gband-sub">Đang tải dữ liệu ca làm việc...</div>
+      </div>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-outline" onclick="navigate('lich_su_ho',document.querySelector('[data-page=lich_su_ho]'))">Tra cứu lịch sử</button>
+        <button class="btn btn-primary" onclick="navigate('quy_doi_diem',document.querySelector('[data-page=quy_doi_diem]'))">Quy đổi điểm</button>
+      </div>
+    </div>
+    <div class="sc-grid" id="sc-grid">
+      <div class="sc cy"><div class="slbl">Khách phục vụ</div><div class="sval">—</div><div class="ssub">Đang tải...</div></div>
+      <div class="sc cg"><div class="slbl">Thẻ đã cấp hôm nay</div><div class="sval">—</div><div class="ssub">Đang tải...</div></div>
+      <div class="sc cb"><div class="slbl">Giao dịch quy đổi điểm</div><div class="sval">—</div><div class="ssub">Đang tải...</div></div>
+      <div class="sc cr"><div class="slbl">Khách hàng mới thêm</div><div class="sval">—</div><div class="ssub">Đang tải...</div></div>
+    </div>
+    <div class="qa-row">
+      <div class="qa" onclick="navigate('khach_hang',document.querySelector('[data-page=khach_hang]'))"><div class="qa-mark">+</div><div class="qa-lbl">Thêm khách hàng</div></div>
+      <div class="qa" onclick="navigate('the_thanh_vien',document.querySelector('[data-page=the_thanh_vien][data-tab=cap-the]'),{tab:'cap-the'})"><div class="qa-mark">TV</div><div class="qa-lbl">Cấp thẻ mới</div></div>
+      <div class="qa" onclick="navigate('quy_doi_diem',document.querySelector('[data-page=quy_doi_diem]'))"><div class="qa-mark">QD</div><div class="qa-lbl">Quy đổi điểm</div></div>
+      <div class="qa" onclick="navigate('lich_su_ho',document.querySelector('[data-page=lich_su_ho]'))"><div class="qa-mark">LS</div><div class="qa-lbl">Tra cứu lịch sử</div></div>
+    </div>
+    <div class="g2">
+      <div class="panel">
+        <div class="ph2"><div class="pt">Giao dịch gần đây trong ca</div><span class="pa">Xem tất cả</span></div>
+        <table class="tbl" id="tbl-giao-dich">
+          <thead><tr><th>Khách hàng</th><th>Loại giao dịch</th><th>Giờ</th><th>Kết quả</th></tr></thead>
+          <tbody id="tbl-giao-dich-body"><tr><td colspan="4" style="text-align:center;color:var(--t3);padding:24px;">Đang tải dữ liệu...</td></tr></tbody>
+        </table>
+      </div>
+      <div>
+        <div class="panel" id="panel-nhat-ky">
+          <div class="ph2"><div class="pt">Nhật ký ca làm</div></div>
+          <div style="padding:24px;text-align:center;color:var(--t3);font-size:12px;" id="nhat-ky-rong">Đang tải dữ liệu...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== KHACH HANG ===================== -->
+  <div class="page-section" id="page-khach_hang">
+    <div class="ph">
+      <div>
+        <div class="ptitle">Quản lý khách hàng</div>
+        <div class="psub">UC-1 · Thêm, sửa, xóa, tìm kiếm hồ sơ khách hàng</div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-h"><span class="panel-t">Danh sách khách hàng</span></div>
+      <div style="padding:48px;text-align:center;color:var(--t3);">
+        <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+        <div style="font-size:12px;">khach_hang.css / pages/khach_hang.js</div>
+        <div style="font-size:11px;margin-top:10px;color:var(--t3);">UC-1.1.1 Thêm KH &nbsp;·&nbsp; UC-1.1.2 Sửa KH &nbsp;·&nbsp; UC-1.1.3 Xóa KH &nbsp;·&nbsp; UC-1.2 Tìm kiếm</div>
+      </div>
+    </div>
+    <!-- Modal: Them / Sua khach hang -->
+    <div class="ov" id="modal-kh-form">
+      <div class="modal" style="max-width:600px;">
+        <div class="mh"><div class="mt" id="kh-form-title">Thêm khách hàng mới</div><button class="mc" onclick="closeModal('modal-kh-form')">X</button></div>
+        <div style="padding:18px 22px;"><!-- TODO: Form --></div>
+        <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-kh-form')">Hủy</button><button class="btn btn-primary" id="btn-kh-save">Lưu thông tin</button></div>
+      </div>
+    </div>
+    <!-- Modal: Xem chi tiet -->
+    <div class="ov" id="modal-kh-view">
+      <div class="modal" style="max-width:520px;">
+        <div class="mh"><div class="mt">Thông tin khách hàng</div><button class="mc" onclick="closeModal('modal-kh-view')">X</button></div>
+        <div style="padding:18px 22px;"><!-- TODO --></div>
+        <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-kh-view')">Đóng</button><button class="btn btn-yellow" id="btn-cap-the-from-view">Cấp thẻ</button></div>
+      </div>
+    </div>
+    <!-- Modal: Xac nhan xoa -->
+    <div class="ov" id="modal-kh-delete">
+      <div class="modal" style="max-width:420px;">
+        <div class="mh"><div class="mt">Xác nhận ẩn/xóa khách hàng</div><button class="mc" onclick="closeModal('modal-kh-delete')">X</button></div>
+        <div style="padding:18px 22px;"><!-- TODO --></div>
+        <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-kh-delete')">Hủy</button><button class="btn" style="background:var(--red);color:#fff;" id="btn-kh-confirm-delete">Xác nhận ẩn</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== THE THANH VIEN ===================== -->
+  <div class="page-section" id="page-the_thanh_vien">
+    <!-- TAB: CAP THE MOI -->
+    <div class="ttv-tab active" id="tab-cap-the">
+      <div class="ph"><div><div class="ptitle">Cấp thẻ thành viên mới</div><div class="psub">Kiểm tra điều kiện và tạo thẻ điện tử</div></div></div>
+      <div class="g2">
+        <div>
+          <div class="panel" style="margin-bottom:14px;">
+            <div class="panel-h"><span class="panel-t">Bước 1 — Tìm kiếm khách hàng</span></div>
+            <div style="padding:48px 16px;text-align:center;color:var(--t3);">
+              <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+              <div style="font-size:12px;">the_thanh_vien.css / pages/the_thanh_vien.js</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="panel">
+            <div class="panel-h"><span class="panel-t">Quy tắc cấp thẻ</span></div>
+            <div style="padding:14px;font-size:12.5px;color:var(--t2);line-height:1.9;">
+              <div style="margin-bottom:8px;">Mỗi khách chỉ có một thẻ duy nhất.</div>
+              <div style="margin-bottom:8px;">Thẻ mới luôn có hạng <b>Mới</b> và hệ số x1.0.</div>
+              <div style="margin-bottom:8px;">Luôn ghi log: thời gian, thu ngân, mã KH.</div>
+              <div>Tạo thẻ trong vòng 2 giây.</div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-h"><span class="panel-t">Hạng thành viên</span></div>
+            <div style="padding:12px;">
+              <div class="tier-row"><span class="rank rank-new" style="width:90px;justify-content:center;">Mới</span><div class="tier-bar-wrap"><div class="tier-bar" style="width:20%;background:#ccc;"></div></div><span style="font-size:12px;color:var(--t3);">0 điểm</span></div>
+              <div class="tier-row"><span class="rank rank-bac" style="width:90px;justify-content:center;">Bạc</span><div class="tier-bar-wrap"><div class="tier-bar" style="width:40%;background:#1a56db;"></div></div><span style="font-size:12px;color:var(--t3);">5.000 trở lên</span></div>
+              <div class="tier-row"><span class="rank rank-vang" style="width:90px;justify-content:center;">Vàng</span><div class="tier-bar-wrap"><div class="tier-bar" style="width:65%;background:var(--yd);"></div></div><span style="font-size:12px;color:var(--t3);">20.000 trở lên</span></div>
+              <div class="tier-row"><span class="rank rank-kim" style="width:90px;justify-content:center;">Kim cương</span><div class="tier-bar-wrap"><div class="tier-bar" style="width:100%;background:#7C3AED;"></div></div><span style="font-size:12px;color:var(--t3);">50.000 trở lên</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- TAB: GIA HAN THE -->
+    <div class="ttv-tab" id="tab-gia-han">
+      <div class="ph"><div><div class="ptitle">Gia hạn thẻ thành viên</div><div class="psub">Gia hạn thêm 12 tháng kể từ ngày hiện tại</div></div></div>
+      <div class="g2">
+        <div>
+          <div class="panel" style="margin-bottom:14px;">
+            <div class="panel-h"><span class="panel-t">Tìm khách hàng cần gia hạn</span></div>
+            <div style="padding:48px 16px;text-align:center;color:var(--t3);">
+              <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+              <div style="font-size:12px;">the_thanh_vien.css / pages/the_thanh_vien.js</div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="panel">
+            <div class="panel-h"><span class="panel-t">Danh sách sắp hết hạn</span></div>
+            <div style="padding:32px 16px;text-align:center;color:var(--t3);font-size:12px;">Đang tải danh sách...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modals -->
+    <div class="ov" id="modal-cap-the">
+      <div class="modal" style="max-width:480px;">
+        <div class="mh"><div class="mt">Xác nhận cấp thẻ mới</div><button class="mc" onclick="closeModal('modal-cap-the')">X</button></div>
+        <div style="padding:18px 22px;"><!-- TODO --></div>
+        <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-cap-the')">Hủy</button><button class="btn btn-primary" id="btn-confirm-cap-the">Xác nhận cấp thẻ</button></div>
+      </div>
+    </div>
+    <div class="ov" id="modal-gia-han">
+      <div class="modal" style="max-width:480px;">
+        <div class="mh"><div class="mt">Xác nhận gia hạn thẻ</div><button class="mc" onclick="closeModal('modal-gia-han')">X</button></div>
+        <div style="padding:18px 22px;"><!-- TODO --></div>
+        <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-gia-han')">Hủy</button><button class="btn btn-primary" id="btn-confirm-gia-han">Xác nhận gia hạn</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== QUY DOI DIEM ===================== -->
+  <div class="page-section" id="page-quy_doi_diem">
+    <div class="ph"><div><div class="ptitle">Quy đổi điểm giảm giá</div><div class="psub">UC-4 · Thu ngân nhập giúp khách tại quầy POS &nbsp;·&nbsp; BR: 1.000đ = 1.000 điểm</div></div></div>
+    <div class="g2">
+      <div>
+        <div class="panel" style="margin-bottom:14px;">
+          <div class="panel-h"><span class="panel-t">Bước 1 — Tìm khách hàng</span></div>
+          <div style="padding:48px 16px;text-align:center;color:var(--t3);">
+            <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+            <div style="font-size:12px;">quy_doi_diem.css / pages/quy_doi_diem.js</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <div class="panel-h"><span class="panel-t">Lịch sử quy đổi trong ca</span></div>
+          <div style="padding:32px 16px;text-align:center;color:var(--t3);font-size:12px;">Chưa có giao dịch nào trong ca này</div>
+        </div>
+        <div class="ibox">BR: 1.000đ = 1.000 điểm &nbsp;·&nbsp; Chỉ tính trên số tiền thực, không tính phí ship / voucher.</div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div class="ov" id="modal-xac-nhan-qd">
+      <div class="modal" style="max-width:440px;">
+        <div class="mh"><div class="mt">Xác nhận quy đổi điểm</div><button class="mc" onclick="closeModal('modal-xac-nhan-qd')">X</button></div>
+        <div style="padding:18px 22px;"><!-- TODO --></div>
+        <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-xac-nhan-qd')">Hủy</button><button class="btn btn-primary" id="btn-confirm-qd">Xác nhận áp dụng</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== LICH SU HO ===================== -->
+  <div class="page-section" id="page-lich_su_ho">
+    <div class="ph"><div><div class="ptitle">Tra cứu lịch sử mua hàng hộ khách</div><div class="psub">UC-5 · BR5-1: Tra cứu hộ khách — chỉ xem, không chỉnh sửa</div></div></div>
+    <div class="panel" style="margin-bottom:16px;">
+      <div class="panel-h"><span class="panel-t">Điều kiện tra cứu</span></div>
+      <div style="padding:48px;text-align:center;color:var(--t3);">
+        <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+        <div style="font-size:12px;">lich_su_ho.css / pages/lich_su_ho.js</div>
+        <div style="font-size:11px;margin-top:10px;color:var(--t3);">Trường cần có: SĐT / Mã KH &nbsp;·&nbsp; Mã đơn hàng &nbsp;·&nbsp; Khoảng ngày &nbsp;·&nbsp; Trạng thái đơn</div>
+      </div>
+    </div>
+    <!-- Modal -->
+    <div class="ov" id="modal-don-hang">
+      <div class="modal" style="max-width:600px;">
+        <div class="mh"><div class="mt">Chi tiết đơn hàng</div><button class="mc" onclick="closeModal('modal-don-hang')">X</button></div>
+        <div style="padding:18px 22px;"><!-- TODO --></div>
+        <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-don-hang')">Đóng</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== VIP CONFIG ===================== -->
+  <div class="page-section" id="page-vip_config">
+    <div class="ph">
+      <div><div class="ptitle">Cấu hình ngưỡng phân hạng VIP</div><div class="psub">UC-15 · Chỉ Thu ngân có quyền Quản lý mới được thao tác</div></div>
+      <button class="btn btn-primary" id="btn-luu-cau-hinh">Lưu cấu hình</button>
+    </div>
+    <div class="ybox">UC-15 · Thay đổi ngưỡng sẽ có hiệu lực ngay lập tức và được ghi log đầy đủ. Hệ thống sẽ tự động rà soát và nâng hạng theo UC-14 vào lúc 00:00 mỗi ngày.</div>
+    <div class="g3" style="margin-bottom:18px;">
+      <div class="panel">
+        <div class="panel-h"><span class="panel-t">Ngưỡng điểm theo hạng</span><span class="pa" onclick="openModal('modal-log-vip')">Lịch sử thay đổi</span></div>
+        <div style="padding:16px;display:flex;flex-direction:column;gap:14px;">
+          <div class="cfg-hng" style="border-color:#ccc;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><span class="rank rank-new" style="font-size:13px;padding:4px 12px;">Hạng Mới</span><span style="font-size:11.5px;color:var(--t3);">Mặc định khi cấp thẻ lần đầu</span></div>
+            <div class="fgrid"><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" value="0" type="number" disabled/></div><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-moi"/></div></div>
+            <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x1.0</b></div>
+          </div>
+          <div class="cfg-hng" style="border-color:#1a56db;">
+            <div style="display:flex;align-items:center;margin-bottom:12px;"><span class="rank rank-bac" style="font-size:13px;padding:4px 12px;">Hạng Bạc</span></div>
+            <div class="fgrid"><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-bac"/></div><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-bac"/></div></div>
+            <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x1.2</b></div>
+          </div>
+          <div class="cfg-hng" style="border-color:var(--yd);">
+            <div style="display:flex;align-items:center;margin-bottom:12px;"><span class="rank rank-vang" style="font-size:13px;padding:4px 12px;">Hạng Vàng</span></div>
+            <div class="fgrid"><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-vang"/></div><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-vang"/></div></div>
+            <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x1.5</b></div>
+          </div>
+          <div class="cfg-hng" style="border-color:#7C3AED;">
+            <div style="display:flex;align-items:center;margin-bottom:12px;"><span class="rank rank-kim" style="font-size:13px;padding:4px 12px;">Hạng Kim cương</span></div>
+            <div class="fgrid"><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-kim"/></div><div class="fg" style="margin-bottom:0;"><label class="fl">Không giới hạn</label><input class="fi" value="—" disabled/></div></div>
+            <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x2.0</b></div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="panel" style="margin-bottom:14px;">
+          <div class="panel-h"><span class="panel-t">Quy tắc nâng hạng tự động (UC-14)</span></div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:12px;">
+            <div class="fg" style="margin-bottom:0;"><label class="fl">Chu kỳ rà soát</label><select class="fi" id="sel-chu-ky"><option selected>Hàng ngày lúc 00:00</option><option>Theo từng giao dịch</option><option>Hàng tuần (Thứ Hai)</option></select></div>
+            <div class="fg" style="margin-bottom:0;"><label class="fl">Thông báo khi nâng hạng</label><select class="fi" id="sel-thong-bao"><option selected>Qua App + SMS</option><option>Chỉ App</option><option>Chỉ SMS</option><option>Không gửi</option></select></div>
+            <div class="fg" style="margin-bottom:0;"><label class="fl">Hạ hạng khi điểm giảm</label><label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2);cursor:pointer;margin-top:2px;"><input type="checkbox" id="chk-ha-hang" style="accent-color:var(--yd);width:14px;height:14px;"/> Cho phép hạ hạng tự động</label></div>
+            <div class="fg" style="margin-bottom:0;"><label class="fl">Ghi log mỗi lần thay đổi hạng</label><label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2);cursor:pointer;margin-top:2px;"><input type="checkbox" id="chk-ghi-log" checked style="accent-color:var(--yd);width:14px;height:14px;"/> Bật ghi log (khuyến nghị)</label></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-h"><span class="panel-t">Phân bố khách hàng hiện tại</span></div>
+          <div style="padding:14px;display:flex;flex-direction:column;gap:10px;" id="phan-bo-kh"><div style="padding:24px;text-align:center;color:var(--t3);font-size:12px;">Đang tải dữ liệu...</div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal: Lich su thay doi VIP -->
+    <div class="ov" id="modal-log-vip">
+      <div class="modal wide">
+        <div class="mh"><div class="mt">Lịch sử thay đổi cấu hình ngưỡng VIP</div><button class="mc" onclick="closeModal('modal-log-vip')">X</button></div>
+        <div style="padding:0 22px 18px;">
+          <table class="tbl"><thead><tr><th>Thời gian</th><th>Người thực hiện</th><th>Nội dung thay đổi</th></tr></thead><tbody id="log-vip-tbody"><tr><td colspan="3" style="text-align:center;color:var(--t3);padding:24px;">Đang tải...</td></tr></tbody></table>
+        </div>
+        <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-log-vip')">Đóng</button></div>
+      </div>
+    </div>
+  </div>
+
+</main>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-wrap" id="toasts"></div>
+
+<!-- THU TU LOAD NAY CO DINH -->
+<script src="supabase_config.js"></script>
+<script src="supabase_api.js"></script>
+<script src="auth.js"></script>
+<script src="router.js"></script>
+<!-- Page JS — load 1 lan, initPage() duoc goi boi router -->
+<script src="pages/dashboard.js"></script>
+<script src="pages/khach_hang.js"></script>
+<script src="pages/the_thanh_vien.js"></script>
+<script src="pages/quy_doi_diem.js"></script>
+<script src="pages/lich_su_ho.js"></script>
+<script src="pages/vip_config.js"></script>
+</body>
+</html>

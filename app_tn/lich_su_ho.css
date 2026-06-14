@@ -1,13 +1,13 @@
 /* =============================================================
-   lich_su_ho.css — Style rieng cho chuc nang: Tra cuu lich su mua hang
-   Phu thuoc: shared.css va app_tn.css (da load truoc)
+   lich_su_ho.css — Style riêng cho chức năng: Tra cứu lịch sử mua hàng
+   Phụ thuộc: shared.css và app_tn.css (đã load trước)
    -------------------------------------------------------------
-   QUY TAC:
-   - KHONG dung emoji/icon Unicode lam trang tri
-   - Dat ten class co prefix "ls-" de tranh trung shared.css
-     Vi du: .ls-filter-row { }  .ls-order-card { }
-   - KHONG override class da co trong shared.css hay app_tn.css
+   QUY TẮC:
+   - KHÔNG dùng emoji/icon Unicode làm trang trí
+   - Đặt tên class có prefix "ls-" để tránh trùng shared.css
+     Ví dụ: .ls-filter-row { }  .ls-order-card { }
+   - KHÔNG override class đã có trong shared.css hay app_tn.css
    ============================================================= */
 
-/* Viet style rieng cua chuc nang ben duoi */
+/* Viết style riêng của chức năng bên dưới */
 /* prefix: ls- */

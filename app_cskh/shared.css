@@ -11,7 +11,7 @@
    4. Đặt tên class riêng có prefix tên chức năng:
       .cap-the-preview { } OK     .panel { } KHÔNG OK (đã có sẵn)
    ============================================================= */
-
+    
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -23,9 +23,9 @@
   --surf:   #FFFFFF;
   --b:      #E8E2D0;
   --bd:     #D4CBAF;
-  --t:      #1C1A15;
-  --t2:     #5A5444;
-  --t3:     #9E9585;
+  --t:      #050505;
+  --t2:     #2d2b26;
+  --t3:     #6d6962;
   --green:  #2D9462;
   --gbg:    #EAF6F0;
   --red:    #C94040;

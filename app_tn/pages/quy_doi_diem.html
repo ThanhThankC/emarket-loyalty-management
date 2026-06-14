@@ -1,0 +1,60 @@
+<!-- pages/quy_doi_diem.html — fragment -->
+
+<div class="ph">
+  <div>
+    <div class="ptitle">Quy đổi điểm giảm giá</div>
+    <div class="psub">UC-4 · Thu ngân nhập giúp khách tại quầy POS &nbsp;·&nbsp; BR: 1.000đ = 1.000 điểm</div>
+  </div>
+</div>
+
+<div class="g2">
+
+  <!-- CỘT TRÁI: Luồng quy đổi -->
+  <div>
+    <div class="panel" style="margin-bottom:14px;">
+      <div class="panel-h">
+        <span class="panel-t">Bước 1 — Tìm khách hàng</span>
+      </div>
+      <div style="padding:48px 16px;text-align:center;color:var(--t3);">
+        <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
+        <div style="font-size:12px;">File: pages/quy_doi_diem.html / quy_doi_diem.css / pages/quy_doi_diem.js</div>
+      </div>
+    </div>
+    <!-- TODO UC-4: Bước 2 — thông tin điểm -->
+    <!-- TODO UC-4: Bước 3 — nhập số điểm -->
+  </div>
+
+  <!-- CỘT PHẢI: Thông tin bổ sung -->
+  <div>
+    <div class="panel">
+      <div class="panel-h">
+        <span class="panel-t">Lịch sử quy đổi trong ca</span>
+      </div>
+      <div style="padding:32px 16px;text-align:center;color:var(--t3);font-size:12px;">
+        Chưa có giao dịch nào trong ca này
+      </div>
+    </div>
+
+    <div class="ibox">
+      BR: 1.000đ = 1.000 điểm &nbsp;·&nbsp;
+      Chỉ tính trên số tiền thực, không tính phí ship / voucher.
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: XÁC NHẬN ÁP DỤNG GIẢM GIÁ -->
+<div class="ov" id="modal-xac-nhan-qd">
+  <div class="modal" style="max-width:440px;">
+    <div class="mh">
+      <div class="mt">Xác nhận quy đổi điểm</div>
+      <button class="mc" onclick="closeModal('modal-xac-nhan-qd')">X</button>
+    </div>
+    <div style="padding:18px 22px;">
+      <!-- TODO: Hiển thị tóm tắt: KH, số điểm sẽ trừ, giá trị giảm, điểm còn lại -->
+    </div>
+    <div class="mf">
+      <button class="btn btn-outline" onclick="closeModal('modal-xac-nhan-qd')">Hủy</button>
+      <button class="btn btn-primary" id="btn-confirm-qd">Xác nhận áp dụng</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,137 @@
+<!-- pages/vip_config.html — fragment -->
+
+<div class="ph">
+  <div>
+    <div class="ptitle">Cấu hình ngưỡng phân hạng VIP</div>
+    <div class="psub">UC-15 · Chỉ Thu ngân có quyền Quản lý mới được thao tác</div>
+  </div>
+  <button class="btn btn-primary" id="btn-luu-cau-hinh">Lưu cấu hình</button>
+</div>
+
+<div class="ybox">
+  UC-15 · Thay đổi ngưỡng sẽ có hiệu lực ngay lập tức và được ghi log đầy đủ.
+  Hệ thống sẽ tự động rà soát và nâng hạng theo UC-14 vào lúc 00:00 mỗi ngày.
+</div>
+
+<div class="g3" style="margin-bottom:18px;">
+
+  <!-- CỘT TRÁI: Ngưỡng điểm theo hạng -->
+  <div class="panel">
+    <div class="panel-h">
+      <span class="panel-t">Ngưỡng điểm theo hạng</span>
+      <span class="pa" onclick="openModal('modal-log-vip')">Lịch sử thay đổi</span>
+    </div>
+    <div style="padding:16px;display:flex;flex-direction:column;gap:14px;">
+
+      <div class="cfg-hng" style="border-color:#ccc;" id="cfg-moi">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <span class="rank rank-new" style="font-size:13px;padding:4px 12px;">Hạng Mới</span>
+          <span style="font-size:11.5px;color:var(--t3);">Mặc định khi cấp thẻ lần đầu</span>
+        </div>
+        <div class="fgrid">
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" value="0" type="number" disabled/></div>
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-moi"/></div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x1.0</b></div>
+      </div>
+
+      <div class="cfg-hng" style="border-color:#1a56db;" id="cfg-bac">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <span class="rank rank-bac" style="font-size:13px;padding:4px 12px;">Hạng Bạc</span>
+        </div>
+        <div class="fgrid">
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-bac"/></div>
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-bac"/></div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x1.2</b></div>
+      </div>
+
+      <div class="cfg-hng" style="border-color:var(--yd);" id="cfg-vang">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <span class="rank rank-vang" style="font-size:13px;padding:4px 12px;">Hạng Vàng</span>
+        </div>
+        <div class="fgrid">
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-vang"/></div>
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-vang"/></div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x1.5</b></div>
+      </div>
+
+      <div class="cfg-hng" style="border-color:#7C3AED;" id="cfg-kim">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <span class="rank rank-kim" style="font-size:13px;padding:4px 12px;">Hạng Kim cương</span>
+        </div>
+        <div class="fgrid">
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-kim"/></div>
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Không giới hạn</label><input class="fi" value="—" disabled/></div>
+        </div>
+        <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x2.0</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CỘT PHẢI: Quy tắc nâng hạng tự động + Phân bố khách hàng -->
+  <div>
+    <div class="panel" style="margin-bottom:14px;">
+      <div class="panel-h"><span class="panel-t">Quy tắc nâng hạng tự động (UC-14)</span></div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:12px;">
+        <div class="fg" style="margin-bottom:0;">
+          <label class="fl">Chu kỳ rà soát</label>
+          <select class="fi" id="sel-chu-ky">
+            <option selected>Hằng ngày lúc 00:00</option>
+            <option>Theo từng giao dịch</option>
+            <option>Hằng tuần (Thứ Hai)</option>
+          </select>
+        </div>
+        <div class="fg" style="margin-bottom:0;">
+          <label class="fl">Thông báo khi nâng hạng</label>
+          <select class="fi" id="sel-thong-bao">
+            <option selected>Qua App + SMS</option>
+            <option>Chỉ App</option>
+            <option>Chỉ SMS</option>
+            <option>Không gửi</option>
+          </select>
+        </div>
+        <div class="fg" style="margin-bottom:0;">
+          <label class="fl">Hạ hạng khi điểm giảm</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2);cursor:pointer;margin-top:2px;">
+            <input type="checkbox" id="chk-ha-hang" style="accent-color:var(--yd);width:14px;height:14px;"/> Cho phép hạ hạng tự động
+          </label>
+        </div>
+        <div class="fg" style="margin-bottom:0;">
+          <label class="fl">Ghi log mỗi lần thay đổi hạng</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2);cursor:pointer;margin-top:2px;">
+            <input type="checkbox" id="chk-ghi-log" checked style="accent-color:var(--yd);width:14px;height:14px;"/> Bật ghi log (khuyến nghị)
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phân bố KH -->
+    <div class="panel">
+      <div class="panel-h"><span class="panel-t">Phân bố khách hàng hiện tại</span></div>
+      <div style="padding:14px;display:flex;flex-direction:column;gap:10px;" id="phan-bo-kh">
+        <div style="padding:24px;text-align:center;color:var(--t3);font-size:12px;">Đang tải dữ liệu...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Lịch sử thay đổi cấu hình VIP -->
+<div class="ov" id="modal-log-vip">
+  <div class="modal wide">
+    <div class="mh">
+      <div class="mt">Lịch sử thay đổi cấu hình ngưỡng VIP</div>
+      <button class="mc" onclick="closeModal('modal-log-vip')">X</button>
+    </div>
+    <div style="padding:0 22px 18px;">
+      <table class="tbl">
+        <thead><tr><th>Thời gian</th><th>Người thực hiện</th><th>Nội dung thay đổi</th></tr></thead>
+        <tbody id="log-vip-tbody">
+          <tr><td colspan="3" style="text-align:center;color:var(--t3);padding:24px;">Đang tải...</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-log-vip')">Đóng</button></div>
+  </div>
+</div>

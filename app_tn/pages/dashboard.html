@@ -1,0 +1,91 @@
+<!-- pages/dashboard.html — fragment, không có html/head/body/sidebar/topbar -->
+
+<div class="ph">
+  <div>
+    <div class="ptitle">Dashboard</div>
+    <div class="psub" id="dashSub">Xin chào</div>
+  </div>
+</div>
+
+<div class="gband">
+  <div>
+    <div class="gtxt">Chào mừng trở lại!</div>
+    <div class="gsub" id="gband-sub">Đang tải dữ liệu ca làm việc...</div>
+  </div>
+  <div style="display:flex;gap:10px;">
+    <button class="btn btn-outline" onclick="navigate('lich_su_ho', document.querySelector('[data-page=lich_su_ho]'))">Tra cứu lịch sử</button>
+    <button class="btn btn-primary" onclick="navigate('quy_doi_diem', document.querySelector('[data-page=quy_doi_diem]'))">Quy đổi điểm</button>
+  </div>
+</div>
+
+<!-- TODO: Render 4 thẻ số liệu tổng quan trong ca -->
+<div class="sc-grid" id="sc-grid">
+  <div class="sc cy">
+    <div class="slbl">Khách phục vụ</div>
+    <div class="sval">—</div>
+    <div class="ssub">Đang tải...</div>
+  </div>
+  <div class="sc cg">
+    <div class="slbl">Thẻ đã cấp hôm nay</div>
+    <div class="sval">—</div>
+    <div class="ssub">Đang tải...</div>
+  </div>
+  <div class="sc cb">
+    <div class="slbl">Giao dịch quy đổi điểm</div>
+    <div class="sval">—</div>
+    <div class="ssub">Đang tải...</div>
+  </div>
+  <div class="sc cr">
+    <div class="slbl">Khách hàng mới thêm</div>
+    <div class="sval">—</div>
+    <div class="ssub">Đang tải...</div>
+  </div>
+</div>
+
+<!-- Tiện ích nhanh -->
+<div class="qa-row">
+  <div class="qa" onclick="navigate('khach_hang', document.querySelector('[data-page=khach_hang]'))">
+    <div class="qa-mark">+</div>
+    <div class="qa-lbl">Thêm khách hàng</div>
+  </div>
+  <div class="qa" onclick="navigate('the_thanh_vien', document.querySelector('[data-page=the_thanh_vien][data-tab=cap-the]'), {tab:'cap-the'})">
+    <div class="qa-mark">TV</div>
+    <div class="qa-lbl">Cấp thẻ mới</div>
+  </div>
+  <div class="qa" onclick="navigate('quy_doi_diem', document.querySelector('[data-page=quy_doi_diem]'))">
+    <div class="qa-mark">QD</div>
+    <div class="qa-lbl">Quy đổi điểm</div>
+  </div>
+  <div class="qa" onclick="navigate('lich_su_ho', document.querySelector('[data-page=lich_su_ho]'))">
+    <div class="qa-mark">LS</div>
+    <div class="qa-lbl">Tra cứu lịch sử</div>
+  </div>
+</div>
+
+<div class="g2">
+  <!-- TODO: Bảng giao dịch gần đây -->
+  <div class="panel">
+    <div class="ph2">
+      <div class="pt">Giao dịch gần đây trong ca</div>
+      <span class="pa">Xem tất cả</span>
+    </div>
+    <table class="tbl" id="tbl-giao-dich">
+      <thead>
+        <tr><th>Khách hàng</th><th>Loại giao dịch</th><th>Giờ</th><th>Kết quả</th></tr>
+      </thead>
+      <tbody id="tbl-giao-dich-body">
+        <tr><td colspan="4" style="text-align:center;color:var(--t3);padding:24px;">Đang tải dữ liệu...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TODO: Nhật ký ca làm -->
+  <div>
+    <div class="panel" id="panel-nhat-ky">
+      <div class="ph2"><div class="pt">Nhật ký ca làm</div></div>
+      <div style="padding:24px;text-align:center;color:var(--t3);font-size:12px;" id="nhat-ky-rong">
+        Đang tải dữ liệu...
+      </div>
+    </div>
+  </div>
+</div>
