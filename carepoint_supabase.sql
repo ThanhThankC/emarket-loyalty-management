@@ -181,6 +181,28 @@ CREATE TRIGGER trg_don_hang_updated
 
 
 -- ============================================================
+-- 5.1. NHAT KY TRA CUU DON HANG TAI POS
+-- Luu moi lan thu ngan thuc hien tra cuu, ke ca khong co ket qua,
+-- du lieu khong hop le, loi he thong hoac qua thoi gian phan hoi.
+-- ============================================================
+CREATE TABLE nhat_ky_tra_cuu_don_hang (
+  id                      UUID            PRIMARY KEY DEFAULT uuid_generate_v4(),
+  ma_nv                   VARCHAR(10)     REFERENCES nhan_vien(ma_nv),
+  so_dien_thoai           VARCHAR(15),
+  ma_kh                   VARCHAR(10),
+  ma_don_hang             VARCHAR(15),
+  tu_ngay                 DATE,
+  den_ngay                DATE,
+  trang                   INT             NOT NULL DEFAULT 1 CHECK (trang > 0),
+  so_ket_qua              INT             NOT NULL DEFAULT 0 CHECK (so_ket_qua >= 0),
+  ket_qua                 VARCHAR(30)     NOT NULL,
+  thoi_gian_phan_hoi_ms   INT             NOT NULL DEFAULT 0 CHECK (thoi_gian_phan_hoi_ms >= 0),
+  thong_tin_loi           VARCHAR(500),
+  thoi_gian_tra_cuu       TIMESTAMPTZ     NOT NULL DEFAULT NOW()
+);
+
+
+-- ============================================================
 -- 6. LỊCH SỬ NÂNG HẠNG
 -- ============================================================
 CREATE TABLE lich_su_nang_hang (
@@ -442,6 +464,8 @@ CREATE INDEX idx_kh_email     ON khach_hang(email);
 CREATE INDEX idx_the_ma_kh    ON the_thanh_vien(ma_kh);
 CREATE INDEX idx_dh_ma_kh     ON don_hang(ma_kh);
 CREATE INDEX idx_dh_ngay      ON don_hang(ngay_mua DESC);
+CREATE INDEX idx_dh_ma_kh_ngay ON don_hang(ma_kh, ngay_mua DESC);
+CREATE INDEX idx_log_tc_nv_ngay ON nhat_ky_tra_cuu_don_hang(ma_nv, thoi_gian_tra_cuu DESC);
 CREATE INDEX idx_gd_ma_the    ON lich_su_giao_dich_diem(ma_the);
 CREATE INDEX idx_gd_ngay      ON lich_su_giao_dich_diem(ngay_gd DESC);
 CREATE INDEX idx_ph_trang_thai ON phan_hoi_khach_hang(trang_thai);
