@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Lịch sử mua hàng - CarePoint</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="shared.css"/>
+<link rel="stylesheet" href="lich_su_mua_hang.css"/>
+</head>
+<body>
+
+<div class="sub-topbar">
+  <a class="back-btn" href="ho_so.html" aria-label="Quay lại">&#8592;</a>
+  <div class="sub-topbar-title">Lịch sử mua hàng</div>
+</div>
+
+<main class="mua-hang-main">
+  <section class="mua-hang-card">
+    <div class="mua-hang-card-title">Điều kiện tra cứu</div>
+    <form id="orderFilterForm" novalidate>
+      <div class="mua-hang-filter-grid">
+        <div class="form-group mua-hang-full">
+          <label class="form-label" for="orderCodeFilter">Mã đơn hàng</label>
+          <input class="form-input" id="orderCodeFilter" type="text" maxlength="15" placeholder="DH2025001" autocomplete="off"/>
+          <div class="mua-hang-field-error" id="orderCodeFilterError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="dateFromFilter">Từ ngày</label>
+          <input class="form-input" id="dateFromFilter" type="date"/>
+          <div class="mua-hang-field-error" id="dateFromFilterError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="dateToFilter">Đến ngày</label>
+          <input class="form-input" id="dateToFilter" type="date"/>
+          <div class="mua-hang-field-error" id="dateToFilterError"></div>
+        </div>
+
+        <div class="form-group mua-hang-full">
+          <label class="form-label" for="statusFilter">Trạng thái</label>
+          <select class="form-input" id="statusFilter">
+            <option value="">Tất cả trạng thái</option>
+            <option value="hoan_thanh">Hoàn thành</option>
+            <option value="dang_xu_ly">Đang xử lý</option>
+            <option value="da_huy">Đã hủy</option>
+            <option value="da_doi_tra">Đã đổi trả</option>
+          </select>
+          <div class="mua-hang-field-error" id="statusFilterError"></div>
+        </div>
+      </div>
+
+      <div class="mua-hang-filter-actions">
+        <button class="btn-outline-full" id="clearFilterButton" type="button">Xóa bộ lọc</button>
+        <button class="btn-full" id="searchButton" type="submit">Tra cứu</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="mua-hang-card mua-hang-results">
+    <div class="mua-hang-result-heading">
+      <div class="mua-hang-card-title">Danh sách đơn hàng</div>
+      <div class="mua-hang-summary" id="resultSummary">Đang tải...</div>
+    </div>
+
+    <div class="mua-hang-message" id="resultMessage" role="status" aria-live="polite"></div>
+    <div class="mua-hang-list" id="orderList"></div>
+
+    <div class="mua-hang-pagination">
+      <button class="mua-hang-page-button" id="previousButton" type="button">Trước</button>
+      <span id="pageInfo">Trang 1</span>
+      <button class="mua-hang-page-button" id="nextButton" type="button">Sau</button>
+    </div>
+  </section>
+</main>
+
+<div class="toast-wrap" id="toasts"></div>
+
+<script src="supabase_config.js"></script>
+<script src="supabase_api.js"></script>
+<script src="auth.js"></script>
+<script src="lich_su_mua_hang.js"></script>
+</body>
+</html>

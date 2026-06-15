@@ -18,19 +18,21 @@
   padding: 0 18px;
 }
 .exc-placeholder { font-size: 12px; color: var(--t3); text-align: center; padding: 20px; }
+.exc-placeholder { grid-column: 1 / -1; }
 .exc-item {
   background: #fff; border: 1px solid var(--b); border-radius: var(--r2);
   overflow: hidden; cursor: pointer; transition: all .18s;
 }
 .exc-item:active { border-color: var(--r); box-shadow: var(--sh); }
 .exc-item-img {
-  height: 90px; display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 700; color: var(--t3);
+  height: 90px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px; color: #fff; text-align: center;
 }
-.exc-c1 { background: linear-gradient(135deg, #FFF0F0, #FFD6D6); }
-.exc-c2 { background: linear-gradient(135deg, #FFF8E1, #FFE082); }
-.exc-c3 { background: linear-gradient(135deg, #E8F5E9, #A5D6A7); }
-.exc-c4 { background: linear-gradient(135deg, #E3F2FD, #90CAF9); }
+.exc-item-symbol { font-family: var(--fh); font-size: 22px; font-weight: 700; letter-spacing: .5px; }
+.exc-item-type { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; opacity: .9; }
+.exc-type-voucher_giam_gia .exc-item-img { background: linear-gradient(135deg, #c94040, #8f2020); }
+.exc-type-qua_hien_vat .exc-item-img { background: linear-gradient(135deg, #c8991a, #9b6d00); }
+.exc-type-uu_dai_dich_vu .exc-item-img { background: linear-gradient(135deg, #2b6cb0, #174a7e); }
 .exc-item-body  { padding: 10px 12px; }
 .exc-item-name  { font-size: 12.5px; font-weight: 600; color: var(--t); line-height: 1.3; }
 .exc-item-pts   { margin-top: 5px; font-size: 12px; color: var(--r); font-weight: 700; }

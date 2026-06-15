@@ -1,0 +1,186 @@
+/* lich_su_mua_hang.css - Tra cuu don hang cua khach hang dang nhap */
+
+.mua-hang-main {
+  padding: 16px 18px 28px;
+}
+
+.mua-hang-card {
+  margin-bottom: 14px;
+  padding: 17px;
+  background: var(--surf);
+  border: 1px solid var(--b);
+  border-radius: var(--r3);
+  box-shadow: var(--sh);
+}
+
+.mua-hang-card-title {
+  margin-bottom: 14px;
+  font-family: var(--fh);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.mua-hang-filter-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 12px;
+}
+
+.mua-hang-full { grid-column: 1 / -1; }
+
+.mua-hang-field-error {
+  min-height: 16px;
+  margin-top: 4px;
+  color: var(--r);
+  font-size: 10.5px;
+}
+
+.mua-hang-input-invalid {
+  border-color: var(--r) !important;
+  background: var(--rll);
+}
+
+.mua-hang-filter-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 10px;
+}
+
+.mua-hang-filter-actions .btn-full,
+.mua-hang-filter-actions .btn-outline-full {
+  margin-top: 0;
+}
+
+.mua-hang-result-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mua-hang-summary {
+  color: var(--t3);
+  font-size: 10.5px;
+  text-align: right;
+}
+
+.mua-hang-message {
+  display: none;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: var(--r1);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.mua-hang-message.info {
+  display: block;
+  color: var(--blue);
+  background: var(--bbg);
+}
+
+.mua-hang-message.error {
+  display: block;
+  color: var(--r);
+  background: var(--rl);
+}
+
+.mua-hang-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mua-hang-order {
+  padding: 14px;
+  border: 1px solid var(--b);
+  border-radius: var(--r2);
+  background: var(--cream);
+}
+
+.mua-hang-order-head,
+.mua-hang-order-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.mua-hang-order-head {
+  padding-bottom: 10px;
+  margin-bottom: 9px;
+  border-bottom: 1px solid var(--b);
+}
+
+.mua-hang-order-code {
+  font-family: var(--fh);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.mua-hang-order-date {
+  margin-top: 3px;
+  color: var(--t3);
+  font-size: 10.5px;
+}
+
+.mua-hang-status {
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.mua-hang-status.success { color: var(--green); background: var(--gbg); }
+.mua-hang-status.pending { color: var(--orange); background: var(--obg); }
+.mua-hang-status.cancelled { color: var(--r); background: var(--rl); }
+.mua-hang-status.returned { color: var(--blue); background: var(--bbg); }
+
+.mua-hang-order-row {
+  padding: 4px 0;
+  color: var(--t2);
+  font-size: 12px;
+}
+
+.mua-hang-order-row strong { color: var(--t); }
+.mua-hang-money { color: var(--r) !important; font-size: 15px; }
+
+.mua-hang-empty {
+  padding: 28px 12px;
+  color: var(--t3);
+  text-align: center;
+  font-size: 12px;
+}
+
+.mua-hang-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 16px;
+  color: var(--t2);
+  font-size: 12px;
+}
+
+.mua-hang-page-button {
+  min-width: 70px;
+  padding: 8px 12px;
+  border: 1px solid var(--bd);
+  border-radius: var(--r1);
+  background: #fff;
+  color: var(--t2);
+  font-family: var(--fb);
+  font-weight: 600;
+}
+
+.mua-hang-page-button:disabled,
+.mua-hang-filter-actions button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+@media (max-width: 360px) {
+  .mua-hang-filter-grid { grid-template-columns: 1fr; }
+  .mua-hang-full { grid-column: auto; }
+}
