@@ -3,6 +3,7 @@
 // Bắt buộc dòng đầu tiên
 requireLogin();
 const kh = getCurrentNV(); // tại đây getCurrentNV() trả về dữ liệu khách hàng
+const currentKhId = kh && (kh.ma_kh || kh.ma_nv);
 
 // ============================================================
 //  MODAL HELPERS (dùng chung — nếu sau này tách sang file riêng
@@ -45,7 +46,7 @@ setInterval(() => {
 //  LOAD DỮ LIỆU TRANG CHỦ
 // ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
-  if (!kh) return;
+  if (!kh || !currentKhId) return;
 
   // Tên và avatar
   const ten = kh.ho_ten || 'Khách hàng';
@@ -58,40 +59,47 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Lấy thông tin thẻ thành viên & điểm
   try {
     const theData = await sbGet('the_thanh_vien',
-      `ma_kh=eq.${kh.ma_nv}&trang_thai=eq.Hoat dong`);
+      `ma_kh=eq.${encodeURIComponent(currentKhId)}` +
+      '&select=ma_the,hang,so_diem,trang_thai&order=updated_at.desc&limit=1');
 
-    if (theData && theData.length > 0) {
-      const the = theData[0];
-      const diem = the.diem_hien_tai || 0;
-      const diemTotal = the.tong_diem_tich_luy || 0;
-      const hang = the.hang_hien_tai || 'Moi';
-      const maThe = the.ma_the || '---';
-
-      // Hero
-      document.getElementById('heroPts').textContent = diem.toLocaleString('vi-VN');
-      document.getElementById('heroTierTxt').textContent = 'Thành viên ' + hang;
-
-      // Stats
-      document.getElementById('statPts').textContent   = diem.toLocaleString('vi-VN');
-      document.getElementById('statTotal').textContent = diemTotal.toLocaleString('vi-VN');
-
-      // Thẻ ID
-      document.getElementById('cardIdTxt').textContent = 'KH – ' + maThe.slice(-5);
-      document.getElementById('qrIdTxt').textContent   = 'KH – ' + maThe.slice(-5);
-      document.getElementById('qrHint').textContent    = ten + ' · Hạng ' + hang;
-
-      // TODO: Tính toán progress (ví dụ ngưỡng hạng) — có thể dùng lại logic
-      // calcProgress() tương tự trang ho_so.html nếu cần đồng bộ 2 nơi.
-      calcProgress(hang, diem);
+    if (!theData || theData.length === 0) {
+      throw new Error('Không tìm thấy thẻ thành viên.');
     }
+
+    const the = theData[0];
+    const diem = Number(the.so_diem || 0);
+    const hang = the.hang || 'Bronze';
+    const maThe = the.ma_the || '---';
+
+    // Hero
+    document.getElementById('heroPts').textContent = diem.toLocaleString('vi-VN');
+    document.getElementById('heroTierTxt').textContent = 'Thành viên ' + hang;
+
+    // Điểm khả dụng hiện tại được hiển thị ở hero và khu vực thống kê.
+    document.getElementById('statPts').textContent = diem.toLocaleString('vi-VN');
+    document.getElementById('statTotal').textContent = diem.toLocaleString('vi-VN');
+
+    // Thẻ ID
+    document.getElementById('cardIdTxt').textContent = 'KH – ' + maThe.slice(-5);
+    document.getElementById('qrIdTxt').textContent   = 'KH – ' + maThe.slice(-5);
+    document.getElementById('qrHint').textContent    = ten + ' · Hạng ' + hang;
+
+    calcProgress(hang, diem);
   } catch (e) {
     console.error('Lỗi tải thẻ:', e);
+    document.getElementById('heroPts').textContent = '---';
+    document.getElementById('statPts').textContent = '---';
+    document.getElementById('statTotal').textContent = '---';
+    const errorElement = document.getElementById('heroPointsError');
+    errorElement.textContent = 'Không thể truy xuất điểm hiện tại. Vui lòng thử lại.';
+    errorElement.classList.add('show');
+    showToast('Không thể truy xuất điểm hiện tại', 'err');
   }
 
   // Lấy số lượng voucher khả dụng (cho stat ở Trang chủ + badge Bottom Nav)
   try {
     const vcData = await sbGet('voucher',
-      `ma_kh=eq.${kh.ma_nv}&trang_thai=eq.Kha dung`);
+      `ma_kh=eq.${encodeURIComponent(currentKhId)}&trang_thai=eq.Kha dung`);
     const count = vcData ? vcData.length : 0;
     document.getElementById('statVoucher').textContent = count;
     const badge = document.getElementById('voucherBadge');
@@ -101,14 +109,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   // Lấy giao dịch gần đây (5 giao dịch mới nhất)
-  // TODO: Xem toàn bộ lịch sử -> chuyển sang lich_su_diem.html (UC-7.1)
+  // Xem toàn bộ đơn hàng tại lich_su_mua_hang.html.
   try {
     const txData = await sbGet('lich_su_giao_dich_diem',
-      `ma_kh=eq.${kh.ma_nv}&order=thoi_gian.desc&limit=5`);
+      `ma_kh=eq.${encodeURIComponent(currentKhId)}&order=thoi_gian.desc&limit=5`);
     renderTxList(txData || [], 'recentTx');
   } catch (e) {
-    document.getElementById('recentTx').innerHTML =
-      '<div class="tx-placeholder">Chưa có giao dịch</div>';
+    document.getElementById('recentTx').innerHTML = '';
   }
 });
 
@@ -116,13 +123,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 //  TÍNH TOÁN PROGRESS BAR HẠNG THÀNH VIÊN
 // ============================================================
 function calcProgress(hang, diem) {
-  const nguong = { 'Moi': 1000, 'Bac': 5000, 'Vang': 10000, 'Bach kim': 99999 };
-  const tien = { 'Moi': 0, 'Bac': 1000, 'Vang': 5000, 'Bach kim': 10000 };
+  const nguong = { Bronze: 1000, Silver: 5000, Gold: 10000, Platinum: 99999 };
+  const tien = { Bronze: 0, Silver: 1000, Gold: 5000, Platinum: 10000 };
   const next = nguong[hang] || 1000;
   const prev = tien[hang] || 0;
-  const nextName = { 'Moi': 'Bac', 'Bac': 'Vang', 'Vang': 'Bach kim', 'Bach kim': '' };
+  const nextName = { Bronze: 'Silver', Silver: 'Gold', Gold: 'Platinum', Platinum: '' };
 
-  if (hang === 'Bach kim') {
+  if (hang === 'Platinum') {
     document.getElementById('progFill').style.width = '100%';
     document.getElementById('progLeft').textContent = 'Đã đạt hạng cao nhất';
     document.getElementById('progPct').textContent  = '100%';
@@ -146,7 +153,7 @@ function calcProgress(hang, diem) {
 function renderTxList(txArr, containerId) {
   const el = document.getElementById(containerId);
   if (!txArr.length) {
-    el.innerHTML = '<div class="tx-placeholder">Chưa có giao dịch nào</div>';
+    el.innerHTML = '';
     return;
   }
   el.innerHTML = txArr.map(tx => {

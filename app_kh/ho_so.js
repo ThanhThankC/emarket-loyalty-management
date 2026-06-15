@@ -4,6 +4,7 @@
 // Bắt buộc dòng đầu tiên
 requireLogin();
 const kh = getCurrentNV();
+const currentKhId = kh && (kh.ma_kh || kh.ma_nv);
 
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
@@ -29,7 +30,7 @@ function showToast(msg, type = '') {
 //  TẢI THÔNG TIN HỒ SƠ (UC-6.2) + ĐIỂM/HẠNG (UC-7.2)
 // ============================================================
 document.addEventListener('DOMContentLoaded', async () => {
-  if (!kh) return;
+  if (!kh || !currentKhId) return;
 
   const ten = kh.ho_ten || 'Khách hàng';
   const initials = ten.split(' ').pop().charAt(0).toUpperCase();
@@ -39,32 +40,36 @@ document.addEventListener('DOMContentLoaded', async () => {
   // AC UC-6.2: báo lỗi nếu không truy xuất được dữ liệu
   try {
     const theData = await sbGet('the_thanh_vien',
-      `ma_kh=eq.${kh.ma_nv}&trang_thai=eq.Hoat dong`);
+      `ma_kh=eq.${encodeURIComponent(currentKhId)}` +
+      '&select=ma_the,hang,so_diem,trang_thai&order=updated_at.desc&limit=1');
 
-    if (theData && theData.length > 0) {
-      const the = theData[0];
-      const diem = the.diem_hien_tai || 0;
-      const diemTotal = the.tong_diem_tich_luy || 0;
-      const hang = the.hang_hien_tai || 'Moi';
-      const maThe = the.ma_the || '---';
-
-      document.getElementById('profId').textContent   = maThe + ' · Hạng ' + hang;
-      document.getElementById('profTier').textContent = 'Thành viên ' + hang;
-      document.getElementById('dRank').textContent    = hang;
-      document.getElementById('dPts').textContent     = diem.toLocaleString('vi-VN') + ' điểm';
-      document.getElementById('dTotal').textContent   = diemTotal.toLocaleString('vi-VN') + ' điểm';
-
-      calcProgress(hang, diem);
+    if (!theData || theData.length === 0) {
+      throw new Error('Không tìm thấy thẻ thành viên.');
     }
+
+    const the = theData[0];
+    const diem = Number(the.so_diem || 0);
+    const hang = the.hang || 'Bronze';
+    const maThe = the.ma_the || '---';
+
+    document.getElementById('profId').textContent   = maThe + ' · Hạng ' + hang;
+    document.getElementById('profTier').textContent = 'Thành viên ' + hang;
+    document.getElementById('dRank').textContent    = hang;
+    document.getElementById('dPts').textContent     = diem.toLocaleString('vi-VN') + ' điểm';
+    document.getElementById('dTotal').textContent   = diem.toLocaleString('vi-VN') + ' điểm';
+
+    calcProgress(hang, diem);
   } catch (e) {
     console.error('Lỗi tải thông tin thẻ:', e);
-    showToast('Không tải được thông tin tài khoản', 'err');
+    document.getElementById('dPts').textContent = 'Không truy xuất được';
+    document.getElementById('dTotal').textContent = 'Không truy xuất được';
+    showToast('Không thể truy xuất điểm hiện tại', 'err');
   }
 
   // Badge số voucher khả dụng trên Bottom Nav
   try {
     const vcData = await sbGet('voucher',
-      `ma_kh=eq.${kh.ma_nv}&trang_thai=eq.Kha dung`);
+      `ma_kh=eq.${encodeURIComponent(currentKhId)}&trang_thai=eq.Kha dung`);
     const count = vcData ? vcData.length : 0;
     const badge = document.getElementById('voucherBadge');
     if (count > 0) {
@@ -81,15 +86,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ============================================================
 function calcProgress(hang, diem) {
   const nguong = {
-    'Moi': 1000,
-    'Bac': 5000,
-    'Vang': 10000,
-    'Bach kim': 99999
+    Bronze: 1000,
+    Silver: 5000,
+    Gold: 10000,
+    Platinum: 99999
   };
 
   const next = nguong[hang] || 1000;
 
-  if (hang === 'Bach kim') {
+  if (hang === 'Platinum') {
     document.getElementById('dNext').textContent = 'Hạng cao nhất';
     return;
   }
@@ -125,7 +130,7 @@ async function handleChangePass() {
 
   try {
     // TODO: AC - kiểm tra oldP đúng với mật khẩu hiện tại trước khi cập nhật
-    await sbUpdate('khach_hang', `ma_kh=eq.${kh.ma_nv}`, { mat_khau: newP });
+    await sbUpdate('khach_hang', `ma_kh=eq.${encodeURIComponent(currentKhId)}`, { mat_khau: newP });
 
     closeModal('modal-changepass');
     showToast('Đổi mật khẩu thành công', 'ok');
