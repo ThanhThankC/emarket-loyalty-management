@@ -3,27 +3,87 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-<title>Thông tin cá nhân — CarePoint</title>
+<title>Thông tin cá nhân - CarePoint</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="shared.css"/>
 <link rel="stylesheet" href="thong_tin.css"/>
 </head>
 <body>
 
-<!-- THANH TIÊU ĐỀ PHỤ -->
 <div class="sub-topbar">
-  <a class="back-btn" href="app_kh.html">←</a>
+  <a class="back-btn" href="ho_so.html" aria-label="Quay lại">&#8592;</a>
   <div class="sub-topbar-title">Thông tin cá nhân</div>
 </div>
 
-<!-- NỘI DUNG CHÍNH — Thành viên code vào đây -->
-<div id="mainContent">
-  <!-- TODO: Thông tin cá nhân — File: thong_tin.html / thong_tin.css / thong_tin.js -->
-  <div class="ph-placeholder">
-    <div class="ph-title">Thông tin cá nhân</div>
-    <div class="ph-sub">File: thong_tin.html / thong_tin.css / thong_tin.js</div>
-  </div>
-</div>
+<main id="mainContent" class="thong-tin-main">
+  <section class="thong-tin-card">
+    <div class="thong-tin-heading">
+      <div>
+        <h1>Hồ sơ của bạn</h1>
+        <p>Kiểm tra và cập nhật thông tin liên hệ cá nhân.</p>
+      </div>
+      <span class="thong-tin-status" id="profileStatus">Đang tải</span>
+    </div>
+
+    <div class="thong-tin-alert" id="formAlert" role="alert" aria-live="polite"></div>
+
+    <form id="profileForm" novalidate>
+      <div class="thong-tin-grid">
+        <div class="form-group">
+          <label class="form-label" for="maKh">Mã khách hàng</label>
+          <input class="form-input thong-tin-locked" id="maKh" type="text" readonly/>
+          <div class="thong-tin-note">Thông tin này không được phép thay đổi.</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="soDienThoai">Số điện thoại</label>
+          <input class="form-input thong-tin-locked" id="soDienThoai" type="tel" readonly/>
+          <div class="thong-tin-note">Thông tin này không được phép thay đổi.</div>
+        </div>
+
+        <div class="form-group thong-tin-full">
+          <label class="form-label" for="hoTen">Họ và tên <span class="thong-tin-required">*</span></label>
+          <input class="form-input" id="hoTen" type="text" maxlength="100" autocomplete="name"/>
+          <div class="thong-tin-error" id="hoTenError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="ngaySinh">Ngày sinh</label>
+          <input class="form-input" id="ngaySinh" type="date"/>
+          <div class="thong-tin-error" id="ngaySinhError"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="gioiTinh">Giới tính</label>
+          <select class="form-input" id="gioiTinh">
+            <option value="">Chưa cập nhật</option>
+            <option value="Nam">Nam</option>
+            <option value="Nu">Nữ</option>
+            <option value="Khac">Khác</option>
+          </select>
+          <div class="thong-tin-error" id="gioiTinhError"></div>
+        </div>
+
+        <div class="form-group thong-tin-full">
+          <label class="form-label" for="email">Email</label>
+          <input class="form-input" id="email" type="email" maxlength="100" autocomplete="email" placeholder="email@example.com"/>
+          <div class="thong-tin-error" id="emailError"></div>
+        </div>
+
+        <div class="form-group thong-tin-full">
+          <label class="form-label" for="diaChi">Địa chỉ</label>
+          <textarea class="form-input thong-tin-textarea" id="diaChi" rows="3" maxlength="500" autocomplete="street-address"></textarea>
+          <div class="thong-tin-error" id="diaChiError"></div>
+        </div>
+      </div>
+
+      <div class="thong-tin-actions">
+        <button class="btn-outline-full" id="resetButton" type="button">Khôi phục</button>
+        <button class="btn-full" id="saveButton" type="submit">Lưu thay đổi</button>
+      </div>
+    </form>
+  </section>
+</main>
 
 <div class="toast-wrap" id="toasts"></div>
 
