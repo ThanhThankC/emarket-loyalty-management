@@ -1,19 +1,133 @@
-/* thong-tin.css — Thong tin ca nhan */
-/* KHONG dung emoji/icon Unicode */
+/* thong_tin.css - Cap nhat thong tin ca nhan khach hang */
 
-.ph-placeholder {
-  padding: 48px 24px;
-  text-align: center;
-  color: var(--t3);
+.thong-tin-main {
+  padding: 18px;
 }
-.ph-title {
+
+.thong-tin-card {
+  background: var(--surf);
+  border: 1px solid var(--b);
+  border-radius: var(--r3);
+  padding: 18px;
+  box-shadow: var(--sh);
+}
+
+.thong-tin-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--b);
+}
+
+.thong-tin-heading h1 {
   font-family: var(--fh);
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--t);
-  margin-bottom: 8px;
+  font-size: 18px;
+  margin-bottom: 5px;
 }
-.ph-sub {
-  font-size: 12px;
+
+.thong-tin-heading p {
   color: var(--t3);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.thong-tin-status {
+  flex-shrink: 0;
+  padding: 4px 9px;
+  border-radius: 20px;
+  background: var(--bbg);
+  color: var(--blue);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.thong-tin-status.ready {
+  background: var(--gbg);
+  color: var(--green);
+}
+
+.thong-tin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 12px;
+}
+
+.thong-tin-full {
+  grid-column: 1 / -1;
+}
+
+.thong-tin-locked {
+  background: #f3efec;
+  color: var(--t2);
+  cursor: not-allowed;
+}
+
+.thong-tin-note,
+.thong-tin-error {
+  min-height: 16px;
+  margin-top: 4px;
+  font-size: 10.5px;
+  line-height: 1.35;
+}
+
+.thong-tin-note { color: var(--t3); }
+.thong-tin-error { color: var(--r); }
+.thong-tin-required { color: var(--r); }
+
+.thong-tin-invalid {
+  border-color: var(--r) !important;
+  background: var(--rll);
+}
+
+.thong-tin-textarea {
+  resize: vertical;
+  min-height: 82px;
+}
+
+.thong-tin-alert {
+  display: none;
+  padding: 10px 12px;
+  margin-bottom: 14px;
+  border-radius: var(--r1);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.thong-tin-alert.error {
+  display: block;
+  color: var(--r);
+  background: var(--rl);
+  border: 1px solid #f0baba;
+}
+
+.thong-tin-alert.success {
+  display: block;
+  color: var(--green);
+  background: var(--gbg);
+  border: 1px solid #b5e0cb;
+}
+
+.thong-tin-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.thong-tin-actions .btn-full,
+.thong-tin-actions .btn-outline-full {
+  margin-top: 0;
+}
+
+.thong-tin-actions button:disabled {
+  cursor: wait;
+  opacity: .65;
+}
+
+@media (max-width: 360px) {
+  .thong-tin-grid { grid-template-columns: 1fr; }
+  .thong-tin-full { grid-column: auto; }
 }
