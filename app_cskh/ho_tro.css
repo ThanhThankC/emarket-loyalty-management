@@ -1,13 +1,183 @@
-/* =============================================================
-   ho_tro.css — Style riêng cho chức năng: Ho tro truc tiep
-   Phụ thuộc: shared.css (đã load trước)
-   -------------------------------------------------------------
-   QUY TẮC:
-   - KHÔNG dùng emoji/icon Unicode làm trang trí (&#...; hoặc text icon)
-   - Đặt tên class có prefix "ho_tro-" để tránh trùng shared.css
-     Ví dụ: .ho_tro-card { }  .ho_tro-status { }
-   - KHÔNG override class đã có trong shared.css
-   ============================================================= */
+/* ==========================================================================
+   UC12 - Hỗ trợ khách hàng trực tiếp (Bổ sung phong cách thiết kế hệ thống)
+   ========================================================================== */
 
-/* Viết style riêng của chức năng bên dưới */
+.ho-tro-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
+.ho-tro-hidden {
+    display: none !important; /* Đảm bảo ẩn triệt để khi chưa xác minh */
+}
+
+.ho-tro-search {
+    display: flex;
+    gap: 12px;
+    align-items: end;
+}
+
+.ho-tro-search .fg {
+    flex: 1;
+}
+
+.ho-tro-info {
+    padding: 20px;
+    background: var(--cream);
+}
+
+.ho-tro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.ho-tro-summary {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.ho-tro-stat {
+    background: #fff;
+    border: 1px solid var(--b);
+    border-left: 4px solid var(--y);
+    border-radius: var(--r);
+    padding: 15px;
+}
+
+.ho-tro-stat-title {
+    font-size: 11px;
+    color: var(--t3);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.ho-tro-stat-value {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--yd);
+}
+
+/* KHU VỰC CHỌN LOẠI HỖ TRỢ */
+.ho-tro-actions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Chia 2 cột để giao diện gọn gàng hơn thay vì kéo dài dọc */
+    gap: 16px;
+}
+
+.ho-tro-action {
+    background: #fff;
+    border: 1px solid var(--b);
+    border-radius: var(--r);
+    padding: 16px;
+    cursor: pointer;
+    transition: all .2s ease;
+}
+
+.ho-tro-action:hover {
+    background: var(--yl);
+    border-color: var(--yd);
+    transform: translateY(-2px);
+}
+
+.ho-tro-action.active {
+    background: var(--yl);
+    border-color: var(--yd);
+    box-shadow: 0 3px 10px rgba(200,153,26,.15);
+}
+
+.ho-tro-action-title {
+    font-weight: 700;
+    color: var(--t);
+    margin-bottom: 6px;
+}
+
+.ho-tro-action-desc {
+    color: var(--t3);
+    font-size: 12px;
+}
+
+/* KẾT QUẢ HỖ TRỢ & KHU VỰC TƯ VẤN ĐỘNG */
+.ho-tro-result {
+    padding: 20px;
+    background: var(--cream);
+}
+
+/* Style cho khu vực hiển thị kịch bản tư vấn động dựa trên tài liệu đặc tả */
+#dynamicConsulting {
+    border-left: 4px solid var(--yd); /* Lấy màu vàng đậm đồng bộ thanh trạng thái */
+    background: #fff;
+    border-top: 1px solid var(--b);
+    border-right: 1px solid var(--b);
+    border-bottom: 1px solid var(--b);
+    border-radius: var(--r);
+    padding: 16px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.5;
+    animation: fadeInSlide .3s ease-in-out; /* Hiệu ứng mượt mà khi hiện nội dung */
+}
+
+#dynamicConsulting strong {
+    color: var(--yd);
+}
+
+/* Đảm bảo khung nhập văn bản hiển thị đẹp mắt */
+.ho-tro-result textarea.fi {
+    min-height: 100px;
+    resize: vertical;
+}
+
+.ho-tro-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.panel {
+    border-radius: 8px;
+    overflow: hidden; /* Tránh các góc vuông của phần header đè lên bo góc của panel */
+}
+
+.panel-h {
+    background: linear-gradient(
+        90deg,
+        var(--yl),
+        var(--cream)
+    );
+}
+
+/* Hiệu ứng chuyển động mượt */
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* RESPONSIVE - GIAO DIỆN DI ĐỘNG/MÁY TÍNH BẢNG */
+@media(max-width:768px){
+
+    .ho-tro-grid,
+    .ho-tro-summary,
+    .ho-tro-actions {
+        grid-template-columns: 1fr; /* Trở về 1 cột trên màn hình nhỏ */
+    }
+
+    .ho-tro-search {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .ho-tro-search button {
+        width: 100%;
+    }
+}
