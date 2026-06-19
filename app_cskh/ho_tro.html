@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hỗ trợ khách hàng trực t i ế p</title>
+<link rel="stylesheet" href="shared.css">
+    <link rel="stylesheet" href="ho_tro.css">
+</head>
+<body>
+
+<div class="main">
+    <div class="ph">
+        <div>
+            <div class="ptitle">Hỗ trợ khách trực tiếp</div>
+            <div class="psub">
+                Tiếp nhận và xử lý yêu cầu hỗ trợ tại quầy CSKH
+            </div>
+        </div>
+    </div>
+
+    <div class="ho-tro-wrap">
+
+        <div class="panel">
+            <div class="panel-h">
+                <span class="panel-t">Tìm kiếm khách </span>
+            </div>
+            <div style="padding:18px">
+                <div class="ho-tro-search">
+                    <div class="fg">
+                        <label class="fl">Số điện thoại hoặc mã khách hàng</label>
+                        <input type="text" id="txtSearch" class="fi" placeholder="Nhập SĐT hoặc mã KH">
+                    </div>
+                    <button class="btn btn-yellow" onclick="timKhachHang()">Tìm khách hàng</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="khachHangInfo" class="panel ho-tro-hidden">
+            <div class="panel-h">
+                <span class="panel-t">Thông tin khách hàng</span>
+            </div>
+            <div class="ho-tro-info">
+                <div class="ho-tro-grid">
+                    <div class="fg">
+                        <label class="fl">Mã khách hàng</label>
+                        <input id="maKH" class="fi" readonly>
+                    </div>
+                    <div class="fg">
+                        <label class="fl">Họ tên</label>
+                        <input id="hoTenKH" class="fi" readonly>
+                    </div>
+                    <div class="fg">
+                        <label class="fl">Số điện thoại</label>
+                        <input id="sdtKH" class="fi" readonly>
+                    </div>
+                    <div class="fg">
+                        <label class="fl">Hạng thẻ</label>
+                        <input id="hangTheKH" class="fi" readonly>
+                    </div>
+                </div>
+
+                <div class="ho-tro-summary">
+                    <div class="ho-tro-stat">
+                        <div class="ho-tro-stat-title">Điểm tích lũy</div>
+                        <div id="diemKH" class="ho-tro-stat-value">0</div>
+                    </div>
+                    <div class="ho-tro-stat">
+                        <div class="ho-tro-stat-title">Trạng thái</div>
+                        <div><span class="badge b-open">Đang hoạt động</span></div>
+                    </div>
+                    <div class="ho-tro-stat">
+                        <div class="ho-tro-stat-title">Xác minh</div>
+                        <div id="trangThaiXacMinh"><span class="badge b-pend">Chưa xác minh</span></div>
+                    </div>
+                </div>
+
+                <div style="margin-top:16px">
+                    <button class="btn btn-green" onclick="xacMinhKH()">Xác minh khách hàng</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="supportSection" class="panel ho-tro-hidden">
+            <div class="panel-h">
+                <span class="panel-t">Loại yêu cầu hỗ trợ</span>
+            </div>
+            <div style="padding:18px">
+                <div class="ho-tro-actions">
+                    <div class="ho-tro-action" data-value="tu_van">
+                        <div class="ho-tro-action-title">Tư vấn khách hàng</div>
+                        <div class="ho-tro-action-desc">Xem điểm tích lũy, hạng thẻ, chương trình phù hợp (6a).</div>
+                    </div>
+                    <div class="ho-tro-action" data-value="the">
+                        <div class="ho-tro-action-title">Liên quan thẻ thành viên</div>
+                        <div class="ho-tro-action-desc">Chuyển sang UC2 quản lý thẻ (6b).</div>
+                    </div>
+                    <div class="ho-tro-action" data-value="qua">
+                        <div class="ho-tro-action-title">Đổi điểm / nhận quà</div>
+                        <div class="ho-tro-action-desc">Chuyển sang UC9 đổi quà/voucher (6c).</div>
+                    </div>
+                    <div class="ho-tro-action" data-value="chuong_trinh">
+                        <div class="ho-tro-action-title">Tham gia chương trình</div>
+                        <div class="ho-tro-action-desc">Ghi nhận đăng ký tham gia (6d).</div>
+                    </div>
+                </div>
+                <input type="hidden" id="loaiYeuCau">
+            </div>
+        </div>
+
+        <div id="resultSection" class="panel ho-tro-hidden">
+            <div class="panel-h">
+                <span class="panel-t">Kết quả hỗ trợ</span>
+            </div>
+            <div class="ho-tro-result">
+                <div id="dynamicConsulting" style="margin-bottom: 16px; padding: 12px; border-left: 4px solid #f1c40f; background: #fdfaf0; display: none;">
+                    </div>
+
+                <div class="fg">
+                    <label class="fl">Nội dung hỗ trợ</label>
+                    <textarea id="ketQuaHoTro" class="fi" placeholder="Nhập nội dung xử lý hoặc tư vấn"></textarea>
+                </div>
+
+                <div class="ho-tro-footer">
+                    <button class="btn btn-outline" onclick="resetForm()">Hủy</button>
+                    <button class="btn btn-yellow" onclick="xuLyYeuCau()">Lưu kết quả hỗ trợ</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="ho_tro.js"></script>
+</body>
+</html>
