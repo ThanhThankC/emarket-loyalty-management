@@ -1,12 +1,104 @@
-/* =============================================================
-   qua_tang.css — Style riêng cho chức năng: Qua tang va Su kien
-   Phụ thuộc: shared.css (đã load trước)
-   -------------------------------------------------------------
-   QUY TẮC:
-   - KHÔNG dùng emoji/icon Unicode làm trang trí (&#...; hoặc text icon)
-   - Đặt tên class có prefix "qua_tang-" để tránh trùng shared.css
-     Ví dụ: .qua_tang-card { }  .qua_tang-status { }
-   - KHÔNG override class đã có trong shared.css
-   ============================================================= */
+/* qua_tang.css - Quan ly qua tang va su kien */
 
-/* Viết style riêng của chức năng bên dưới */
+.qua_tang-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.qua_tang-stat {
+  background: var(--surf);
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  box-shadow: var(--sh);
+}
+
+.qua_tang-stat span {
+  display: block;
+  font-family: var(--fh);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--t);
+  line-height: 1;
+}
+
+.qua_tang-stat small {
+  display: block;
+  margin-top: 6px;
+  color: var(--t3);
+  font-size: 12px;
+}
+
+.qua_tang-message {
+  margin: 14px 16px;
+  padding: 10px 12px;
+  border-radius: var(--r);
+  font-size: 12.5px;
+}
+
+.qua_tang-message.inf {
+  background: var(--bbg);
+  color: var(--blue);
+  border: 1px solid #B8D4F5;
+}
+
+.qua_tang-message.ok {
+  background: var(--gbg);
+  color: var(--green);
+  border: 1px solid #B5E0CB;
+}
+
+.qua_tang-message.err {
+  background: var(--rbg);
+  color: var(--red);
+  border: 1px solid #F0BABA;
+}
+
+.qua_tang-table-wrap {
+  overflow-x: auto;
+}
+
+.qua_tang-table {
+  min-width: 920px;
+}
+
+.qua_tang-condition {
+  color: var(--t3);
+  font-size: 12px;
+  margin-top: 4px;
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.qua_tang-empty {
+  text-align: center;
+  color: var(--t3);
+  padding: 28px 16px !important;
+}
+
+.qua_tang-field-error {
+  min-height: 15px;
+  color: var(--red);
+  font-size: 11px;
+}
+
+.qua_tang-input-invalid {
+  border-color: var(--red) !important;
+  background: #fff !important;
+}
+
+.qua_tang-end-body {
+  padding: 20px 22px 4px;
+  color: var(--t2);
+  font-size: 13.5px;
+}
+
+@media (max-width: 980px) {
+  .qua_tang-stats {
+    grid-template-columns: 1fr;
+  }
+}

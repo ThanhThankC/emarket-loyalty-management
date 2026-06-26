@@ -1,20 +1,165 @@
-/* khuyen-mai.css — Khuyen mai & Su kien */
-/* KHONG dung emoji/icon Unicode */
+/* khuyen-mai.css - Khuyen mai & Su kien */
 /* Prefix tat ca class: .khuyen-mai- */
 
-.ph-placeholder {
-  padding: 48px 24px;
-  text-align: center;
-  color: var(--t3);
+.khuyen-mai-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 18px 28px;
 }
-.ph-title {
+
+.khuyen-mai-card {
+  background: #fff;
+  border: 1px solid var(--b);
+  border-radius: var(--r2);
+  padding: 15px;
+  box-shadow: var(--sh);
+  cursor: pointer;
+}
+
+.khuyen-mai-card:active {
+  border-color: var(--r);
+}
+
+.khuyen-mai-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.khuyen-mai-type {
+  color: var(--r);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.khuyen-mai-title {
+  color: var(--t);
   font-family: var(--fh);
   font-size: 16px;
   font-weight: 700;
-  color: var(--t);
-  margin-bottom: 8px;
+  line-height: 1.28;
 }
-.ph-sub {
+
+.khuyen-mai-badge {
+  flex-shrink: 0;
+  border-radius: var(--r1);
+  padding: 3px 8px;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.khuyen-mai-badge.ok {
+  background: var(--gbg);
+  color: var(--green);
+  border: 1px solid #B5E0CB;
+}
+
+.khuyen-mai-badge.ended {
+  background: #F0F0F0;
+  color: #666;
+  border: 1px solid #D0D0D0;
+}
+
+.khuyen-mai-badge.upcoming {
+  background: var(--goldbg);
+  color: var(--gold);
+  border: 1px solid #E8D58C;
+}
+
+.khuyen-mai-desc {
+  color: var(--t2);
+  font-size: 12.5px;
+  line-height: 1.45;
+  margin-top: 9px;
+}
+
+.khuyen-mai-gift {
+  background: var(--rll);
+  border: 1px solid rgba(201,64,64,.12);
+  border-radius: var(--r1);
+  padding: 10px 11px;
+  margin-top: 12px;
+}
+
+.khuyen-mai-gift-name {
+  color: var(--t);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.khuyen-mai-gift-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--r);
   font-size: 12px;
+  font-weight: 700;
+  margin-top: 5px;
+}
+
+.khuyen-mai-foot {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
   color: var(--t3);
+  font-size: 11.5px;
+  margin-top: 11px;
+}
+
+.khuyen-mai-note {
+  color: var(--t3);
+  font-size: 11.5px;
+  line-height: 1.4;
+  margin-top: 8px;
+}
+
+.khuyen-mai-empty {
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--t3);
+  font-size: 12.5px;
+}
+
+.khuyen-mai-detail-body {
+  padding-bottom: 4px;
+}
+
+.khuyen-mai-detail-section {
+  background: var(--rll);
+  border: 1px solid rgba(201,64,64,.12);
+  border-radius: var(--r2);
+  padding: 13px;
+  margin-bottom: 12px;
+}
+
+.khuyen-mai-detail-label {
+  color: var(--t3);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.khuyen-mai-detail-text {
+  color: var(--t);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.khuyen-mai-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  color: var(--t2);
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.khuyen-mai-detail-button {
+  margin-top: 8px;
 }
