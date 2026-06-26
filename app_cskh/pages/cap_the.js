@@ -4,10 +4,13 @@
 //  openModal/closeModal/showToast dùng từ router.js
 // =============================================================
 
-var _capTheNV = null;  // lưu NV hiện tại khi initPage chạy
+var _capTheNV     = null;  // lưu NV hiện tại khi initPage chạy
+var _hangKhoiDiem = 'Bronze';  // Hạng có diem_toi_thieu = 0, load từ DB khi init
 
 registerPage('cap_the', function(opts) {
   _capTheNV = getCurrentNV();
+  // Load hạng khởi điểm từ DB để không hardcode 'Bronze'
+  capTheLoadHangKhoiDiem();
 
   // Live preview khi nhập tên
   var hotenEl   = document.getElementById('new-hoten');
@@ -44,6 +47,27 @@ function updatePreview() {
   var dateEl = document.getElementById('prev-date-new');
   if (nameEl) nameEl.textContent = ten;
   if (dateEl) dateEl.textContent = 'HH: ' + hetHan.toLocaleDateString('vi-VN');
+}
+
+// ---- Load hạng khởi điểm từ DB (diem_toi_thieu = 0) ----
+async function capTheLoadHangKhoiDiem() {
+  try {
+    var data = await sbGet('cau_hinh_hang_thanh_vien',
+      'diem_toi_thieu=eq.0&select=hang,ten_hien_thi&limit=1');
+    if (data && data.length > 0) {
+      _hangKhoiDiem = data[0].hang;
+      // Cập nhật hiển thị trên form
+      var hangSelectEl = document.getElementById('new-hang');
+      if (hangSelectEl) {
+        hangSelectEl.innerHTML = '<option value="' + _hangKhoiDiem + '">' + data[0].ten_hien_thi + ' (mặc định)</option>';
+      }
+      var hintEl = document.querySelector('.fhint');
+      if (hintEl) hintEl.textContent = 'Khách hàng mới luôn bắt đầu ở hạng ' + data[0].ten_hien_thi;
+    }
+  } catch (err) {
+    // Fallback về Bronze nếu không load được
+    console.warn('Không load được hạng khởi điểm, dùng Bronze mặc định:', err.message);
+  }
 }
 
 // ---- Sinh mã ----
@@ -116,7 +140,7 @@ async function capTheMoi() {
     });
 
     await sbInsert('the_thanh_vien', {
-      ma_the: maThe, ma_kh: maKH, hang: 'Bronze',
+      ma_the: maThe, ma_kh: maKH, hang: _hangKhoiDiem,
       ngay_cap: new Date().toISOString().split('T')[0],
       ngay_het_han: ngayHetHanStr,
       trang_thai: 'hoat_dong', so_diem: 0
@@ -161,7 +185,9 @@ async function timKhachHang() {
       return;
     }
     resultDiv.innerHTML = data.map(function(kh) {
-      var daCoThe = kh.the_thanh_vien && kh.the_thanh_vien.length > 0;
+      // Supabase trả object (không phải array) vì the_thanh_vien có UNIQUE FK với khach_hang (quan hệ 1-1)
+      var theRaw  = kh.the_thanh_vien;
+      var daCoThe = theRaw && (Array.isArray(theRaw) ? theRaw.length > 0 : true);
       return '<div class="kh-result-item">' +
         '<div><div class="cname">' + escHtml(kh.ho_ten) + '</div>' +
         '<div class="cid">' + escHtml(kh.so_dien_thoai) + ' &nbsp;·&nbsp; ' + escHtml(kh.ma_kh) + '</div></div>' +
@@ -184,7 +210,7 @@ async function capTheCu(maKH, hoTen) {
     var ngayHetHanStr = ngayHetHan.toISOString().split('T')[0];
 
     await sbInsert('the_thanh_vien', {
-      ma_the: maThe, ma_kh: maKH, hang: 'Bronze',
+      ma_the: maThe, ma_kh: maKH, hang: _hangKhoiDiem,
       ngay_cap: new Date().toISOString().split('T')[0],
       ngay_het_han: ngayHetHanStr,
       trang_thai: 'hoat_dong', so_diem: 0

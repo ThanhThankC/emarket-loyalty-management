@@ -1,13 +1,86 @@
 /* =============================================================
-   gia_han.css — Style riêng cho chức năng: Gia han the thanh vien
+   gia_han.css — Style riêng cho chức năng: Gia hạn thẻ thành viên
    Phụ thuộc: shared.css (đã load trước)
-   -------------------------------------------------------------
-   QUY TẮC:
-   - KHÔNG dùng emoji/icon Unicode làm trang trí (&#...; hoặc text icon)
-   - Đặt tên class có prefix "gia_han-" để tránh trùng shared.css
-     Ví dụ: .gia_han-card { }  .gia_han-status { }
-   - KHÔNG override class đã có trong shared.css
+   Prefix: gia_han- (tránh trùng shared.css)
    ============================================================= */
 
-/* Viết style riêng của chức năng bên dưới */
+/* Khu vực tìm kiếm */
+.gia_han-search-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  max-width: 540px;
+}
+.gia_han-search-wrap .fi {
+  flex: 1;
+}
 
+/* Kết quả tìm kiếm */
+.gh-result-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--b);
+  gap: 12px;
+}
+.gh-result-item:last-child { border-bottom: none; }
+.gh-result-item:hover { background: var(--bg); }
+
+/* Card preview thẻ (tái dùng style từ cap_the.css với prefix riêng) */
+.gia_han-card-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 24px 0 8px;
+}
+.gia_han-card {
+  width: 300px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+  border-radius: 14px;
+  padding: 22px 24px 18px;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  position: relative;
+  overflow: hidden;
+}
+.gia_han-card .cp-brand  { font-size: 18px; font-weight: 700; letter-spacing: 1px; color: var(--y); margin-bottom: 22px; }
+.gia_han-card .cp-dots   { display: flex; gap: 6px; margin-bottom: 18px; }
+.gia_han-card .cp-dots span { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,.3); }
+.gia_han-card .cp-dots span:first-child { background: var(--y); }
+.gia_han-card .cp-ma     { font-size: 13px; letter-spacing: 2px; color: rgba(255,255,255,.7); margin-bottom: 10px; }
+.gia_han-card .cp-name   { font-size: 15px; font-weight: 600; margin-bottom: 16px; }
+.gia_han-card .cp-foot   { display: flex; justify-content: space-between; font-size: 12px; color: rgba(255,255,255,.6); }
+
+/* Thông tin chi tiết (grid 2 cột) */
+.gia_han-detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 16px 20px;
+}
+
+/* Cảnh báo */
+.gia_han-warn {
+  margin: 10px 20px 0;
+  padding: 10px 14px;
+  background: var(--bg);
+  border: 1px solid var(--red);
+  border-radius: var(--r);
+  font-size: 13px;
+  color: var(--red);
+}
+
+/* Footer hành động */
+.gia_han-actions {
+  display: flex;
+  gap: 10px;
+  padding: 16px 20px;
+  border-top: 1px solid var(--b);
+  justify-content: flex-end;
+}
+
+/* Trạng thái thẻ */
+.ts-hoat_dong { color: var(--green); font-weight: 600; font-size: 12px; }
+.ts-het_han   { color: var(--red);   font-weight: 600; font-size: 12px; }
+.ts-bi_khoa   { color: var(--t3);    font-weight: 600; font-size: 12px; }
+.ts-mat_the   { color: var(--t3);    font-weight: 600; font-size: 12px; }
