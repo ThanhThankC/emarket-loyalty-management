@@ -3,6 +3,7 @@
 // Bắt buộc dòng đầu tiên
 requireLogin();
 const kh = getCurrentNV();
+const currentKhId = kh && (kh.ma_kh || kh.ma_nv);
 
 function setTab(el) {
   el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Cập nhật badge số voucher khả dụng trên Bottom Nav
   try {
     const vcData = await sbGet('voucher',
-      `ma_kh=eq.${kh.ma_nv}&trang_thai=eq.Kha dung`);
+      `ma_kh=eq.${encodeURIComponent(currentKhId)}&trang_thai=eq.chua_dung`);
     const count = vcData ? vcData.length : 0;
     const badge = document.getElementById('voucherBadge');
     if (count > 0) { badge.textContent = count; badge.style.display = ''; }
@@ -43,8 +44,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   // TODO: AC - Hiển thị danh sách đơn hàng phân trang
   // TODO: AC - Báo lỗi nếu không tìm thấy
   try {
+    const theData = await sbGet('the_thanh_vien',
+      `ma_kh=eq.${encodeURIComponent(currentKhId)}` +
+      '&select=ma_the&order=updated_at.desc&limit=1');
+    if (!theData || !theData.length) throw new Error('Khong tim thay the thanh vien.');
+
     const txData = await sbGet('lich_su_giao_dich_diem',
-      `ma_kh=eq.${kh.ma_nv}&order=thoi_gian.desc`);
+      `ma_the=eq.${encodeURIComponent(theData[0].ma_the)}` +
+      '&select=loai_gd,so_diem,ngay_gd,ghi_chu,ma_don_hang' +
+      '&order=ngay_gd.desc');
     renderTxList(txData || [], 'allTx');
   } catch (e) {
     document.getElementById('allTx').innerHTML =
@@ -62,19 +70,19 @@ function renderTxList(txArr, containerId) {
     return;
   }
   el.innerHTML = txArr.map(tx => {
-    const plus  = tx.loai_giao_dich === 'Tich diem';
+    const plus  = tx.loai_gd === 'tich_diem' || Number(tx.so_diem || 0) > 0;
     const cls   = plus ? 'earn' : 'redeem';
-    const sign  = plus ? '+' : '-';
+    const sign  = Number(tx.so_diem || 0) >= 0 ? '+' : '';
     const label = plus ? 'MH' : 'ĐĐ';
-    const date  = tx.thoi_gian ? new Date(tx.thoi_gian).toLocaleDateString('vi-VN') : '---';
+    const date  = tx.ngay_gd ? new Date(tx.ngay_gd).toLocaleDateString('vi-VN') : '---';
     return `
       <div class="tx">
         <div class="tx-icon ${cls}">${label}</div>
         <div class="tx-body">
-          <div class="tx-title">${tx.mo_ta || tx.loai_giao_dich || '---'}</div>
+          <div class="tx-title">${tx.ghi_chu || tx.loai_gd || '---'}</div>
           <div class="tx-date">${date}</div>
         </div>
-        <div class="tx-pts ${plus ? 'plus' : 'minus'}">${sign}${Math.abs(tx.so_diem || 0)} đ</div>
+        <div class="tx-pts ${plus ? 'plus' : 'minus'}">${sign}${Number(tx.so_diem || 0).toLocaleString('vi-VN')} đ</div>
       </div>`;
   }).join('');
 }

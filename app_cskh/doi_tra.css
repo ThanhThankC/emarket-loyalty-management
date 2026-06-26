@@ -9,5 +9,330 @@
    - KHÔNG override class đã có trong shared.css
    ============================================================= */
 
+.doi_tra-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 16px;
+  align-items: start;
+}
+
+.doi_tra-search {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px;
+  flex-wrap: wrap;
+}
+
+.doi_tra-search-field {
+  flex: 1 1 260px;
+}
+
+.doi_tra-message {
+  margin: 0 16px 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  font-size: 12.5px;
+}
+
+.doi_tra-message.inf {
+  background: var(--bbg);
+  color: var(--blue);
+  border-color: rgba(43, 108, 176, .2);
+}
+
+.doi_tra-message.ok {
+  background: var(--gbg);
+  color: var(--green);
+  border-color: rgba(45, 148, 98, .25);
+}
+
+.doi_tra-message.err {
+  background: var(--rbg);
+  color: var(--red);
+  border-color: rgba(201, 64, 64, .25);
+}
+
+.doi_tra-message.wrn {
+  background: var(--obg);
+  color: var(--orange);
+  border-color: rgba(184, 106, 0, .25);
+}
+
+.doi_tra-field-error {
+  min-height: 16px;
+  color: var(--red);
+  font-size: 11px;
+}
+
+.doi_tra-input-invalid {
+  border-color: var(--red);
+  background: #fff;
+}
+
+.doi_tra-empty {
+  padding: 30px 16px;
+  text-align: center;
+  color: var(--t3);
+  font-size: 12.5px;
+}
+
+.doi_tra-order {
+  padding: 16px;
+}
+
+.doi_tra-mode-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 14px 16px;
+}
+
+.doi_tra-mode {
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  background: var(--bg);
+  color: var(--t2);
+  cursor: pointer;
+  font-family: var(--fb);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 9px 12px;
+}
+
+.doi_tra-mode.active {
+  background: var(--y);
+  border-color: var(--yd);
+  color: var(--t);
+}
+
+.doi_tra-order-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.doi_tra-order-code {
+  font-family: var(--fh);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--t);
+}
+
+.doi_tra-info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.doi_tra-info-item {
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  background: var(--bg);
+  padding: 10px 12px;
+}
+
+.doi_tra-info-item span {
+  display: block;
+  color: var(--t3);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.doi_tra-info-item strong {
+  color: var(--t);
+  font-size: 13.5px;
+}
+
+.doi_tra-condition-body {
+  padding: 16px;
+}
+
+.doi_tra-check {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--b);
+  color: var(--t2);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.doi_tra-check input {
+  width: 15px;
+  height: 15px;
+  margin-top: 2px;
+  accent-color: var(--yd);
+  flex-shrink: 0;
+}
+
+.doi_tra-check:last-of-type {
+  border-bottom: none;
+}
+
+.doi_tra-reason {
+  margin-top: 12px;
+}
+
+.doi_tra-exchange-box {
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  background: var(--bg);
+  margin: 12px 0;
+  padding: 12px;
+}
+
+.doi_tra-diff-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid var(--b);
+  color: var(--t2);
+  font-size: 13px;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.doi_tra-diff-row strong {
+  color: var(--t);
+}
+
+.doi_tra-diff-row strong.positive {
+  color: var(--green);
+}
+
+.doi_tra-diff-row strong.negative {
+  color: var(--red);
+}
+
+.doi_tra-points {
+  padding: 14px;
+}
+
+.doi_tra-point-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--b);
+  font-size: 13px;
+}
+
+.doi_tra-point-row:last-child {
+  border-bottom: none;
+}
+
+.doi_tra-point-row span {
+  color: var(--t2);
+}
+
+.doi_tra-point-row strong {
+  color: var(--t);
+  text-align: right;
+}
+
+.doi_tra-point-row strong.green {
+  color: var(--green);
+}
+
+.doi_tra-point-row strong.red {
+  color: var(--red);
+}
+
+.doi_tra-point-row.final {
+  background: var(--cream);
+  margin: 0 -14px;
+  padding: 11px 14px;
+}
+
+.doi_tra-point-row.final strong {
+  font-size: 16px;
+}
+
+.doi_tra-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 14px 14px;
+}
+
+.doi_tra-rule-box,
+.doi_tra-speed-box {
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  background: var(--bbg);
+  color: var(--blue);
+  padding: 10px 12px;
+  font-size: 12.5px;
+  margin-bottom: 12px;
+}
+
+.doi_tra-speed-box.ok {
+  background: var(--gbg);
+  color: var(--green);
+  border-color: rgba(45, 148, 98, .25);
+}
+
+.doi_tra-speed-box.wrn {
+  background: var(--obg);
+  color: var(--orange);
+  border-color: rgba(184, 106, 0, .25);
+}
+
+.doi_tra-confirm {
+  padding: 16px 22px 2px;
+}
+
+.doi_tra-confirm-list {
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+
+.doi_tra-confirm-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--b);
+  font-size: 13px;
+}
+
+.doi_tra-confirm-row:last-child {
+  border-bottom: none;
+}
+
+.doi_tra-confirm-row span {
+  color: var(--t3);
+  flex-shrink: 0;
+}
+
+.doi_tra-confirm-row strong {
+  color: var(--t);
+  text-align: right;
+}
+
+@media (max-width: 980px) {
+  .doi_tra-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .doi_tra-search,
+  .doi_tra-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .doi_tra-search .btn,
+  .doi_tra-actions .btn {
+    justify-content: center;
+  }
+}
 /* Viết style riêng của chức năng bên dưới */
 

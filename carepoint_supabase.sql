@@ -452,6 +452,44 @@ CREATE INDEX idx_voucher_kh   ON voucher(ma_kh);
 
 -- ============================================================
 -- ============================================================
+
+
+-- ============================================================
+-- API ACCESS FOR DEMO APPS
+-- ============================================================
+-- The three frontend apps call Supabase REST with the anon key.
+-- For this classroom/demo project we allow anon/authenticated to
+-- read and write public tables. Do not use this block for production.
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO anon, authenticated;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO anon, authenticated;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+  GRANT USAGE, SELECT ON SEQUENCES TO anon, authenticated;
+
+ALTER TABLE cau_hinh_hang_thanh_vien DISABLE ROW LEVEL SECURITY;
+ALTER TABLE nhan_vien DISABLE ROW LEVEL SECURITY;
+ALTER TABLE khach_hang DISABLE ROW LEVEL SECURITY;
+ALTER TABLE the_thanh_vien DISABLE ROW LEVEL SECURITY;
+ALTER TABLE don_hang DISABLE ROW LEVEL SECURITY;
+ALTER TABLE lich_su_nang_hang DISABLE ROW LEVEL SECURITY;
+ALTER TABLE lich_su_giao_dich_diem DISABLE ROW LEVEL SECURITY;
+ALTER TABLE chuong_trinh_khuyen_mai DISABLE ROW LEVEL SECURITY;
+ALTER TABLE qua_tang DISABLE ROW LEVEL SECURITY;
+ALTER TABLE lich_su_doi_qua DISABLE ROW LEVEL SECURITY;
+ALTER TABLE voucher DISABLE ROW LEVEL SECURITY;
+ALTER TABLE phan_hoi_khach_hang DISABLE ROW LEVEL SECURITY;
+ALTER TABLE lich_su_ho_tro DISABLE ROW LEVEL SECURITY;
+ALTER TABLE lich_su_cap_the DISABLE ROW LEVEL SECURITY;
+ALTER TABLE dang_ky_chuong_trinh DISABLE ROW LEVEL SECURITY;
+
+-- Quick checks after running this file in Supabase SQL Editor:
+-- SELECT COUNT(*) AS so_khach_hang FROM khach_hang;
+-- SELECT COUNT(*) AS so_nhan_vien FROM nhan_vien;
+-- SELECT COUNT(*) AS so_the FROM the_thanh_vien;
+-- SELECT COUNT(*) AS so_don_hang FROM don_hang;
 --  DỮ LIỆU MẪU
 -- ============================================================
 -- ============================================================

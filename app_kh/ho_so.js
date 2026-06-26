@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Badge số voucher khả dụng trên Bottom Nav
   try {
     const vcData = await sbGet('voucher',
-      `ma_kh=eq.${encodeURIComponent(currentKhId)}&trang_thai=eq.Kha dung`);
+      `ma_kh=eq.${encodeURIComponent(currentKhId)}&trang_thai=eq.chua_dung`);
     const count = vcData ? vcData.length : 0;
     const badge = document.getElementById('voucherBadge');
     if (count > 0) {
@@ -130,7 +130,7 @@ async function handleChangePass() {
 
   try {
     // TODO: AC - kiểm tra oldP đúng với mật khẩu hiện tại trước khi cập nhật
-    await sbUpdate('khach_hang', `ma_kh=eq.${encodeURIComponent(currentKhId)}`, { mat_khau: newP });
+    await sbUpdate('khach_hang', `ma_kh=eq.${encodeURIComponent(currentKhId)}`, { mat_khau_hash: newP });
 
     closeModal('modal-changepass');
     showToast('Đổi mật khẩu thành công', 'ok');

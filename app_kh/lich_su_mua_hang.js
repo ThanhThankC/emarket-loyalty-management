@@ -8,7 +8,6 @@ let currentCustomer = null;
 let purchasePage = 1;
 let purchaseHasNextPage = false;
 let lastFilters = null;
-
 function showToast(msg, type = '') {
   const tc = document.getElementById('toasts');
   const t = document.createElement('div');
@@ -35,8 +34,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadPurchaseOrders();
   } catch (error) {
     console.error(error);
-    showPurchaseMessage('Không thể tải hồ sơ hoặc lịch sử mua hàng.', 'error');
-    showToast('Không thể tải lịch sử mua hàng', 'err');
+    showPurchaseMessage('Khong the tai ho so hoac lich su mua hang tu Supabase.', 'error');
+    showPurchaseMessage('Loi Supabase: ' + (error && error.message ? error.message : 'Khong ro loi'), 'error');
+    showToast('Khong the tai lich su mua hang tu Supabase', 'err');
   } finally {
     setPurchaseBusy(false);
   }
@@ -148,9 +148,10 @@ async function loadPurchaseOrders() {
     purchaseHasNextPage = false;
     renderPurchaseOrders([]);
     updatePurchasePagination();
-    showPurchaseMessage('Không thể tra cứu đơn hàng. Vui lòng thử lại.', 'error');
-    setPurchaseSummary('Tra cứu thất bại');
-    showToast('Lỗi tra cứu lịch sử mua hàng', 'err');
+    showPurchaseMessage('Khong the tra cuu don hang tu Supabase. Kiem tra bang don_hang va quyen API.', 'error');
+    setPurchaseSummary('Tra cuu that bai');
+    showPurchaseMessage('Loi Supabase: ' + (error && error.message ? error.message : 'Khong ro loi'), 'error');
+    showToast('Loi tra cuu lich su mua hang tu Supabase', 'err');
   } finally {
     setPurchaseBusy(false);
   }

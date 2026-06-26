@@ -1,12 +1,179 @@
 /* =============================================================
-   phan_hoi.css — Style riêng cho chức năng: Phan hoi va Khieu nai
-   Phụ thuộc: shared.css (đã load trước)
-   -------------------------------------------------------------
-   QUY TẮC:
-   - KHÔNG dùng emoji/icon Unicode làm trang trí (&#...; hoặc text icon)
-   - Đặt tên class có prefix "phan_hoi-" để tránh trùng shared.css
-     Ví dụ: .phan_hoi-card { }  .phan_hoi-status { }
-   - KHÔNG override class đã có trong shared.css
+   phan_hoi.css - Style rieng cho chuc nang Phan hoi va Khieu nai
+   Phu thuoc: shared.css
    ============================================================= */
 
-/* Viết style riêng của chức năng bên dưới */
+.phan_hoi-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  gap: 16px;
+  align-items: start;
+}
+
+.phan_hoi-search {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px;
+  flex-wrap: wrap;
+}
+
+.phan_hoi-search-field {
+  flex: 1 1 260px;
+}
+
+.phan_hoi-message {
+  margin: 0 16px 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  font-size: 12.5px;
+}
+
+.phan_hoi-message.inf {
+  background: var(--bbg);
+  border-color: rgba(43, 108, 176, .2);
+  color: var(--blue);
+}
+
+.phan_hoi-message.ok {
+  background: var(--gbg);
+  border-color: rgba(45, 148, 98, .25);
+  color: var(--green);
+}
+
+.phan_hoi-message.err {
+  background: var(--rbg);
+  border-color: rgba(201, 64, 64, .25);
+  color: var(--red);
+}
+
+.phan_hoi-field-error {
+  min-height: 16px;
+  color: var(--red);
+  font-size: 11px;
+}
+
+.phan_hoi-input-invalid {
+  border-color: var(--red);
+  background: #fff;
+}
+
+.phan_hoi-empty,
+.phan_hoi-list-state {
+  padding: 30px 16px;
+  color: var(--t3);
+  font-size: 12.5px;
+  text-align: center;
+}
+
+.phan_hoi-customer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+}
+
+.phan_hoi-customer-name {
+  color: var(--t);
+  font-family: var(--fh);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.phan_hoi-form {
+  padding: 16px;
+}
+
+.phan_hoi-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+.phan_hoi-list {
+  padding: 12px;
+}
+
+.phan_hoi-item {
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  background: var(--surf);
+  margin-bottom: 10px;
+  padding: 12px;
+}
+
+.phan_hoi-item:last-child {
+  margin-bottom: 0;
+}
+
+.phan_hoi-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.phan_hoi-item-title {
+  color: var(--t);
+  font-size: 13.5px;
+  font-weight: 700;
+}
+
+.phan_hoi-item-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  color: var(--t3);
+  font-size: 11px;
+}
+
+.phan_hoi-item-meta span {
+  border: 1px solid var(--b);
+  border-radius: var(--r);
+  background: var(--bg);
+  padding: 2px 6px;
+}
+
+.phan_hoi-item-content {
+  margin-top: 10px;
+  color: var(--t2);
+  font-size: 13px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+}
+
+.phan_hoi-result {
+  margin-top: 10px;
+  padding: 9px 10px;
+  border: 1px solid rgba(45, 148, 98, .22);
+  border-radius: var(--r);
+  background: var(--gbg);
+  color: var(--t2);
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+
+.phan_hoi-item-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+
+.phan_hoi-done-note {
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.phan_hoi-resolution {
+  padding: 18px 22px 4px;
+}
+
+@media (max-width: 980px) {
+  .phan_hoi-layout {
+    grid-template-columns: 1fr;
+  }
+}
