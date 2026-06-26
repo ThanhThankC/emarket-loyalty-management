@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="doi_tra.css"/>
 <link rel="stylesheet" href="quan_ly_the.css"/>
 <link rel="stylesheet" href="cap_the.css"/>
+<link rel="stylesheet" href="cap_lai_the.css"/>
 <link rel="stylesheet" href="gia_han.css"/>
 <link rel="stylesheet" href="qua_tang.css"/>
 <style>
@@ -55,6 +56,7 @@
       <div class="nslbl">Thẻ thành viên</div>
       <div class="ni" data-page="quan_ly_the" data-label="Quản lý thẻ" onclick="navigate('quan_ly_the',this)">Quản lý thẻ</div>
       <div class="ni" data-page="cap_the" data-label="Cấp thẻ mới" onclick="navigate('cap_the',this)">Cấp thẻ mới</div>
+      <div class="ni" data-page="cap_lai_the" data-label="Cấp lại thẻ" onclick="navigate('cap_lai_the',this)">Cấp lại thẻ</div>
       <div class="ni" data-page="gia_han" data-label="Gia hạn thẻ" onclick="navigate('gia_han',this)">Gia hạn thẻ</div>
     </div>
     <div class="nsec">
@@ -363,26 +365,167 @@
       </div>
     </div>
 
+    <!-- ===================== CAP LAI THE ===================== -->
+    <div class="page-section" id="page-cap_lai_the">
+      <div class="ph">
+        <div>
+          <div class="ptitle">Cấp lại thẻ thành viên</div>
+          <div class="psub">Khóa thẻ cũ, tạo thẻ mới — kế thừa hạng và điểm (UC-2.2)</div>
+        </div>
+      </div>
+
+      <!-- Khu vực tìm kiếm -->
+      <div id="cl-search-area">
+        <div class="panel">
+          <div class="panel-h"><span class="panel-t">Tìm kiếm khách hàng</span></div>
+          <div style="padding:20px 20px 8px;">
+            <div style="display:flex;gap:10px;align-items:center;max-width:540px;">
+              <input class="fi" id="cl-search-inp" type="text"
+                placeholder="Nhập SĐT, tên hoặc mã KH..."
+                onkeydown="clSearchKeydown(event)" style="flex:1"/>
+              <button class="btn btn-primary" onclick="clTimKiem()">Tìm kiếm</button>
+            </div>
+          </div>
+          <div id="cl-search-result" style="padding-bottom:8px;"></div>
+        </div>
+      </div>
+
+      <!-- Khu vực thông tin thẻ đã chọn -->
+      <div id="cl-info-area" style="display:none;">
+        <div class="panel">
+          <div class="panel-h">
+            <span class="panel-t">Thông tin thẻ hiện tại</span>
+            <span class="panel-a" onclick="clQuayLai()">Tìm khách hàng khác</span>
+          </div>
+          <div class="cap_lai-card-wrap">
+            <div class="cap_lai-card" id="cl-card"></div>
+          </div>
+          <div class="cap_lai-detail-grid" id="cl-detail"></div>
+
+          <div style="padding:0 20px;margin-bottom:4px;">
+            <div style="font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.3px;margin-bottom:10px;">Lý do cấp lại thẻ</div>
+          </div>
+          <div class="cap_lai-ly-do-area">
+            <div class="fg">
+              <label class="fl">Lý do (*)</label>
+              <select class="fi" id="cl-ly-do" onchange="clCapNhatNutXacNhan()">
+                <option value="">-- Chọn lý do --</option>
+                <option value="mat_the">Thẻ bị mất</option>
+                <option value="hong_the">Thẻ bị hỏng / không đọc được</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label class="fl">Ghi chú thêm</label>
+              <textarea class="fi" id="cl-ghi-chu" placeholder="Mô tả thêm nếu cần..." rows="2"></textarea>
+            </div>
+          </div>
+
+          <div class="cap_lai-actions">
+            <button class="btn btn-outline" onclick="clQuayLai()">Hủy</button>
+            <button class="btn btn-danger" id="cl-btn-xacnhan" onclick="clMoXacNhan()" disabled>Cấp lại thẻ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal xác nhận cấp lại -->
+      <div class="ov" id="modal-cap-lai-confirm">
+        <div class="modal">
+          <div class="mh">
+            <div class="mt">Xác nhận cấp lại thẻ</div>
+            <button class="mc" onclick="closeModal('modal-cap-lai-confirm')">Đóng</button>
+          </div>
+          <div style="padding:18px 22px 8px;" id="cl-confirm-body"></div>
+          <div style="padding:0 22px 14px;font-size:12px;color:var(--red);">
+            Thẻ cũ sẽ bị khóa vĩnh viễn. Hành động này không thể hoàn tác.
+          </div>
+          <div class="mf">
+            <button class="btn btn-outline" onclick="closeModal('modal-cap-lai-confirm')">Hủy</button>
+            <button class="btn btn-danger" id="cl-confirm-btn" onclick="clXacNhan()">Xác nhận cấp lại</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal thành công -->
+      <div class="ov" id="modal-cap-lai-success">
+        <div class="modal">
+          <div class="mh">
+            <div class="mt">Cấp lại thẻ thành công</div>
+            <button class="mc" onclick="closeModal('modal-cap-lai-success')">Đóng</button>
+          </div>
+          <div style="padding:18px 22px;">
+            <div class="cap_lai-card-wrap" style="padding:0 0 16px;">
+              <div class="cap_lai-card" id="cl-success-card"></div>
+            </div>
+            <div id="cl-success-info" style="font-size:13px;color:var(--t2);line-height:1.7;"></div>
+          </div>
+          <div class="mf">
+            <button class="btn btn-outline" onclick="closeModal('modal-cap-lai-success');clQuayLai()">Cấp lại thẻ khác</button>
+            <button class="btn btn-primary" onclick="closeModal('modal-cap-lai-success');navigate('quan_ly_the',document.querySelector('[data-page=quan_ly_the]'))">Về danh sách thẻ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- ===================== GIA HAN ===================== -->
     <div class="page-section" id="page-gia_han">
       <div class="ph">
         <div>
           <div class="ptitle">Gia hạn thẻ thành viên</div>
-          <div class="psub"></div>
+          <div class="psub">Tìm kiếm thẻ và gia hạn thêm 12 tháng kể từ hôm nay</div>
         </div>
       </div>
-      <div class="panel">
-        <div class="panel-h"><span class="panel-t">Gia hạn thẻ thành viên</span></div>
-        <div style="padding:48px;text-align:center;color:var(--t3);">
-          <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
-          <div style="font-size:12px;">gia_han.css / pages/gia_han.js</div>
+
+      <!-- Khu vực tìm kiếm (ẩn khi đã chọn thẻ) -->
+      <div id="gh-search-area">
+        <div class="panel">
+          <div class="panel-h"><span class="panel-t">Tìm kiếm thẻ cần gia hạn</span></div>
+          <div style="padding:20px 20px 8px;">
+            <div class="gia_han-search-wrap">
+              <input class="fi" id="gh-search-inp" type="text"
+                placeholder="Nhập SĐT, tên khách hàng hoặc mã thẻ..."
+                onkeydown="ghSearchKeydown(event)"/>
+              <button class="btn btn-primary" onclick="ghTimKiem()">Tìm kiếm</button>
+            </div>
+          </div>
+          <div id="gh-search-result" style="padding-bottom:8px;"></div>
         </div>
       </div>
+
+      <!-- Khu vực hiển thị thông tin thẻ đã chọn (ẩn mặc định) -->
+      <div id="gh-info-area" style="display:none;">
+        <div class="panel">
+          <div class="panel-h">
+            <span class="panel-t">Thông tin thẻ</span>
+            <span class="panel-a" onclick="ghQuayLai()">Tìm thẻ khác</span>
+          </div>
+          <!-- Card thẻ -->
+          <div class="gia_han-card-wrap">
+            <div class="gia_han-card" id="gh-card"></div>
+          </div>
+          <!-- Chi tiết dạng grid -->
+          <div class="gia_han-detail-grid" id="gh-detail"></div>
+          <!-- Cảnh báo nếu không thể gia hạn -->
+          <div class="gia_han-warn" id="gh-warn" style="display:none;"></div>
+          <!-- Nút hành động -->
+          <div class="gia_han-actions">
+            <button class="btn btn-outline" onclick="ghQuayLai()">Tìm thẻ khác</button>
+            <button class="btn btn-yellow" id="gh-btn-giah" onclick="ghMoXacNhan()">Gia hạn thẻ</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal xác nhận gia hạn -->
       <div class="ov" id="modal-gia-han-confirm">
         <div class="modal">
-          <div class="mh"><div class="mt">Xác nhận gia hạn</div><button class="mc" onclick="closeModal('modal-gia-han-confirm')">X</button></div>
-          <div style="padding:20px 22px"></div>
-          <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-gia-han-confirm')">Hủy</button><button class="btn btn-primary">Xác nhận</button></div>
+          <div class="mh">
+            <div class="mt">Xác nhận gia hạn thẻ</div>
+            <button class="mc" onclick="closeModal('modal-gia-han-confirm')">Đóng</button>
+          </div>
+          <div style="padding:18px 22px 4px;" id="gh-confirm-body"></div>
+          <div class="mf">
+            <button class="btn btn-outline" onclick="closeModal('modal-gia-han-confirm')">Hủy</button>
+            <button class="btn btn-yellow" id="gh-confirm-btn" onclick="ghXacNhan()">Xác nhận gia hạn</button>
+          </div>
         </div>
       </div>
     </div>
@@ -426,6 +569,7 @@
 <script src="pages/doi_tra.js"></script>
 <script src="pages/quan_ly_the.js"></script>
 <script src="pages/cap_the.js"></script>
+<script src="pages/cap_lai_the.js"></script>
 <script src="pages/gia_han.js"></script>
 <script src="pages/qua_tang.js"></script>
 </body>
