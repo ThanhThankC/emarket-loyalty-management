@@ -42,5 +42,10 @@
   padding: 7px; background: var(--r); color: #fff; border: none;
   border-radius: var(--r1); font-size: 12px; font-weight: 700; cursor: pointer;
 }
+.exc-btn:disabled {
+  background: #E5DDD7;
+  color: var(--t3);
+  cursor: not-allowed;
+}
 
 /* TODO: them style cho tab "Qua tang" va "Uu dai dich vu" tai day */

@@ -6,6 +6,7 @@
 <title>Đổi điểm lấy voucher — CarePoint</title>
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="shared.css"/>
+<link rel="stylesheet" href="app_kh.css"/>
 <link rel="stylesheet" href="doi_voucher.css"/>
 </head>
 <body>
@@ -18,10 +19,34 @@
 
 <!-- NỘI DUNG CHÍNH — Thành viên code vào đây -->
 <div id="mainContent">
-  <!-- TODO: Đổi điểm lấy voucher — File: doi_voucher.html / doi_voucher.css / doi_voucher.js -->
-  <div class="ph-placeholder">
-    <div class="ph-title">Đổi điểm lấy voucher</div>
-    <div class="ph-sub">File: doi_voucher.html / doi_voucher.css / doi_voucher.js</div>
+  <div class="doi-voucher-empty">Đang tải danh sách voucher...</div>
+</div>
+
+<div class="ov" id="modal-doi-voucher">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <span class="sheet-close" onclick="closeModal('modal-doi-voucher')">x</span>
+    <div class="sheet-title">Xác nhận đổi voucher</div>
+    <div class="sheet-sub">Điểm sẽ được trừ ngay sau khi xác nhận.</div>
+
+    <div class="doi-voucher-confirm-box">
+      <div class="doi-voucher-confirm-name" id="doi-voucher-confirm-name">---</div>
+      <div class="doi-voucher-confirm-row">
+        <span>Điểm sẽ trừ</span>
+        <strong id="doi-voucher-confirm-cost">---</strong>
+      </div>
+      <div class="doi-voucher-confirm-row">
+        <span>Còn lại</span>
+        <strong id="doi-voucher-confirm-after">---</strong>
+      </div>
+      <div class="doi-voucher-confirm-row">
+        <span>Hiệu lực</span>
+        <strong id="doi-voucher-confirm-exp">---</strong>
+      </div>
+    </div>
+
+    <button class="btn-full" id="doi-voucher-confirm">Xác nhận đổi</button>
+    <button class="btn-outline-full" onclick="closeModal('modal-doi-voucher')">Hủy</button>
   </div>
 </div>
 
