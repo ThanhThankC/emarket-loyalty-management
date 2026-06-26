@@ -3,6 +3,7 @@
 // Bắt buộc dòng đầu tiên
 requireLogin();
 const kh = getCurrentNV();
+const currentKhId = kh && (kh.ma_kh || kh.ma_nv);
 
 function setTab(el) {
   el.parentElement.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -40,7 +41,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // TODO: AC - khi chuyển tab thì đổi điều kiện trang_thai tương ứng
     // (Khả dụng / Đã dùng / Hết hạn) thay vì luôn tải 'Khả dụng'
     const vcData = await sbGet('voucher',
-      `ma_kh=eq.${kh.ma_nv}&trang_thai=eq.Kha dung`);
+      `ma_kh=eq.${encodeURIComponent(currentKhId)}&trang_thai=eq.chua_dung`);
     const count = vcData ? vcData.length : 0;
     const badge = document.getElementById('voucherBadge');
     if (count > 0) { badge.textContent = count; badge.style.display = ''; }
@@ -71,11 +72,11 @@ function renderVouchers(vcArr) {
           <div class="voucher-unit">VND giảm</div>
         </div>
         <div class="voucher-body">
-          <div class="voucher-name">${vc.ten_voucher || 'Voucher'}</div>
+          <div class="voucher-name">${vc.ten_voucher || ('Voucher giảm ' + Number(vc.gia_tri_giam || 0).toLocaleString('vi-VN') + 'đ')}</div>
           <div class="voucher-exp">HSD: ${exp}</div>
         </div>
         <button class="voucher-use"
-          onclick="openUseVoucher('${vc.ma_voucher}','${vc.ten_voucher}','${exp}')">
+          onclick="openUseVoucher('${vc.ma_voucher}','${vc.ten_voucher || 'Voucher'}','${exp}')">
           Dùng
         </button>
       </div>`;

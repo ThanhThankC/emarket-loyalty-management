@@ -1,7 +1,7 @@
 // =============================================================
-//  dang_nhap.js — App CSKH
-//  Chỉ đăng nhập, không đăng ký
-//  Phụ thuộc: supabase_config.js, supabase_api.js, auth.js
+//  dang_nhap.js - App CSKH
+//  Chi dang nhap, khong dang ky
+//  Phu thuoc: supabase_config.js, supabase_api.js, auth.js
 // =============================================================
 (function(){ if(getCurrentNV()) window.location.href='index.html'; })();
 
@@ -12,13 +12,13 @@ async function handleLogin(e){
   hide('alertBox'); setLoading(true);
   try {
     const data = await sbGet('nhan_vien',
-      `ten_dang_nhap=eq.${encodeURIComponent(username)}` +
+      `or=(ten_dang_nhap.eq.${encodeURIComponent(username)},sdt.eq.${encodeURIComponent(username)})` +
       `&vai_tro=eq.cskh&trang_thai=eq.hoat_dong` +
-      `&select=ma_nv,ho_ten,vai_tro,ten_dang_nhap`);
+      `&select=ma_nv,ho_ten,vai_tro,ten_dang_nhap,sdt,mat_khau_hash`);
     if(!data || data.length===0){
       showAlert('Tên đăng nhập không tồn tại hoặc không có quyền CSKH.'); shake(); return;
     }
-    if(password !== '123456'){ // demo — production: bcrypt verify
+    if(!isValidPassword(password, data[0].mat_khau_hash)){
       showAlert('Mật khẩu không đúng. Vui lòng thử lại.'); shake(); return;
     }
     saveSession(data[0]);
@@ -27,7 +27,7 @@ async function handleLogin(e){
     document.getElementById('btnText').textContent='Thành công';
     setTimeout(()=>{ window.location.href='index.html'; }, 700);
   } catch(err){
-    showAlert('Không thể kết nối hệ thống. Kiểm tra mạng và thử lại.');
+    showAlert('Không thể kết nối Supabase hoặc truy vấn thất bại. Kiểm tra cấu hình CSDL và quyền API.');
     console.error(err);
   } finally { setLoading(false); }
 }
@@ -45,8 +45,16 @@ function setLoading(on){
 function showAlert(msg){ document.getElementById('alertMsg').textContent=msg; show('alertBox'); }
 function hide(id){ document.getElementById(id).style.display='none'; }
 function show(id){ document.getElementById(id).style.display='flex'; }
+function isValidPassword(input, storedPassword){
+  if(!storedPassword) return false;
+  if(input === storedPassword) return true;
+  if(input === '123456' && isDemoHash(storedPassword)) return true;
+  return false;
+}
+function isDemoHash(value){
+  return /^\$2[aby]\$10\$(examplehash|khash)/.test(value);
+}
 function shake(){
   const c=document.getElementById('loginCard');
   c.style.animation='none'; c.offsetHeight; c.style.animation='shake .4s ease';
 }
-

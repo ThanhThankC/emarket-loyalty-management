@@ -28,6 +28,7 @@ function dangXuat() {
 /** Luu session sau khi dang nhap thanh cong */
 function saveSession(khData) {
   sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+    ma_kh:         khData.ma_kh,
     ma_nv:         khData.ma_kh,
     ho_ten:        khData.ho_ten,
     vai_tro:       'khach_hang',

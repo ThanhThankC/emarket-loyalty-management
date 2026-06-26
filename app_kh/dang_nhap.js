@@ -1,23 +1,11 @@
 // =============================================================
-//  dang_nhap.js — App Khách Hàng (mobile)
-//  Đăng nhập bằng SĐT + Đăng ký tài khoản mới
-//  Tự động cấp thẻ thành viên hạng Đồng khi đăng ký
-//  Phụ thuộc: supabase_config.js, supabase_api.js, auth.js
+//  dang_nhap.js - App Khach Hang (mobile)
+//  Dang nhap bang SDT + dang ky tai khoan moi
+//  Tu dong cap the thanh vien hang Dong khi dang ky
+//  Phu thuoc: supabase_config.js, supabase_api.js, auth.js
 // =============================================================
 
-// Session riêng cho KH, không xung đột với NV
-const KH_KEY = 'carepoint_kh';
-function getCurrentKH(){ const s=sessionStorage.getItem(KH_KEY); return s?JSON.parse(s):null; }
-function saveKHSession(kh){
-  sessionStorage.setItem(KH_KEY, JSON.stringify({
-    ma_kh:kh.ma_kh, ho_ten:kh.ho_ten,
-    so_dien_thoai:kh.so_dien_thoai,
-    logged_in_at:new Date().toISOString()
-  }));
-}
-
-// Đã đăng nhập thì vào thẳng
-(function(){ if(getCurrentKH()) window.location.href='app_kh.html'; })();
+(function(){ if(getCurrentNV()) window.location.href='app_kh.html'; })();
 
 // ---- Tab switcher ----
 function switchTab(tab){
@@ -25,7 +13,6 @@ function switchTab(tab){
     document.getElementById('panel-'+t).classList.toggle('active', t===tab);
     document.getElementById('tab-'+t).classList.toggle('active', t===tab);
   });
-  // Cập nhật header
   if(tab==='login'){
     document.getElementById('headerTitle').textContent='Chào mừng trở lại';
     document.getElementById('headerSub').textContent='Đăng nhập để xem điểm và ưu đãi của bạn';
@@ -33,12 +20,11 @@ function switchTab(tab){
     document.getElementById('headerTitle').textContent='Tạo tài khoản';
     document.getElementById('headerSub').textContent='Đăng ký thành viên và nhận ưu đãi ngay hôm nay';
   }
-  // Reset alerts
   ['login-alert','signup-err','signup-ok'].forEach(id=>{ document.getElementById(id).style.display='none'; });
 }
 
 // ============================================================
-//  ĐĂNG NHẬP
+//  DANG NHAP
 // ============================================================
 async function handleLogin(e){
   e.preventDefault();
@@ -54,16 +40,16 @@ async function handleLogin(e){
     if(!data || data.length===0){
       showLoginErr('Số điện thoại chưa đăng ký hoặc tài khoản bị khóa.'); shake(); return;
     }
-    if(pw !== '123456'){ // demo — production: bcrypt verify
+    if(!isValidPassword(pw, data[0].mat_khau_hash)){
       showLoginErr('Mật khẩu không đúng. Vui lòng thử lại.'); shake(); return;
     }
-    saveKHSession(data[0]);
+    saveSession(data[0]);
     const btn=document.getElementById('btn-login');
     btn.style.background='#2D9462';
     document.getElementById('btn-login-txt').textContent='Thành công';
     setTimeout(()=>{ window.location.href='app_kh.html'; }, 700);
   } catch(err){
-    showLoginErr('Không thể kết nối hệ thống. Kiểm tra mạng và thử lại.');
+    showLoginErr('Không thể kết nối Supabase hoặc truy vấn thất bại. Kiểm tra cấu hình CSDL và quyền API.');
     console.error(err);
   } finally { setLoad('login', false); }
 }
@@ -74,7 +60,7 @@ function showLoginErr(msg){
 }
 
 // ============================================================
-//  ĐĂNG KÝ
+//  DANG KY
 // ============================================================
 async function handleSignup(e){
   e.preventDefault();
@@ -90,7 +76,6 @@ async function handleSignup(e){
   document.getElementById('signup-err').style.display='none';
   document.getElementById('signup-ok').style.display='none';
 
-  // Validate
   if(!hoTen||!sdt||!pw){ showSignupErr('Vui lòng điền đầy đủ các trường bắt buộc.'); return; }
   if(!/^0[0-9]{9}$/.test(sdt)){ showSignupErr('Số điện thoại không hợp lệ (10 chữ số, bắt đầu bằng 0).'); return; }
   if(pw.length<6){ showSignupErr('Mật khẩu tối thiểu 6 ký tự.'); return; }
@@ -98,7 +83,6 @@ async function handleSignup(e){
 
   setLoad('signup', true);
   try {
-    // Kiểm tra SĐT tồn tại
     const ex = await sbGet('khach_hang',`so_dien_thoai=eq.${encodeURIComponent(sdt)}&select=ma_kh`);
     if(ex && ex.length>0){
       document.getElementById('sdt-err').style.display='block';
@@ -107,29 +91,25 @@ async function handleSignup(e){
       return;
     }
 
-    // Tạo mã KH và thẻ
     const maKH  = 'KH'+Date.now().toString().slice(-5)+Math.random().toString(36).slice(2,4).toUpperCase();
     const maThe = 'THE'+Date.now().toString().slice(-6)+Math.random().toString(36).slice(2,3).toUpperCase();
     const ngayHH= new Date(); ngayHH.setFullYear(ngayHH.getFullYear()+2);
     const today = new Date().toISOString().split('T')[0];
 
-    // INSERT khách hàng
     await sbInsert('khach_hang',{
       ma_kh:maKH, ho_ten:hoTen,
       ngay_sinh:ns||null, gioi_tinh:gt||null,
       so_dien_thoai:sdt, email:email||null, dia_chi:dc||null,
-      mat_khau_hash:pw, // production: hash bcrypt
+      mat_khau_hash:pw,
       ngay_dang_ky:today, trang_thai:'hoat_dong'
     });
 
-    // INSERT thẻ thành viên hạng Đồng
     await sbInsert('the_thanh_vien',{
       ma_the:maThe, ma_kh:maKH, hang:'Bronze',
       ngay_cap:today, ngay_het_han:ngayHH.toISOString().split('T')[0],
       trang_thai:'hoat_dong', so_diem:0
     });
 
-    // Thành công
     document.getElementById('signup-ok-msg').textContent=
       'Đăng ký thành công! Mã thẻ của bạn: '+maThe+'. Đang chuyển sang đăng nhập...';
     document.getElementById('signup-ok').style.display='block';
@@ -195,6 +175,15 @@ function setLoad(form, on){
   document.getElementById('btn-'+form+'-spin').style.display=on?'inline-block':'none';
 }
 
+function isValidPassword(input, storedPassword){
+  if(!storedPassword) return false;
+  if(input === storedPassword) return true;
+  if(input === '123456' && isDemoHash(storedPassword)) return true;
+  return false;
+}
+function isDemoHash(value){
+  return /^\$2[aby]\$10\$(examplehash|khash)/.test(value);
+}
 function shake(){
   const h=document.getElementById('authHeader');
   h.style.animation='none'; h.offsetHeight; h.style.animation='shake .4s ease';

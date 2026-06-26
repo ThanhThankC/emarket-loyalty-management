@@ -4,6 +4,7 @@
 requireLogin();
 const kh = getCurrentNV(); // tại đây getCurrentNV() trả về dữ liệu khách hàng
 const currentKhId = kh && (kh.ma_kh || kh.ma_nv);
+let currentMemberCardId = null;
 
 // ============================================================
 //  MODAL HELPERS (dùng chung — nếu sau này tách sang file riêng
@@ -70,6 +71,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const diem = Number(the.so_diem || 0);
     const hang = the.hang || 'Bronze';
     const maThe = the.ma_the || '---';
+    currentMemberCardId = maThe;
 
     // Hero
     document.getElementById('heroPts').textContent = diem.toLocaleString('vi-VN');
@@ -99,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Lấy số lượng voucher khả dụng (cho stat ở Trang chủ + badge Bottom Nav)
   try {
     const vcData = await sbGet('voucher',
-      `ma_kh=eq.${encodeURIComponent(currentKhId)}&trang_thai=eq.Kha dung`);
+      `ma_kh=eq.${encodeURIComponent(currentKhId)}&trang_thai=eq.chua_dung`);
     const count = vcData ? vcData.length : 0;
     document.getElementById('statVoucher').textContent = count;
     const badge = document.getElementById('voucherBadge');
@@ -111,8 +113,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Lấy giao dịch gần đây (5 giao dịch mới nhất)
   // Xem toàn bộ đơn hàng tại lich_su_mua_hang.html.
   try {
+    if (!currentMemberCardId) throw new Error('Khong tim thay ma the thanh vien.');
     const txData = await sbGet('lich_su_giao_dich_diem',
-      `ma_kh=eq.${encodeURIComponent(currentKhId)}&order=thoi_gian.desc&limit=5`);
+      `ma_the=eq.${encodeURIComponent(currentMemberCardId)}` +
+      '&select=loai_gd,so_diem,ngay_gd,ghi_chu,ma_don_hang' +
+      '&order=ngay_gd.desc&limit=5');
     renderTxList(txData || [], 'recentTx');
   } catch (e) {
     document.getElementById('recentTx').innerHTML = '';
@@ -157,19 +162,19 @@ function renderTxList(txArr, containerId) {
     return;
   }
   el.innerHTML = txArr.map(tx => {
-    const plus  = tx.loai_giao_dich === 'Tich diem';
+    const plus  = tx.loai_gd === 'tich_diem' || Number(tx.so_diem || 0) > 0;
     const cls   = plus ? 'earn' : 'redeem';
-    const sign  = plus ? '+' : '-';
+    const sign  = Number(tx.so_diem || 0) >= 0 ? '+' : '';
     const label = plus ? 'MH' : 'DD';
-    const date  = tx.thoi_gian ? new Date(tx.thoi_gian).toLocaleDateString('vi-VN') : '---';
+    const date  = tx.ngay_gd ? new Date(tx.ngay_gd).toLocaleDateString('vi-VN') : '---';
     return `
       <div class="tx">
         <div class="tx-icon ${cls}">${label}</div>
         <div class="tx-body">
-          <div class="tx-title">${tx.mo_ta || tx.loai_giao_dich || '---'}</div>
+          <div class="tx-title">${tx.ghi_chu || tx.loai_gd || '---'}</div>
           <div class="tx-date">${date}</div>
         </div>
-        <div class="tx-pts ${plus ? 'plus' : 'minus'}">${sign}${Math.abs(tx.so_diem || 0)} đ</div>
+        <div class="tx-pts ${plus ? 'plus' : 'minus'}">${sign}${Number(tx.so_diem || 0).toLocaleString('vi-VN')} đ</div>
       </div>`;
   }).join('');
 }

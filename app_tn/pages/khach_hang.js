@@ -7,7 +7,6 @@ var khachHangPageSize = 10;
 var khachHangKeyword = '';
 var khachHangMode = 'view';
 var themKhachHangHandlersReady = false;
-
 registerPage('khach_hang', function(opts) {
   initKhachHangPage();
 });
@@ -509,6 +508,7 @@ async function loadDanhSachKhachHang() {
     tbody.innerHTML = '<tr><td colspan="5" class="kh-empty">Không thể tải danh sách khách hàng.</td></tr>';
     setKhMessage('Không thể tải danh sách khách hàng.', 'err');
     showToast('Lỗi tải danh sách khách hàng', 'err');
+    setKhMessage('Loi Supabase: ' + (err && err.message ? err.message : 'Khong ro loi'), 'err');
     updateKhPagination(false);
   }
 }
