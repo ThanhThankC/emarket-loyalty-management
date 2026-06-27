@@ -34,3 +34,8 @@
   border-radius: var(--r1); padding: 7px 14px; font-size: 12px; font-weight: 700;
   cursor: pointer; white-space: nowrap; flex-shrink: 0;
 }
+.voucher-use:disabled {
+  background: #d8d1cc;
+  color: var(--t2);
+  cursor: not-allowed;
+}
