@@ -395,6 +395,44 @@ describe('filterByGiftType', () => {
   });
 });
 
+// =============================================================================
+//  filterByGiftType: Lọc danh sách quà theo loại tab đang active
+// =============================================================================
+describe('filterByGiftType - test case theo bảng', () => {
+  // Test case 1: Lọc đúng loại
+  test("items có 2 voucher + 1 uu_dai, activeType='voucher_giam_gia' -> trả về 2 phần tử", () => {
+    const items = [
+      { ma_qua: 'Q1', loai: 'voucher_giam_gia', ten_qua: 'Voucher 50k' },
+      { ma_qua: 'Q2', loai: 'voucher_giam_gia', ten_qua: 'Voucher 100k' },
+      { ma_qua: 'Q3', loai: 'uu_dai_dich_vu', ten_qua: 'Miễn phí giao hàng' },
+    ];
+
+    const result = filterByGiftType(items, 'voucher_giam_gia');
+
+    expect(result).toHaveLength(2);
+    expect(result.every(item => item.loai === 'voucher_giam_gia')).toBe(true);
+  });
+
+  // Test case 2: Không có phần tử khớp
+  test("items có 2 voucher, activeType='uu_dai_dich_vu' -> mảng rỗng", () => {
+    const items = [
+      { ma_qua: 'Q1', loai: 'voucher_giam_gia', ten_qua: 'Voucher 50k' },
+      { ma_qua: 'Q2', loai: 'voucher_giam_gia', ten_qua: 'Voucher 100k' },
+    ];
+
+    const result = filterByGiftType(items, 'uu_dai_dich_vu');
+
+    expect(result).toEqual([]);
+  });
+
+  // Test case 3: Danh sách rỗng
+  test("items=[], activeType='voucher_giam_gia' -> mảng rỗng", () => {
+    const result = filterByGiftType([], 'voucher_giam_gia');
+
+    expect(result).toEqual([]);
+  });
+});
+
 describe('exchangeDescription', () => {
   test('voucher giảm giá → mô tả có giá trị tiền', () => {
     const desc = exchangeDescription({ loai: 'voucher_giam_gia', gia_tri: 50000 });
@@ -414,6 +452,40 @@ describe('exchangeDescription', () => {
 
   test('gia_tri = 0 → mô tả vẫn render được (không crash)', () => {
     expect(() => exchangeDescription({ loai: 'voucher_giam_gia', gia_tri: 0 })).not.toThrow();
+  });
+});
+
+// =============================================================================
+//  exchangeDescription: Tạo mô tả hiển thị cho từng loại quà tặng
+// =============================================================================
+describe('exchangeDescription - test case theo bảng', () => {
+  // Test case 1: Voucher giảm giá
+  test("loai='voucher_giam_gia', gia_tri=50000 -> chuỗi chứa '50.000'", () => {
+    const desc = exchangeDescription({ loai: 'voucher_giam_gia', gia_tri: 50000 });
+
+    expect(desc).toContain('50.000');
+  });
+
+  // Test case 2: Ưu đãi dịch vụ
+  test("loai='uu_dai_dich_vu' -> 'Ưu đãi dịch vụ dành cho thành viên'", () => {
+    const desc = exchangeDescription({ loai: 'uu_dai_dich_vu' });
+
+    expect(desc).toBe('Ưu đãi dịch vụ dành cho thành viên');
+  });
+
+  // Test case 3: Loại khác hoặc không xác định
+  test("loai='khac' -> 'Quà tặng dành cho thành viên'", () => {
+    const desc = exchangeDescription({ loai: 'khac' });
+
+    expect(desc).toBe('Quà tặng dành cho thành viên');
+  });
+
+  // Test case 4: gia_tri = 0 hoặc undefined
+  test("loai='voucher_giam_gia', gia_tri=undefined -> không lỗi và hiển thị '0'", () => {
+    const desc = exchangeDescription({ loai: 'voucher_giam_gia', gia_tri: undefined });
+
+    expect(desc).toContain('0');
+    expect(() => exchangeDescription({ loai: 'voucher_giam_gia', gia_tri: undefined })).not.toThrow();
   });
 });
 
