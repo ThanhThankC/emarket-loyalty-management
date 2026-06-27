@@ -55,7 +55,6 @@
   <div class="nsec">
     <div class="nslbl">Thẻ thành viên (UC-2)</div>
     <div class="ni" data-page="the_thanh_vien" data-tab="cap-the" data-label="Cấp thẻ mới" onclick="navigate('the_thanh_vien',this,{tab:'cap-the'})">Cấp thẻ mới</div>
-    <div class="ni" data-page="the_thanh_vien" data-tab="gia-han" data-label="Gia hạn thẻ" onclick="navigate('the_thanh_vien',this,{tab:'gia-han'})">Gia hạn thẻ</div>
   </div>
   <div class="nsec">
     <div class="nslbl">Thanh toán</div>
@@ -168,75 +167,111 @@
 
   <!-- ===================== THE THANH VIEN ===================== -->
   <div class="page-section" id="page-the_thanh_vien">
-    <!-- TAB: CAP THE MOI -->
     <div class="ttv-tab active" id="tab-cap-the">
-      <div class="ph"><div><div class="ptitle">Cấp thẻ thành viên mới</div><div class="psub">Kiểm tra điều kiện và tạo thẻ điện tử</div></div></div>
-      <div class="g2">
+      <div class="ph">
         <div>
-          <div class="panel" style="margin-bottom:14px;">
-            <div class="panel-h"><span class="panel-t">Bước 1 — Tìm kiếm khách hàng</span></div>
-            <div style="padding:48px 16px;text-align:center;color:var(--t3);">
-              <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
-              <div style="font-size:12px;">the_thanh_vien.css / pages/the_thanh_vien.js</div>
+          <div class="ptitle">Cấp thẻ thành viên mới</div>
+          <div class="psub">UC-2.1 · Kiểm tra điều kiện và tạo thẻ điện tử tại quầy</div>
+        </div>
+      </div>
+      <div class="g2">
+        <!-- CỘT TRÁI: Tìm kiếm + thông tin KH -->
+        <div>
+          <!-- Bước 1: Tìm KH -->
+          <div id="ttv-search-area">
+            <div class="panel" style="margin-bottom:14px;">
+              <div class="panel-h"><span class="panel-t">Bước 1 — Tìm kiếm khách hàng</span></div>
+              <div style="padding:16px 16px 8px;">
+                <div style="display:flex;gap:10px;align-items:center;">
+                  <input class="fi" id="ttv-search-inp" type="text"
+                    placeholder="Nhập SĐT, tên hoặc mã KH..."
+                    onkeydown="ttvSearchKeydown(event)" style="flex:1"/>
+                  <button class="btn btn-primary" onclick="ttvTimKiem()">Tìm</button>
+                </div>
+              </div>
+              <div id="ttv-search-result" style="padding-bottom:6px;"></div>
+            </div>
+          </div>
+
+          <!-- Bước 2: Thông tin KH đã chọn (ẩn mặc định) -->
+          <div id="ttv-info-area" style="display:none;">
+            <div class="panel" style="margin-bottom:14px;">
+              <div class="panel-h">
+                <span class="panel-t">Bước 2 — Xác nhận thông tin</span>
+                <span class="panel-a" onclick="ttvResetForm()">Tìm KH khác</span>
+              </div>
+              <!-- Preview thẻ -->
+              <div class="ttv-card-wrap">
+                <div class="ttv-card" id="ttv-card"></div>
+              </div>
+              <!-- Chi tiết -->
+              <div class="ttv-kh-grid" id="ttv-kh-detail"></div>
+              <!-- Actions -->
+              <div class="ttv-actions">
+                <button class="btn btn-outline" onclick="ttvResetForm()">Hủy</button>
+                <button class="btn btn-primary" id="ttv-btn-capthe" onclick="ttvMoXacNhan()">Cấp thẻ ngay</button>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- CỘT PHẢI: Quy tắc + bảng hạng từ DB -->
         <div>
-          <div class="panel">
+          <div class="panel" style="margin-bottom:14px;">
             <div class="panel-h"><span class="panel-t">Quy tắc cấp thẻ</span></div>
             <div style="padding:14px;font-size:12.5px;color:var(--t2);line-height:1.9;">
-              <div style="margin-bottom:8px;">Mỗi khách chỉ có một thẻ duy nhất.</div>
-              <div style="margin-bottom:8px;">Thẻ mới luôn có hạng <b>Mới</b> và hệ số x1.0.</div>
-              <div style="margin-bottom:8px;">Luôn ghi log: thời gian, thu ngân, mã KH.</div>
-              <div>Tạo thẻ trong vòng 2 giây.</div>
+              <div style="margin-bottom:6px;">Mỗi khách hàng chỉ được có một thẻ duy nhất.</div>
+              <div style="margin-bottom:6px;">Thẻ mới luôn bắt đầu ở hạng <b>Đồng</b>, điểm = 0.</div>
+              <div style="margin-bottom:6px;">Thời hạn thẻ mặc định là 2 năm kể từ ngày cấp.</div>
+              <div>Mọi thao tác đều được ghi log tự động.</div>
             </div>
           </div>
           <div class="panel">
             <div class="panel-h"><span class="panel-t">Hạng thành viên</span></div>
-            <div style="padding:12px;">
-              <div class="tier-row"><span class="rank rank-new" style="width:90px;justify-content:center;">Mới</span><div class="tier-bar-wrap"><div class="tier-bar" style="width:20%;background:#ccc;"></div></div><span style="font-size:12px;color:var(--t3);">0 điểm</span></div>
-              <div class="tier-row"><span class="rank rank-bac" style="width:90px;justify-content:center;">Bạc</span><div class="tier-bar-wrap"><div class="tier-bar" style="width:40%;background:#1a56db;"></div></div><span style="font-size:12px;color:var(--t3);">5.000 trở lên</span></div>
-              <div class="tier-row"><span class="rank rank-vang" style="width:90px;justify-content:center;">Vàng</span><div class="tier-bar-wrap"><div class="tier-bar" style="width:65%;background:var(--yd);"></div></div><span style="font-size:12px;color:var(--t3);">20.000 trở lên</span></div>
-              <div class="tier-row"><span class="rank rank-kim" style="width:90px;justify-content:center;">Kim cương</span><div class="tier-bar-wrap"><div class="tier-bar" style="width:100%;background:#7C3AED;"></div></div><span style="font-size:12px;color:var(--t3);">50.000 trở lên</span></div>
+            <div id="ttv-bang-hang" style="padding:4px 0 8px;">
+              <!-- Render động từ DB bởi ttvRenderBangHang() -->
+              <div style="padding:20px;text-align:center;color:var(--t3);font-size:12px;">Đang tải...</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- TAB: GIA HAN THE -->
-    <div class="ttv-tab" id="tab-gia-han">
-      <div class="ph"><div><div class="ptitle">Gia hạn thẻ thành viên</div><div class="psub">Gia hạn thêm 12 tháng kể từ ngày hiện tại</div></div></div>
-      <div class="g2">
-        <div>
-          <div class="panel" style="margin-bottom:14px;">
-            <div class="panel-h"><span class="panel-t">Tìm khách hàng cần gia hạn</span></div>
-            <div style="padding:48px 16px;text-align:center;color:var(--t3);">
-              <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
-              <div style="font-size:12px;">the_thanh_vien.css / pages/the_thanh_vien.js</div>
-            </div>
-          </div>
+
+    <!-- Modal xác nhận cấp thẻ -->
+    <div class="ov" id="modal-cap-the-confirm">
+      <div class="modal" style="max-width:460px;">
+        <div class="mh">
+          <div class="mt">Xác nhận cấp thẻ mới</div>
+          <button class="mc" onclick="closeModal('modal-cap-the-confirm')">Đóng</button>
         </div>
-        <div>
-          <div class="panel">
-            <div class="panel-h"><span class="panel-t">Danh sách sắp hết hạn</span></div>
-            <div style="padding:32px 16px;text-align:center;color:var(--t3);font-size:12px;">Đang tải danh sách...</div>
-          </div>
+        <div style="padding:18px 22px 8px;" id="ttv-confirm-body"></div>
+        <div style="padding:0 22px 14px;font-size:12px;color:var(--t3);">
+          Thẻ sẽ được tạo ngay sau khi xác nhận và không thể hủy.
+        </div>
+        <div class="mf">
+          <button class="btn btn-outline" onclick="closeModal('modal-cap-the-confirm')">Hủy</button>
+          <button class="btn btn-primary" id="ttv-confirm-btn" onclick="ttvXacNhanCapThe()">Xác nhận cấp thẻ</button>
         </div>
       </div>
     </div>
-    <!-- Modals -->
-    <div class="ov" id="modal-cap-the">
-      <div class="modal" style="max-width:480px;">
-        <div class="mh"><div class="mt">Xác nhận cấp thẻ mới</div><button class="mc" onclick="closeModal('modal-cap-the')">X</button></div>
-        <div style="padding:18px 22px;"><!-- TODO --></div>
-        <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-cap-the')">Hủy</button><button class="btn btn-primary" id="btn-confirm-cap-the">Xác nhận cấp thẻ</button></div>
-      </div>
-    </div>
-    <div class="ov" id="modal-gia-han">
-      <div class="modal" style="max-width:480px;">
-        <div class="mh"><div class="mt">Xác nhận gia hạn thẻ</div><button class="mc" onclick="closeModal('modal-gia-han')">X</button></div>
-        <div style="padding:18px 22px;"><!-- TODO --></div>
-        <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-gia-han')">Hủy</button><button class="btn btn-primary" id="btn-confirm-gia-han">Xác nhận gia hạn</button></div>
+
+    <!-- Modal thành công -->
+    <div class="ov" id="modal-cap-the-success">
+      <div class="modal" style="max-width:420px;">
+        <div class="mh">
+          <div class="mt">Cấp thẻ thành công</div>
+          <button class="mc" onclick="closeModal('modal-cap-the-success')">Đóng</button>
+        </div>
+        <div style="padding:18px 22px;">
+          <div class="ttv-card-wrap" style="padding:0 0 14px;">
+            <div class="ttv-card" id="ttv-success-card"></div>
+          </div>
+          <div id="ttv-success-info" style="font-size:13px;color:var(--t2);line-height:1.7;"></div>
+        </div>
+        <div class="mf">
+          <button class="btn btn-outline" onclick="closeModal('modal-cap-the-success');ttvResetForm()">Cấp thẻ khác</button>
+          <button class="btn btn-primary" onclick="closeModal('modal-cap-the-success')">Xong</button>
+        </div>
       </div>
     </div>
   </div>
@@ -297,32 +332,36 @@
   <div class="page-section" id="page-vip_config">
     <div class="ph">
       <div><div class="ptitle">Cấu hình ngưỡng phân hạng VIP</div><div class="psub">UC-15 · Chỉ Thu ngân có quyền Quản lý mới được thao tác</div></div>
-      <button class="btn btn-primary" id="btn-luu-cau-hinh">Lưu cấu hình</button>
+      <button class="btn btn-primary" id="btn-luu-cau-hinh" onclick="luuCauHinh()">Lưu cấu hình</button>
     </div>
-    <div class="ybox">UC-15 · Thay đổi ngưỡng sẽ có hiệu lực ngay lập tức và được ghi log đầy đủ. Hệ thống sẽ tự động rà soát và nâng hạng theo UC-14 vào lúc 00:00 mỗi ngày.</div>
+    <div class="ybox">UC-15 · Thay đổi ngưỡng có hiệu lực ngay lập tức. Hệ thống tự động nâng hạng theo UC-14 sau mỗi đơn hàng hoàn tất.</div>
     <div class="g3" style="margin-bottom:18px;">
       <div class="panel">
-        <div class="panel-h"><span class="panel-t">Ngưỡng điểm theo hạng</span><span class="pa" onclick="openModal('modal-log-vip')">Lịch sử thay đổi</span></div>
+        <div class="panel-h"><span class="panel-t">Ngưỡng điểm theo hạng</span><span class="pa" onclick="vcLoadLichSu();openModal('modal-log-vip')">Lịch sử thay đổi</span></div>
         <div style="padding:16px;display:flex;flex-direction:column;gap:14px;">
-          <div class="cfg-hng" style="border-color:#ccc;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><span class="rank rank-new" style="font-size:13px;padding:4px 12px;">Hạng Mới</span><span style="font-size:11.5px;color:var(--t3);">Mặc định khi cấp thẻ lần đầu</span></div>
-            <div class="fgrid"><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" value="0" type="number" disabled/></div><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-moi"/></div></div>
-            <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x1.0</b></div>
+          <!-- Đồng -->
+          <div class="cfg-hng" style="border-color:#c8a97e;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;"><span class="rank rank-new" style="font-size:13px;padding:4px 12px;">Hạng Đồng</span><span style="font-size:11.5px;color:var(--t3);">Mặc định khi cấp thẻ lần đầu</span></div>
+            <div class="fgrid"><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" value="0" type="number" disabled/></div><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-dong" placeholder="VD: 999"/></div></div>
+            <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);" id="he-so-bronze">x1.0</b></div>
           </div>
+          <!-- Bạc -->
           <div class="cfg-hng" style="border-color:#1a56db;">
             <div style="display:flex;align-items:center;margin-bottom:12px;"><span class="rank rank-bac" style="font-size:13px;padding:4px 12px;">Hạng Bạc</span></div>
-            <div class="fgrid"><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-bac"/></div><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-bac"/></div></div>
-            <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x1.2</b></div>
+            <div class="fgrid"><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-bac" placeholder="VD: 1000"/></div><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-bac" placeholder="VD: 4999"/></div></div>
+            <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);" id="he-so-silver">x1.2</b></div>
           </div>
+          <!-- Vàng -->
           <div class="cfg-hng" style="border-color:var(--yd);">
             <div style="display:flex;align-items:center;margin-bottom:12px;"><span class="rank rank-vang" style="font-size:13px;padding:4px 12px;">Hạng Vàng</span></div>
-            <div class="fgrid"><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-vang"/></div><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-vang"/></div></div>
-            <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x1.5</b></div>
+            <div class="fgrid"><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-vang" placeholder="VD: 5000"/></div><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-vang" placeholder="VD: 14999"/></div></div>
+            <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);" id="he-so-gold">x1.5</b></div>
           </div>
+          <!-- Bạch Kim -->
           <div class="cfg-hng" style="border-color:#7C3AED;">
-            <div style="display:flex;align-items:center;margin-bottom:12px;"><span class="rank rank-kim" style="font-size:13px;padding:4px 12px;">Hạng Kim cương</span></div>
-            <div class="fgrid"><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-kim"/></div><div class="fg" style="margin-bottom:0;"><label class="fl">Không giới hạn</label><input class="fi" value="—" disabled/></div></div>
-            <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x2.0</b></div>
+            <div style="display:flex;align-items:center;margin-bottom:12px;"><span class="rank rank-kim" style="font-size:13px;padding:4px 12px;">Hạng Bạch Kim</span></div>
+            <div class="fgrid"><div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-bach-kim" placeholder="VD: 15000"/></div><div class="fg" style="margin-bottom:0;"><label class="fl">Không giới hạn</label><input class="fi" value="—" disabled/></div></div>
+            <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);" id="he-so-platinum">x2.0</b></div>
           </div>
         </div>
       </div>
@@ -330,7 +369,7 @@
         <div class="panel" style="margin-bottom:14px;">
           <div class="panel-h"><span class="panel-t">Quy tắc nâng hạng tự động (UC-14)</span></div>
           <div style="padding:16px;display:flex;flex-direction:column;gap:12px;">
-            <div class="fg" style="margin-bottom:0;"><label class="fl">Chu kỳ rà soát</label><select class="fi" id="sel-chu-ky"><option selected>Hàng ngày lúc 00:00</option><option>Theo từng giao dịch</option><option>Hàng tuần (Thứ Hai)</option></select></div>
+            <div class="fg" style="margin-bottom:0;"><label class="fl">Chu kỳ rà soát</label><select class="fi" id="sel-chu-ky"><option selected>Hằng ngày lúc 00:00</option><option>Theo từng giao dịch</option><option>Hằng tuần (Thứ Hai)</option></select></div>
             <div class="fg" style="margin-bottom:0;"><label class="fl">Thông báo khi nâng hạng</label><select class="fi" id="sel-thong-bao"><option selected>Qua App + SMS</option><option>Chỉ App</option><option>Chỉ SMS</option><option>Không gửi</option></select></div>
             <div class="fg" style="margin-bottom:0;"><label class="fl">Hạ hạng khi điểm giảm</label><label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2);cursor:pointer;margin-top:2px;"><input type="checkbox" id="chk-ha-hang" style="accent-color:var(--yd);width:14px;height:14px;"/> Cho phép hạ hạng tự động</label></div>
             <div class="fg" style="margin-bottom:0;"><label class="fl">Ghi log mỗi lần thay đổi hạng</label><label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t2);cursor:pointer;margin-top:2px;"><input type="checkbox" id="chk-ghi-log" checked style="accent-color:var(--yd);width:14px;height:14px;"/> Bật ghi log (khuyến nghị)</label></div>
@@ -342,13 +381,10 @@
         </div>
       </div>
     </div>
-    <!-- Modal: Lich su thay doi VIP -->
     <div class="ov" id="modal-log-vip">
       <div class="modal wide">
         <div class="mh"><div class="mt">Lịch sử thay đổi cấu hình ngưỡng VIP</div><button class="mc" onclick="closeModal('modal-log-vip')">X</button></div>
-        <div style="padding:0 22px 18px;">
-          <table class="tbl"><thead><tr><th>Thời gian</th><th>Người thực hiện</th><th>Nội dung thay đổi</th></tr></thead><tbody id="log-vip-tbody"><tr><td colspan="3" style="text-align:center;color:var(--t3);padding:24px;">Đang tải...</td></tr></tbody></table>
-        </div>
+        <div style="padding:0 22px 18px;"><table class="tbl"><thead><tr><th>Thời gian</th><th>Người thực hiện</th><th>Nội dung thay đổi</th></tr></thead><tbody id="log-vip-tbody"><tr><td colspan="3" style="text-align:center;color:var(--t3);padding:24px;">Đang tải...</td></tr></tbody></table></div>
         <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-log-vip')">Đóng</button></div>
       </div>
     </div>
