@@ -5,12 +5,11 @@
     <div class="ptitle">Cấu hình ngưỡng phân hạng VIP</div>
     <div class="psub">UC-15 · Chỉ Thu ngân có quyền Quản lý mới được thao tác</div>
   </div>
-  <button class="btn btn-primary" id="btn-luu-cau-hinh">Lưu cấu hình</button>
+  <button class="btn btn-primary" id="btn-luu-cau-hinh" onclick="luuCauHinh()">Lưu cấu hình</button>
 </div>
 
 <div class="ybox">
-  UC-15 · Thay đổi ngưỡng sẽ có hiệu lực ngay lập tức và được ghi log đầy đủ.
-  Hệ thống sẽ tự động rà soát và nâng hạng theo UC-14 vào lúc 00:00 mỗi ngày.
+  UC-15 · Thay đổi ngưỡng có hiệu lực ngay lập tức. Hệ thống tự động nâng hạng theo UC-14 sau mỗi đơn hàng hoàn tất.
 </div>
 
 <div class="g3" style="margin-bottom:18px;">
@@ -19,58 +18,62 @@
   <div class="panel">
     <div class="panel-h">
       <span class="panel-t">Ngưỡng điểm theo hạng</span>
-      <span class="pa" onclick="openModal('modal-log-vip')">Lịch sử thay đổi</span>
+      <span class="pa" onclick="vcLoadLichSu();openModal('modal-log-vip')">Lịch sử thay đổi</span>
     </div>
     <div style="padding:16px;display:flex;flex-direction:column;gap:14px;">
 
-      <div class="cfg-hng" style="border-color:#ccc;" id="cfg-moi">
+      <!-- Đồng (Bronze) -->
+      <div class="cfg-hng" style="border-color:#c8a97e;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <span class="rank rank-new" style="font-size:13px;padding:4px 12px;">Hạng Mới</span>
+          <span class="rank rank-new" style="font-size:13px;padding:4px 12px;">Hạng Đồng</span>
           <span style="font-size:11.5px;color:var(--t3);">Mặc định khi cấp thẻ lần đầu</span>
         </div>
         <div class="fgrid">
           <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" value="0" type="number" disabled/></div>
-          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-moi"/></div>
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-dong" placeholder="VD: 999"/></div>
         </div>
-        <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x1.0</b></div>
+        <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);" id="he-so-bronze">x1.0</b></div>
       </div>
 
-      <div class="cfg-hng" style="border-color:#1a56db;" id="cfg-bac">
+      <!-- Bạc (Silver) -->
+      <div class="cfg-hng" style="border-color:#1a56db;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
           <span class="rank rank-bac" style="font-size:13px;padding:4px 12px;">Hạng Bạc</span>
         </div>
         <div class="fgrid">
-          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-bac"/></div>
-          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-bac"/></div>
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-bac" placeholder="VD: 1000"/></div>
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-bac" placeholder="VD: 4999"/></div>
         </div>
-        <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x1.2</b></div>
+        <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);" id="he-so-silver">x1.2</b></div>
       </div>
 
-      <div class="cfg-hng" style="border-color:var(--yd);" id="cfg-vang">
+      <!-- Vàng (Gold) -->
+      <div class="cfg-hng" style="border-color:var(--yd);">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
           <span class="rank rank-vang" style="font-size:13px;padding:4px 12px;">Hạng Vàng</span>
         </div>
         <div class="fgrid">
-          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-vang"/></div>
-          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-vang"/></div>
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-vang" placeholder="VD: 5000"/></div>
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối đa</label><input class="fi" type="number" id="inp-max-vang" placeholder="VD: 14999"/></div>
         </div>
-        <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x1.5</b></div>
+        <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);" id="he-so-gold">x1.5</b></div>
       </div>
 
-      <div class="cfg-hng" style="border-color:#7C3AED;" id="cfg-kim">
+      <!-- Bạch Kim (Platinum) -->
+      <div class="cfg-hng" style="border-color:#7C3AED;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-          <span class="rank rank-kim" style="font-size:13px;padding:4px 12px;">Hạng Kim cương</span>
+          <span class="rank rank-kim" style="font-size:13px;padding:4px 12px;">Hạng Bạch Kim</span>
         </div>
         <div class="fgrid">
-          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-kim"/></div>
+          <div class="fg" style="margin-bottom:0;"><label class="fl">Điểm tối thiểu</label><input class="fi" type="number" id="inp-min-bach-kim" placeholder="VD: 15000"/></div>
           <div class="fg" style="margin-bottom:0;"><label class="fl">Không giới hạn</label><input class="fi" value="—" disabled/></div>
         </div>
-        <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);">x2.0</b></div>
+        <div style="margin-top:10px;font-size:12px;color:var(--t3);">Hệ số tích điểm: <b style="color:var(--t);" id="he-so-platinum">x2.0</b></div>
       </div>
     </div>
   </div>
 
-  <!-- CỘT PHẢI: Quy tắc nâng hạng tự động + Phân bố khách hàng -->
+  <!-- CỘT PHẢI -->
   <div>
     <div class="panel" style="margin-bottom:14px;">
       <div class="panel-h"><span class="panel-t">Quy tắc nâng hạng tự động (UC-14)</span></div>
@@ -107,7 +110,7 @@
       </div>
     </div>
 
-    <!-- Phân bố KH -->
+    <!-- Phân bố KH theo hạng thực từ DB -->
     <div class="panel">
       <div class="panel-h"><span class="panel-t">Phân bố khách hàng hiện tại</span></div>
       <div style="padding:14px;display:flex;flex-direction:column;gap:10px;" id="phan-bo-kh">
@@ -117,7 +120,7 @@
   </div>
 </div>
 
-<!-- MODAL: Lịch sử thay đổi cấu hình VIP -->
+<!-- MODAL: Lịch sử thay đổi -->
 <div class="ov" id="modal-log-vip">
   <div class="modal wide">
     <div class="mh">
