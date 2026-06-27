@@ -50,11 +50,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const the = theData[0];
     const diem = Number(the.so_diem || 0);
     const hang = the.hang || 'Bronze';
+    const tenViet = { Bronze: 'Đồng', Silver: 'Bạc', Gold: 'Vàng', Platinum: 'Bạch Kim' };
+    const hangViet = tenViet[hang] || hang;
     const maThe = the.ma_the || '---';
 
-    document.getElementById('profId').textContent   = maThe + ' · Hạng ' + hang;
-    document.getElementById('profTier').textContent = 'Thành viên ' + hang;
-    document.getElementById('dRank').textContent    = hang;
+    document.getElementById('profId').textContent   = maThe + ' · Hạng ' + hangViet;
+    document.getElementById('profTier').textContent = 'Thành viên ' + hangViet;
+    document.getElementById('dRank').textContent    = hangViet;
     document.getElementById('dPts').textContent     = diem.toLocaleString('vi-VN') + ' điểm';
     document.getElementById('dTotal').textContent   = diem.toLocaleString('vi-VN') + ' điểm';
 
@@ -85,12 +87,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 //  TÍNH ĐIỂM CẦN THÊM ĐỂ LÊN HẠNG TIẾP THEO (UC-7.2)
 // ============================================================
 function calcProgress(hang, diem) {
+  const tenViet = { Bronze: 'Đồng', Silver: 'Bạc', Gold: 'Vàng', Platinum: 'Bạch Kim' };
   const nguong = {
     Bronze: 1000,
     Silver: 5000,
     Gold: 10000,
     Platinum: 99999
   };
+  const nextName = { Bronze: 'Silver', Silver: 'Gold', Gold: 'Platinum', Platinum: '' };
 
   const next = nguong[hang] || 1000;
 
@@ -100,8 +104,9 @@ function calcProgress(hang, diem) {
   }
 
   const con = next - diem;
+  const nextViet = tenViet[nextName[hang]] || '';
   document.getElementById('dNext').textContent =
-    'Cần thêm ' + Math.max(0, con).toLocaleString('vi-VN') + ' điểm';
+    'Cần thêm ' + Math.max(0, con).toLocaleString('vi-VN') + ' điểm lên ' + nextViet;
 }
 
 // ============================================================

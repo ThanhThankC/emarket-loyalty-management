@@ -70,12 +70,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     const the = theData[0];
     const diem = Number(the.so_diem || 0);
     const hang = the.hang || 'Bronze';
+    const tenViet = { Bronze: 'Đồng', Silver: 'Bạc', Gold: 'Vàng', Platinum: 'Bạch Kim' };
+    const hangViet = tenViet[hang] || hang;
     const maThe = the.ma_the || '---';
     currentMemberCardId = maThe;
 
     // Hero
     document.getElementById('heroPts').textContent = diem.toLocaleString('vi-VN');
-    document.getElementById('heroTierTxt').textContent = 'Thành viên ' + hang;
+    document.getElementById('heroTierTxt').textContent = 'Thành viên ' + hangViet;
 
     // Điểm khả dụng hiện tại được hiển thị ở hero và khu vực thống kê.
     document.getElementById('statPts').textContent = diem.toLocaleString('vi-VN');
@@ -84,7 +86,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Thẻ ID
     document.getElementById('cardIdTxt').textContent = 'KH – ' + maThe.slice(-5);
     document.getElementById('qrIdTxt').textContent   = 'KH – ' + maThe.slice(-5);
-    document.getElementById('qrHint').textContent    = ten + ' · Hạng ' + hang;
+    document.getElementById('qrHint').textContent    = ten + ' · Hạng ' + hangViet;
 
     calcProgress(hang, diem);
   } catch (e) {
@@ -128,6 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 //  TÍNH TOÁN PROGRESS BAR HẠNG THÀNH VIÊN
 // ============================================================
 function calcProgress(hang, diem) {
+  const tenViet = { Bronze: 'Đồng', Silver: 'Bạc', Gold: 'Vàng', Platinum: 'Bạch Kim' };
   const nguong = { Bronze: 1000, Silver: 5000, Gold: 10000, Platinum: 99999 };
   const tien = { Bronze: 0, Silver: 1000, Gold: 5000, Platinum: 10000 };
   const next = nguong[hang] || 1000;
@@ -145,10 +148,11 @@ function calcProgress(hang, diem) {
   const done  = Math.min(diem - prev, range);
   const pct   = Math.round((done / range) * 100);
   const con   = next - diem;
+  const nextViet = tenViet[nextName[hang]] || '';
 
   document.getElementById('progFill').style.width  = Math.max(0, pct) + '%';
   document.getElementById('progLeft').textContent  =
-    'Còn ' + Math.max(0, con).toLocaleString('vi-VN') + ' điểm lên ' + (nextName[hang] || '');
+    'Còn ' + Math.max(0, con).toLocaleString('vi-VN') + ' điểm lên ' + nextViet;
   document.getElementById('progPct').textContent   = Math.max(0, pct) + '%';
 }
 
