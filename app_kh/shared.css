@@ -64,6 +64,9 @@
 html {
   font-size: 15px;
   -webkit-tap-highlight-color: transparent;
+  /* Giữ scrollbar luôn chiếm chỗ → tránh layout shift khi chuyển trang */
+  scrollbar-gutter: stable both-edges;
+  overflow-x: hidden;
 }
 
 body {
@@ -71,9 +74,17 @@ body {
   background: var(--bg);
   color: var(--t);
   min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Wrapper căn giữa nội dung — giữ layout cố định khi chuyển tab */
+.app-wrapper {
   max-width: 430px;
   margin: 0 auto;
+  min-height: 100vh;
   position: relative;
+  background: var(--bg);
   overflow-x: hidden;
 }
 
@@ -263,7 +274,6 @@ select.form-input { appearance: none; }
   background: rgba(0,0,0,.45); z-index: 300;
   display: flex; align-items: flex-end; justify-content: center;
   opacity: 0; pointer-events: none; transition: opacity .25s;
-  max-width: 430px; left: 50%; transform: translateX(-50%);
 }
 .ov.open { opacity: 1; pointer-events: all; }
 .sheet {
