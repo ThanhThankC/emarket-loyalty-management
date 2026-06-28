@@ -315,7 +315,7 @@ function renderKhachHangMarkup() {
     '<div class="ph">' +
       '<div>' +
         '<div class="ptitle">Quản lý khách hàng</div>' +
-        '<div class="psub">UC-1 · Tìm kiếm, xem và cập nhật hồ sơ khách hàng tại quầy</div>' +
+        '<div class="psub">· Tìm kiếm, xem và cập nhật hồ sơ khách hàng tại quầy</div>' +
       '</div>' +
     '</div>' +
     '<div class="panel">' +

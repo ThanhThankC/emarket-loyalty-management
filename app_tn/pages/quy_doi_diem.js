@@ -21,7 +21,7 @@ function renderQuyDoiDiemMarkup() {
     '<div class="ph">' +
       '<div>' +
         '<div class="ptitle">Quy đổi điểm giảm giá</div>' +
-        '<div class="psub">UC-4 · Thu ngân hỗ trợ khách hàng dùng điểm tích lũy tại quầy POS</div>' +
+        '<div class="psub">· Thu ngân hỗ trợ khách hàng dùng điểm tích lũy tại quầy POS</div>' +
       '</div>' +
     '</div>' +
     '<div class="g2 qd-layout">' +
@@ -55,7 +55,7 @@ function renderQuyDoiDiemMarkup() {
                 '<div class="qd-points-label">Số điểm hiện có</div>' +
                 '<div class="qd-points-value" id="qd-current-points">0</div>' +
               '</div>' +
-              '<div class="qd-rank" id="qd-current-rank">Bronze</div>' +
+              '<div class="qd-rank" id="qd-current-rank">Đồng</div>' +
             '</div>' +
           '</div>' +
         '</div>' +
@@ -310,7 +310,8 @@ function renderQdCustomer() {
   document.getElementById('qd-customer-name').textContent = qdCustomer.ho_ten || 'Khách hàng';
   document.getElementById('qd-customer-meta').textContent = (qdCustomer.ma_kh || '-') + ' · ' + (qdCustomer.so_dien_thoai || '-');
   document.getElementById('qd-current-points').textContent = formatQdNumber(qdCard.so_diem);
-  document.getElementById('qd-current-rank').textContent = qdCard.hang || '-';
+  var _hangMap = { Bronze: 'Đồng', Silver: 'Bạc', Gold: 'Vàng', Platinum: 'Bạch Kim' };
+  document.getElementById('qd-current-rank').textContent = _hangMap[qdCard.hang] || qdCard.hang || '-';
 
   var statusEl = document.getElementById('qd-card-status');
   statusEl.className = 'badge ' + (qdCard.trang_thai === 'hoat_dong' ? 'b-done' : 'b-err');

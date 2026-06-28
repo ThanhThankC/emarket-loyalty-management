@@ -19,13 +19,15 @@ var _vcCauHinhCu = [];  // Lưu giá trị cũ để ghi log diff
 registerPage('vip_config', function(opts) {
   _vcNV = getCurrentNV();
 
-  // UC-15 BR15-1: chỉ vai trò Quản lý mới được vào
-  // (comment out để test; uncomment khi go-live)
-  // if (_vcNV && _vcNV.vai_tro !== 'quan_ly') {
-  //   showToast('Chức năng này yêu cầu quyền Quản lý', 'err');
-  //   setTimeout(function() { navigate('dashboard', document.querySelector('[data-page=dashboard]')); }, 1500);
-  //   return;
-  // }
+  // UC-15 BR15-1: chỉ Admin (demo) mới được vào trang này
+  if (typeof _demoIsAdmin === 'undefined' || !_demoIsAdmin) {
+    showToast('🔒 Chức năng này yêu cầu quyền Quản lý. Bật chế độ Demo Admin để thử.', 'err');
+    setTimeout(function() {
+      var dashNi = document.querySelector('.sidebar .ni[data-page=\"dashboard\"]');
+      navigate('dashboard', dashNi);
+    }, 1800);
+    return;
+  }
 
   vcLoadCauHinh();
   vcLoadPhanBo();
