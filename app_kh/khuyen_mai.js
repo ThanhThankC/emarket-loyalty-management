@@ -1,4 +1,4 @@
-// khuyen_mai.js - Khuyen mai & Su kien
+// khuyen_mai.js - Khuyến mãi & Sự kiện
 requireLogin();
 const kh = getCurrentNV();
 
@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 async function loadKhuyenMai() {
   const main = document.getElementById('mainContent');
-  main.innerHTML = '<div class="khuyen-mai-empty">Dang tai khuyen mai va su kien...</div>';
+  main.innerHTML = '<div class="khuyen-mai-empty">Đang tải khuyến mãi và sự kiện...</div>';
 
   try {
     const rows = await sbGet(
@@ -45,16 +45,16 @@ async function loadKhuyenMai() {
     khuyenMaiRows = rows || [];
     renderKhuyenMai();
   } catch (error) {
-    console.error('Loi tai khuyen mai:', error);
-    main.innerHTML = '<div class="khuyen-mai-empty">Khong tai duoc danh sach khuyen mai.</div>';
-    showToast('Khong tai duoc khuyen mai', 'err');
+    console.error('Lỗi tải khuyến mãi:', error);
+    main.innerHTML = '<div class="khuyen-mai-empty">Không tải được danh sách khuyến mãi.</div>';
+    showToast('Không tải được khuyến mãi', 'err');
   }
 }
 
 function renderKhuyenMai() {
   const main = document.getElementById('mainContent');
   if (!khuyenMaiRows.length) {
-    main.innerHTML = '<div class="khuyen-mai-empty">Hien chua co chuong trinh nao dang dien ra.</div>';
+    main.innerHTML = '<div class="khuyen-mai-empty">Hiện chưa có chương trình nào đang diễn ra.</div>';
     return;
   }
 
@@ -74,23 +74,23 @@ function renderKhuyenMaiCard(item) {
       <div class="khuyen-mai-head">
         <div>
           <div class="khuyen-mai-type">${escapeHtmlKhuyenMai(programTypeLabel(item.loai))}</div>
-          <div class="khuyen-mai-title">${escapeHtmlKhuyenMai(item.ten_chuong_trinh || 'Chuong trinh thanh vien')}</div>
+          <div class="khuyen-mai-title">${escapeHtmlKhuyenMai(item.ten_chuong_trinh || 'Chương trình thành viên')}</div>
         </div>
         <span class="khuyen-mai-badge ${escapeAttrKhuyenMai(timeState.className)}">${escapeHtmlKhuyenMai(timeState.label)}</span>
       </div>
-      <div class="khuyen-mai-desc">${escapeHtmlKhuyenMai(item.mo_ta || item.dieu_kien_ap_dung || 'Uu dai danh cho khach hang thanh vien CarePoint.')}</div>
+      <div class="khuyen-mai-desc">${escapeHtmlKhuyenMai(item.mo_ta || item.dieu_kien_ap_dung || 'Ưu đãi dành cho khách hàng thành viên CarePoint.')}</div>
       <div class="khuyen-mai-gift">
-        <div class="khuyen-mai-gift-name">${escapeHtmlKhuyenMai(gift.ten_qua || 'Qua tang thanh vien')}</div>
+        <div class="khuyen-mai-gift-name">${escapeHtmlKhuyenMai(gift.ten_qua || 'Quà tặng thành viên')}</div>
         <div class="khuyen-mai-gift-meta">
-          <span>${formatKhuyenMaiNumber(gift.so_diem_quy_doi)} diem</span>
-          <span>Con ${formatKhuyenMaiNumber(stock)}</span>
+          <span>${formatKhuyenMaiNumber(gift.so_diem_quy_doi)} điểm</span>
+          <span>Còn ${formatKhuyenMaiNumber(stock)}</span>
         </div>
       </div>
       <div class="khuyen-mai-foot">
         <span>${escapeHtmlKhuyenMai(formatKhuyenMaiDate(item.ngay_bat_dau))} - ${escapeHtmlKhuyenMai(formatKhuyenMaiDate(item.ngay_ket_thuc))}</span>
-        <span>${escapeHtmlKhuyenMai(item.hang_toi_thieu || 'Tat ca hang')}</span>
+        <span>${escapeHtmlKhuyenMai(item.hang_toi_thieu || 'Tất cả hạng')}</span>
       </div>
-      ${available ? '' : '<div class="khuyen-mai-note">' + escapeHtmlKhuyenMai(timeState.note || 'Chuong trinh dang duoc cong bo de khach hang theo doi.') + '</div>'}
+      ${available ? '' : '<div class="khuyen-mai-note">' + escapeHtmlKhuyenMai(timeState.note || 'Chương trình đang được công bố để khách hàng theo dõi.') + '</div>'}
     </article>
   `;
 }
@@ -100,7 +100,7 @@ function openKhuyenMaiDetail(id) {
   if (!item) return;
   const gift = normalizeKhuyenMaiGift(item.qua_tang);
 
-  document.getElementById('kmTitle').textContent = item.ten_chuong_trinh || 'Chi tiet khuyen mai';
+  document.getElementById('kmTitle').textContent = item.ten_chuong_trinh || 'Chi tiết khuyến mãi';
   document.getElementById('kmSub').textContent =
     formatKhuyenMaiDate(item.ngay_bat_dau) + ' - ' + formatKhuyenMaiDate(item.ngay_ket_thuc);
 
@@ -115,20 +115,20 @@ function openKhuyenMaiDetail(id) {
 
   body.innerHTML = `
     <div class="khuyen-mai-detail-section">
-      <div class="khuyen-mai-detail-label">Dieu kien</div>
+      <div class="khuyen-mai-detail-label">Điều kiện</div>
       <div class="khuyen-mai-detail-text">${escapeHtmlKhuyenMai(item.dieu_kien_ap_dung || '-')}</div>
     </div>
     <div class="khuyen-mai-detail-section">
-      <div class="khuyen-mai-detail-label">Qua tang</div>
+      <div class="khuyen-mai-detail-label">Quà tặng</div>
       <div class="khuyen-mai-detail-text">${escapeHtmlKhuyenMai(gift.ten_qua || '-')}</div>
       <div class="khuyen-mai-detail-grid">
-        <span>Diem doi: <b>${formatKhuyenMaiNumber(gift.so_diem_quy_doi)}</b></span>
-        <span>So luong: <b>${formatKhuyenMaiNumber(gift.so_luong_ton)}</b></span>
-        <span>Loai: <b>${escapeHtmlKhuyenMai(giftTypeLabel(gift.loai))}</b></span>
-        <span>Hang: <b>${escapeHtmlKhuyenMai(item.hang_toi_thieu || 'Tat ca')}</b></span>
+        <span>Điểm đổi: <b>${formatKhuyenMaiNumber(gift.so_diem_quy_doi)}</b></span>
+        <span>Số lượng: <b>${formatKhuyenMaiNumber(gift.so_luong_ton)}</b></span>
+        <span>Loại: <b>${escapeHtmlKhuyenMai(giftTypeLabel(gift.loai))}</b></span>
+        <span>Hạng: <b>${escapeHtmlKhuyenMai(item.hang_toi_thieu || 'Tất cả')}</b></span>
       </div>
     </div>
-    <button class="btn-full khuyen-mai-detail-button" onclick="location.href='doi_diem_qua.html'">Xem qua doi diem</button>
+    <button class="btn-full khuyen-mai-detail-button" onclick="location.href='doi_diem_qua.html'">Xem quà đổi điểm</button>
   `;
 
   openModal('modal-km-detail');
@@ -143,19 +143,19 @@ function normalizeKhuyenMaiGift(value) {
 
 function programTypeLabel(type) {
   return {
-    tang_qua: 'Qua tang',
-    giam_gia: 'Giam gia',
-    tich_diem_bo: 'Tich diem bo sung',
-    su_kien: 'Su kien'
-  }[type] || 'Thanh vien';
+    tang_qua: 'Quà tặng',
+    giam_gia: 'Giảm giá',
+    tich_diem_bo: 'Tích điểm bổ sung',
+    su_kien: 'Sự kiện'
+  }[type] || 'Thành viên';
 }
 
 function giftTypeLabel(type) {
   return {
     voucher_giam_gia: 'Voucher',
-    qua_hien_vat: 'Qua hien vat',
-    uu_dai_dich_vu: 'Uu dai dich vu'
-  }[type] || 'Qua tang';
+    qua_hien_vat: 'Quà hiện vật',
+    uu_dai_dich_vu: 'Ưu đãi dịch vụ'
+  }[type] || 'Quà tặng';
 }
 
 function formatKhuyenMaiDate(value) {
@@ -170,22 +170,22 @@ function getKhuyenMaiTimeState(item) {
   if (item.ngay_bat_dau && today < item.ngay_bat_dau) {
     return {
       key: 'upcoming',
-      label: 'Sap dien ra',
+      label: 'Sắp diễn ra',
       className: 'upcoming',
-      note: 'Chuong trinh chua den ngay bat dau.'
+      note: 'Chương trình chưa đến ngày bắt đầu.'
     };
   }
   if (item.ngay_ket_thuc && today > item.ngay_ket_thuc) {
     return {
       key: 'expired',
-      label: 'Da qua han',
+      label: 'Đã quá hạn',
       className: 'ended',
-      note: 'Chuong trinh da qua thoi gian ap dung.'
+      note: 'Chương trình đã qua thời gian áp dụng.'
     };
   }
   return {
     key: 'open',
-    label: 'Dang mo',
+    label: 'Đang mở',
     className: 'ok',
     note: ''
   };
