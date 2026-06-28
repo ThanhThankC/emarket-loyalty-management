@@ -32,8 +32,8 @@ function renderDoiTraMarkup() {
               '<input class="fi" id="doi_tra-order-code" type="text" maxlength="15" placeholder="DH2025008" autocomplete="off"/>' +
               '<div class="doi_tra-field-error" id="doi_tra-order-code-error"></div>' +
             '</div>' +
-            '<button class="btn btn-primary" id="doi_tra-search-button" type="submit">Kiểm tra</button>' +
-            '<button class="btn btn-outline" id="doi_tra-reset-button" type="button">Nhập lại</button>' +
+'<button class="btn btn-primary" style="margin-top: 25px;" id="doi_tra-search-button" type="submit">Kiểm tra</button>' +
+'<button class="btn btn-outline" style="margin-top: 25px;" id="doi_tra-reset-button" type="button">Nhập lại</button>' +
           '</form>' +
           '<div class="doi_tra-message inf" id="doi_tra-message">Nhập mã hóa đơn để kiểm tra thời hạn và điểm tích lũy.</div>' +
         '</div>' +
@@ -100,7 +100,6 @@ function renderDoiTraMarkup() {
         '<div class="doi_tra-rule-box">' +
           '<b>Quy tắc:</b> trả hàng hoàn điểm đã dùng và thu hồi điểm đã cộng. Đổi hàng tính lại điểm theo giá trị mới, sau đó cộng/trừ phần chênh lệch điểm.' +
         '</div>' +
-        '<div class="doi_tra-speed-box" id="doi_tra-speed-box">Mục tiêu xử lý: dưới 2 giây sau khi bấm xác nhận.</div>' +
       '</div>' +
     '</div>' +
     '<div class="ov" id="modal-doi-tra">' +

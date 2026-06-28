@@ -24,3 +24,20 @@
 .stat-label { font-size: 11.5px; font-weight: 600; color: var(--t3); text-transform: uppercase; letter-spacing: .4px; margin-bottom: 8px; }
 .stat-val   { font-family: var(--fh); font-size: 32px; font-weight: 700; color: var(--t); line-height: 1; margin-bottom: 6px; }
 .stat-hint  { font-size: 11px; color: var(--t3); }
+/* Dashboard spinner */
+.dash-spin {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2.5px solid var(--b);
+  border-top-color: var(--yd);
+  border-radius: 50%;
+  animation: dashSpinAnim .6s linear infinite;
+  vertical-align: middle;
+}
+@keyframes dashSpinAnim {
+  to { transform: rotate(360deg); }
+}
+
+/* Dashboard hang bar items */
+#dash-hang-wrap > div { }
