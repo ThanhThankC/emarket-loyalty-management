@@ -49,11 +49,11 @@
     <div class="ni" data-page="dashboard" data-label="Dashboard" onclick="navigate('dashboard',this)">Dashboard</div>
   </div>
   <div class="nsec">
-    <div class="nslbl">Khách hàng (UC-1)</div>
+    <div class="nslbl">Khách hàng</div>
     <div class="ni" data-page="khach_hang" data-label="Quản lý khách hàng" onclick="navigate('khach_hang',this)">Quản lý khách hàng</div>
   </div>
   <div class="nsec">
-    <div class="nslbl">Thẻ thành viên (UC-2)</div>
+    <div class="nslbl">Thẻ thành viên</div>
     <div class="ni" data-page="the_thanh_vien" data-tab="cap-the" data-label="Cấp thẻ mới" onclick="navigate('the_thanh_vien',this,{tab:'cap-the'})">Cấp thẻ mới</div>
   </div>
   <div class="nsec">
@@ -64,11 +64,14 @@
     <div class="nslbl">Tra cứu</div>
     <div class="ni" data-page="lich_su_ho" data-label="Lịch sử mua hàng" onclick="navigate('lich_su_ho',this)">Lịch sử mua hàng</div>
   </div>
-  <div class="nsec">
+  <div class="nsec" id="nsec-admin" style="display:none;">
     <div class="nslbl">Quản trị (Quản lý)</div>
     <div class="ni" data-page="vip_config" data-label="Cấu hình ngưỡng VIP" onclick="navigate('vip_config',this)">Cấu hình ngưỡng VIP</div>
   </div>
   <div class="sfooter">
+    <div id="demo-btn" onclick="toggleDemoAdmin()" style="margin-bottom:8px;padding:8px 12px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;text-align:center;border:1.5px dashed var(--yd);color:var(--yd);background:var(--yl);letter-spacing:.3px;">
+      Chế độ Demo: Thu Ngân
+    </div>
     <div class="ni" onclick="dangXuat()" style="color:var(--red)">Đăng xuất</div>
   </div>
 </aside>
@@ -128,7 +131,7 @@
     <div class="ph">
       <div>
         <div class="ptitle">Quản lý khách hàng</div>
-        <div class="psub">UC-1 · Thêm, sửa, xóa, tìm kiếm hồ sơ khách hàng</div>
+        <div class="psub">· Thêm, sửa, xóa, tìm kiếm hồ sơ khách hàng</div>
       </div>
     </div>
     <div class="panel">
@@ -171,7 +174,7 @@
       <div class="ph">
         <div>
           <div class="ptitle">Cấp thẻ thành viên mới</div>
-          <div class="psub">UC-2.1 · Kiểm tra điều kiện và tạo thẻ điện tử tại quầy</div>
+          <div class="psub">· Kiểm tra điều kiện và tạo thẻ điện tử tại quầy</div>
         </div>
       </div>
       <div class="g2">
@@ -408,5 +411,37 @@
 <script src="pages/quy_doi_diem.js"></script>
 <script src="pages/lich_su_ho.js"></script>
 <script src="pages/vip_config.js"></script>
+
+<script>
+// ── Demo Mode: chuyển vai trò Admin / Thu Ngân ──────────────
+var _demoIsAdmin = false;
+
+function toggleDemoAdmin() {
+  _demoIsAdmin = !_demoIsAdmin;
+  var btn     = document.getElementById('demo-btn');
+  var nsec    = document.getElementById('nsec-admin');
+
+  if (_demoIsAdmin) {
+    btn.textContent = 'Chế độ Demo: Admin';
+    btn.style.borderColor  = 'var(--green)';
+    btn.style.color        = 'var(--green)';
+    btn.style.background   = 'var(--gbg)';
+    nsec.style.display     = 'block';
+    showToast('Đã chuyển sang chế độ Admin — có thể truy cập Cấu hình ngưỡng VIP', 'ok');
+  } else {
+    btn.textContent = 'Chế độ Demo: Thu Ngân';
+    btn.style.borderColor  = 'var(--yd)';
+    btn.style.color        = 'var(--yd)';
+    btn.style.background   = 'var(--yl)';
+    nsec.style.display     = 'none';
+    // Nếu đang ở trang vip_config → về dashboard
+    if (typeof _currentPage !== 'undefined' && _currentPage === 'vip_config') {
+      var dashNi = document.querySelector('.sidebar .ni[data-page="dashboard"]');
+      navigate('dashboard', dashNi);
+    }
+    showToast('Đã chuyển về Thu Ngân — chức năng Admin bị ẩn', '');
+  }
+}
+</script>
 </body>
 </html>
