@@ -182,11 +182,16 @@ async function themKhachHangMoi() {
     setKhBusy(submitButton, true, 'Đang lưu...');
     var created = await insertThemKhachHangWithRetry(payload, 3);
     var maKh = created && created.ma_kh ? created.ma_kh : payload.ma_kh;
+    var memberCard = await capTheDongChoKhachHangMoi(maKh);
 
     document.getElementById('kh-new-form').reset();
     document.getElementById('kh-new-code').value = maKh;
-    setThemKhachHangMessage('Thêm khách hàng thành công. Mã khách hàng: ' + maKh, 'ok');
-    showToast('Thêm khách hàng thành công', 'ok');
+    setThemKhachHangMessage(
+      'Thêm khách hàng thành công. Mã khách hàng: ' + maKh +
+      '. Đã tự động cấp thẻ hạng Đồng: ' + memberCard.ma_the,
+      'ok'
+    );
+    showToast('Thêm khách hàng và cấp thẻ Đồng thành công', 'ok');
     khachHangPage = 1;
     khachHangKeyword = '';
   } catch (error) {
@@ -202,6 +207,61 @@ async function themKhachHangMoi() {
   } finally {
     setKhBusy(submitButton, false, 'Thêm khách hàng');
   }
+}
+
+async function capTheDongChoKhachHangMoi(maKh) {
+  var maThe = generateMaTheThanhVien();
+  var ngayCap = new Date().toISOString().split('T')[0];
+  var ngayHetHan = getNgayHetHanTheThanhVien(2);
+
+  var rows = await sbInsert('the_thanh_vien', {
+    ma_the: maThe,
+    ma_kh: maKh,
+    hang: 'Bronze',
+    ngay_cap: ngayCap,
+    ngay_het_han: ngayHetHan,
+    trang_thai: 'hoat_dong',
+    so_diem: 0
+  });
+
+  await ghiLichSuCapTheTuDong(maThe, ngayHetHan);
+
+  return rows && rows.length ? rows[0] : {
+    ma_the: maThe,
+    ma_kh: maKh,
+    hang: 'Bronze',
+    ngay_cap: ngayCap,
+    ngay_het_han: ngayHetHan,
+    trang_thai: 'hoat_dong',
+    so_diem: 0
+  };
+}
+
+async function ghiLichSuCapTheTuDong(maThe, ngayHetHan) {
+  if (typeof getCurrentNV !== 'function') return;
+
+  var nv = getCurrentNV();
+  if (!nv || !nv.ma_nv) return;
+
+  await sbInsert('lich_su_cap_the', {
+    ma_nv: nv.ma_nv,
+    ma_the: maThe,
+    loai_su_kien: 'cap_moi',
+    ngay_thuc_hien: new Date().toISOString(),
+    ly_do: 'Thu ngân thêm mới khách hàng và hệ thống tự động cấp thẻ Đồng',
+    ngay_het_han_moi: ngayHetHan
+  });
+}
+
+function generateMaTheThanhVien() {
+  return 'THE' + Date.now().toString().slice(-6) +
+    Math.random().toString(36).slice(2, 5).toUpperCase();
+}
+
+function getNgayHetHanTheThanhVien(years) {
+  var date = new Date();
+  date.setFullYear(date.getFullYear() + years);
+  return date.toISOString().split('T')[0];
 }
 
 async function insertThemKhachHangWithRetry(payload, attemptsLeft) {
