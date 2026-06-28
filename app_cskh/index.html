@@ -78,59 +78,178 @@
           <div class="ptitle">Dashboard</div>
           <div class="psub" id="dashSub">Xin chào, đang tải...</div>
         </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="dash-last-updated" style="font-size:11px;color:var(--t3);"></span>
+          <button class="btn btn-outline btn-sm" onclick="dashLoad()">Làm mới</button>
+        </div>
       </div>
+
+      <!-- Stat cards -->
       <div class="dash-grid" id="dashStats">
         <div class="stat-card" onclick="navigate('phan_hoi',document.querySelector('[data-page=phan_hoi]'))">
           <div class="stat-label">Phản hồi chờ xử lý</div>
-          <div class="stat-val" id="stat-ph">--</div>
-          <div class="stat-hint">Nhấn để xem</div>
+          <div class="stat-val" id="stat-ph"><span class="dash-spin"></span></div>
+          <div class="stat-hint">Nhấn để xem danh sách</div>
         </div>
         <div class="stat-card" onclick="navigate('cap_the',document.querySelector('[data-page=cap_the]'))">
           <div class="stat-label">Thẻ cấp hôm nay</div>
-          <div class="stat-val" id="stat-the">--</div>
-          <div class="stat-hint">Nhấn để xem</div>
+          <div class="stat-val" id="stat-the"><span class="dash-spin"></span></div>
+          <div class="stat-hint">Nhấn để cấp thẻ mới</div>
         </div>
         <div class="stat-card" onclick="navigate('doi_tra',document.querySelector('[data-page=doi_tra]'))">
           <div class="stat-label">Đổi trả chờ xử lý</div>
-          <div class="stat-val" id="stat-dt">--</div>
-          <div class="stat-hint">Nhấn để xem</div>
+          <div class="stat-val" id="stat-dt"><span class="dash-spin"></span></div>
+          <div class="stat-hint">Nhấn để xem đơn đổi trả</div>
         </div>
         <div class="stat-card" onclick="navigate('ho_tro',document.querySelector('[data-page=ho_tro]'))">
           <div class="stat-label">Hỗ trợ hôm nay</div>
-          <div class="stat-val" id="stat-ht">--</div>
-          <div class="stat-hint">Nhấn để xem</div>
+          <div class="stat-val" id="stat-ht"><span class="dash-spin"></span></div>
+          <div class="stat-hint">Nhấn để hỗ trợ khách</div>
         </div>
       </div>
-      <div class="panel" style="margin-top:20px">
-        <div class="panel-h"><span class="panel-t">Hoạt động gần đây</span></div>
-        <div style="padding:40px;text-align:center;color:var(--t3)">
-          <div style="font-size:13px;font-weight:600;margin-bottom:6px">Dashboard đang được xây dựng</div>
-          <div style="font-size:12px">Sử dụng menu bên trái để truy cập các chức năng</div>
+
+      <!-- Row 2: The thanh vien stats + recent activity -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+
+        <!-- The thanh vien phan bo hang -->
+        <div class="panel" style="margin:0">
+          <div class="panel-h"><span class="panel-t">Phân bổ hạng thẻ</span></div>
+          <div style="padding:16px 20px;" id="dash-hang-wrap">
+            <div style="text-align:center;padding:20px;color:var(--t3);font-size:13px;" id="dash-hang-loading">Đang tải...</div>
+          </div>
+        </div>
+
+        <!-- Tong so lieu -->
+        <div class="panel" style="margin:0">
+          <div class="panel-h"><span class="panel-t">Tổng quan hệ thống</span></div>
+          <div style="padding:16px 20px;" id="dash-tong-wrap">
+            <div style="text-align:center;padding:20px;color:var(--t3);font-size:13px;" id="dash-tong-loading">Đang tải...</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Recent the moi cap -->
+      <div class="panel">
+        <div class="panel-h">
+          <span class="panel-t">Thẻ thành viên mới cấp gần đây</span>
+          <span class="panel-a" onclick="navigate('quan_ly_the',document.querySelector('[data-page=quan_ly_the]'))">Xem tất cả</span>
+        </div>
+        <div id="dash-recent-loading" style="padding:28px;text-align:center;color:var(--t3);font-size:13px;">Đang tải...</div>
+        <div id="dash-recent-empty" style="display:none;padding:28px;text-align:center;color:var(--t3);font-size:13px;">Chưa có thẻ nào được cấp hôm nay</div>
+        <div id="dash-recent-table" style="display:none;">
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Khách hàng</th>
+                <th>Mã thẻ</th>
+                <th>Hạng</th>
+                <th>Điểm</th>
+                <th>Trạng thái</th>
+                <th>Ngày cấp</th>
+              </tr>
+            </thead>
+            <tbody id="dash-recent-body"></tbody>
+          </table>
         </div>
       </div>
+
     </div>
 
-    <!-- ===================== HO TRO ===================== -->
+    <!-- ===================== HO TRO (UC-12) ===================== -->
     <div class="page-section" id="page-ho_tro">
       <div class="ph">
         <div>
-          <div class="ptitle">Hỗ trợ trực tiếp</div>
-          <div class="psub"></div>
+          <div class="ptitle">Hỗ trợ khách trực tiếp</div>
+          <div class="psub">Tiếp nhận và xử lý yêu cầu hỗ trợ tại quầy CSKH</div>
         </div>
       </div>
-      <div class="panel">
-        <div class="panel-h"><span class="panel-t">Hỗ trợ trực tiếp</span></div>
-        <div style="padding:48px;text-align:center;color:var(--t3);">
-          <div style="font-size:13px;font-weight:600;margin-bottom:6px;">Chức năng đang được phát triển</div>
-          <div style="font-size:12px;">ho_tro.css / pages/ho_tro.js</div>
+
+      <div class="ho-tro-wrap">
+
+        <div class="panel">
+          <div class="panel-h"><span class="panel-t">Tìm kiếm khách hàng</span></div>
+          <div style="padding:18px">
+            <div class="ho-tro-search">
+              <div class="fg">
+                <label class="fl">Số điện thoại hoặc mã khách hàng</label>
+                <input type="text" id="ht-txtSearch" class="fi" placeholder="Nhập SĐT hoặc mã KH" onkeydown="if(event.key==='Enter')htTimKhachHang()">
+              </div>
+              <button class="btn btn-yellow" onclick="htTimKhachHang()">Tìm khách hàng</button>
+            </div>
+            <div id="ht-search-state" style="margin-top:10px;font-size:13px;color:var(--t3);display:none;"></div>
+          </div>
         </div>
-      </div>
-      <div class="ov" id="modal-ho-tro">
-        <div class="modal">
-          <div class="mh"><div class="mt">Tiêu đề modal</div><button class="mc" onclick="closeModal('modal-ho-tro')">X</button></div>
-          <div style="padding:20px 22px"></div>
-          <div class="mf"><button class="btn btn-outline" onclick="closeModal('modal-ho-tro')">Hủy</button><button class="btn btn-primary">Xác nhận</button></div>
+
+        <div id="ht-khachHangInfo" class="panel ho-tro-hidden">
+          <div class="panel-h"><span class="panel-t">Thông tin khách hàng</span></div>
+          <div class="ho-tro-info">
+            <div class="ho-tro-grid">
+              <div class="fg"><label class="fl">Mã khách hàng</label><input id="ht-maKH" class="fi" readonly></div>
+              <div class="fg"><label class="fl">Họ tên</label><input id="ht-hoTenKH" class="fi" readonly></div>
+              <div class="fg"><label class="fl">Số điện thoại</label><input id="ht-sdtKH" class="fi" readonly></div>
+              <div class="fg"><label class="fl">Hạng thẻ</label><input id="ht-hangTheKH" class="fi" readonly></div>
+            </div>
+            <div class="ho-tro-summary">
+              <div class="ho-tro-stat">
+                <div class="ho-tro-stat-title">Điểm tích lũy</div>
+                <div id="ht-diemKH" class="ho-tro-stat-value">0</div>
+              </div>
+              <div class="ho-tro-stat">
+                <div class="ho-tro-stat-title">Trạng thái thẻ</div>
+                <div id="ht-trangThaiThe"><span class="badge b-open">Hoạt động</span></div>
+              </div>
+              <div class="ho-tro-stat">
+                <div class="ho-tro-stat-title">Xác minh</div>
+                <div id="ht-trangThaiXacMinh"><span class="badge b-pend">Chưa xác minh</span></div>
+              </div>
+            </div>
+            <div style="margin-top:16px">
+              <button class="btn btn-green" onclick="htXacMinhKH()">Xác minh khách hàng</button>
+            </div>
+          </div>
         </div>
+
+        <div id="ht-supportSection" class="panel ho-tro-hidden">
+          <div class="panel-h"><span class="panel-t">Loại yêu cầu hỗ trợ</span></div>
+          <div style="padding:18px">
+            <div class="ho-tro-actions">
+              <div class="ho-tro-action" data-value="tu_van" onclick="htChonLoai(this)">
+                <div class="ho-tro-action-title">Tư vấn khách hàng</div>
+                <div class="ho-tro-action-desc">Xem điểm tích lũy, hạng thẻ, chương trình phù hợp (6a).</div>
+              </div>
+              <div class="ho-tro-action" data-value="the" onclick="htChonLoai(this)">
+                <div class="ho-tro-action-title">Liên quan thẻ thành viên</div>
+                <div class="ho-tro-action-desc">Chuyển sang quản lý thẻ (UC2) để xử lý yêu cầu về thẻ (6b).</div>
+              </div>
+              <div class="ho-tro-action" data-value="qua" onclick="htChonLoai(this)">
+                <div class="ho-tro-action-title">Đổi điểm / nhận quà</div>
+                <div class="ho-tro-action-desc">Chuyển sang quà tặng & sự kiện để đổi điểm (6c).</div>
+              </div>
+              <div class="ho-tro-action" data-value="chuong_trinh" onclick="htChonLoai(this)">
+                <div class="ho-tro-action-title">Tham gia chương trình</div>
+                <div class="ho-tro-action-desc">Kiểm tra điều kiện và ghi nhận đăng ký tham gia (6d).</div>
+              </div>
+            </div>
+            <input type="hidden" id="ht-loaiYeuCau">
+          </div>
+        </div>
+
+        <div id="ht-resultSection" class="panel ho-tro-hidden">
+          <div class="panel-h"><span class="panel-t">Kết quả hỗ trợ</span></div>
+          <div class="ho-tro-result">
+            <div id="ht-dynamicConsulting" style="margin-bottom:16px;padding:12px;border-left:4px solid var(--yd);background:var(--yl);border-radius:var(--r);display:none;font-size:13px;line-height:1.6;"></div>
+            <div class="fg">
+              <label class="fl">Nội dung hỗ trợ</label>
+              <textarea id="ht-ketQuaHoTro" class="fi" rows="3" placeholder="Nhập nội dung xử lý hoặc tư vấn"></textarea>
+            </div>
+            <div class="ho-tro-footer">
+              <button class="btn btn-outline" onclick="htResetForm()">Hủy</button>
+              <button class="btn btn-yellow" onclick="htXuLyYeuCau()">Lưu kết quả hỗ trợ</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
@@ -327,7 +446,7 @@
               <div class="cp-dots"><span></span><span></span><span></span></div>
               <div class="cp-ma" id="prev-ma-new">THE — XXXXXX</div>
               <div class="cp-name" id="prev-name-new">Họ tên khách hàng</div>
-              <div class="cp-foot"><span class="cp-hang" id="prev-hang-new">DONG</span><span id="prev-date-new">HH: —</span></div>
+              <div class="cp-foot"><span class="cp-hang" id="prev-hang-new">ĐỒNG</span><span id="prev-date-new">HH: —</span></div>
             </div>
             <div style="display:flex;gap:10px;margin-top:20px">
               <button class="btn btn-outline" onclick="resetForm()">Nhập lại</button>

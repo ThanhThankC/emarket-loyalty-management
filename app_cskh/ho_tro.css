@@ -138,18 +138,7 @@
     margin-top: 20px;
 }
 
-.panel {
-    border-radius: 8px;
-    overflow: hidden; /* Tránh các góc vuông của phần header đè lên bo góc của panel */
-}
-
-.panel-h {
-    background: linear-gradient(
-        90deg,
-        var(--yl),
-        var(--cream)
-    );
-}
+/* Removed duplicate .panel/.panel-h — defined in shared.css */
 
 /* Hiệu ứng chuyển động mượt */
 @keyframes fadeInSlide {
