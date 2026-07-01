@@ -23,7 +23,6 @@ registerPage('cap_the', function(opts) {
   switchTab('moi');
 });
 
-// ---- Chuyển tab ----
 function switchTab(tab) {
   ['moi','cu'].forEach(function(t) {
     var panel = document.getElementById('panel-' + t);
