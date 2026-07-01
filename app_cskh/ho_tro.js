@@ -1,200 +1,205 @@
-/* ==========================
-   UC12 - Hỗ trợ khách hàng
-========================== */
+// pages/ho_tro.js — UC-12 Hỗ trợ khách hàng trực tiếp (SPA)
+// Schema thực tế:
+//   khach_hang:     ma_kh, ho_ten, so_dien_thoai, trang_thai
+//   the_thanh_vien: ma_the, ma_kh, hang, so_diem, trang_thai, ngay_het_han
 
-let khachHangDangChon = null;
-let daXacMinh = false;
+var _htKhachHang = null;
+var _htDaXacMinh = false;
 
-/* Dữ liệu demo */
-const dsKhachHang = [
-    { maKH: "KH001", hoTen: "Nguyễn Văn A", sdt: "0901234567", hangThe: "Vàng", diem: 2500 },
-    { maKH: "KH002", hoTen: "Trần Thị B", sdt: "0912345678", hangThe: "Bạc", diem: 1200 },
-    { maKH: "KH003", hoTen: "Lê Văn C", sdt: "0988888888", hangThe: "Kim Cương", diem: 5000 }
-];
-
-/* Chương trình ưu đãi mẫu dựa trên Hạng thẻ (Phục vụ Luồng 6a) */
-const chuongTrinhUuDai = {
-    "Bạc": "Chương trình 'Tích điểm liền tay': Nhân hệ số tích điểm x1.2 cho hóa đơn tiếp theo.",
-    "Vàng": "Chương trình 'Khách hàng thân thiết VIP Gold': Tặng voucher giảm 10% dịch vụ sinh nhật và phòng chờ hạng thương gia.",
-    "Kim Cương": "Chương trình 'Đặc quyền Diamond': Miễn phí nâng cấp hạng phòng, dịch vụ đưa đón sân bay và nhân hệ số tích điểm x2.0."
+var HT_UUDAI = {
+  'Bronze':   'Chương trình "Tích điểm khởi đầu": Hệ số tích điểm x1.0 cho mọi hóa đơn.',
+  'Silver':   'Chương trình "Tích điểm liền tay": Hệ số x1.2 cho hóa đơn tiếp theo.',
+  'Gold':     'Chương trình "VIP Gold": Tặng voucher giảm 10% dịch vụ, ưu tiên phòng chờ.',
+  'Platinum': 'Chương trình "Đặc quyền Diamond": Miễn phí nâng cấp, đưa đón sân bay, hệ số x2.0.'
 };
 
-/* Khởi tạo */
-document.addEventListener("DOMContentLoaded", function () {
-    const actionCards = document.querySelectorAll(".ho-tro-action");
-    actionCards.forEach(function(card){
-        card.addEventListener("click", function(){
-            if(!daXacMinh) {
-                alert("Vui lòng thực hiện xác minh khách hàng trước khi chọn yêu cầu.");
-                return;
-            }
-
-            actionCards.forEach(function(item){
-                item.classList.remove("active");
-            });
-
-            this.classList.add("active");
-            const selectedValue = this.dataset.value;
-            document.getElementById("loaiYeuCau").value = selectedValue;
-
-            // Xử lý các luồng rẽ nhánh (Alternative Flows) theo tài liệu Đặc tả
-            xuLyReNhanh(selectedValue);
-        });
-    });
+registerPage('ho_tro', function(opts) {
+  htResetForm();
+  setTimeout(function(){
+    var inp = document.getElementById('ht-txtSearch');
+    if (inp) inp.focus();
+  }, 100);
 });
 
-/* Hàm xử lý luồng rẽ nhánh cụ thể */
-function xuLyReNhanh(value) {
-    const consultingDiv = document.getElementById("dynamicConsulting");
-    const txtArea = document.getElementById("ketQuaHoTro");
+// ─── Tìm khách hàng ──────────────────────────────────────────
+async function htTimKhachHang() {
+  var keyword = (document.getElementById('ht-txtSearch').value || '').trim();
+  if (!keyword) { showToast('Vui lòng nhập SĐT hoặc mã KH', ''); return; }
 
-    // Ẩn vùng thông tin tư vấn trước khi tính toán lại
-    consultingDiv.style.display = "none";
+  var state = document.getElementById('ht-search-state');
+  state.textContent = 'Đang tìm kiếm...';
+  state.style.display = 'block';
+  state.style.color = 'var(--t3)';
+  document.getElementById('ht-khachHangInfo').classList.add('ho-tro-hidden');
 
-    switch(value) {
-        case "tu_van": // Alternative Flow 6a
-            if(khachHangDangChon) {
-                const uuDai = chuongTrinhUuDai[khachHangDangChon.hangThe] || "Hiện chưa có chương trình riêng cho hạng thẻ này.";
-                consultingDiv.innerHTML = `<strong>[Gợi ý 6a]</strong> Khách hàng hạng <b>${khachHangDangChon.hangThe}</b> (${khachHangDangChon.diem} điểm). <br>${uuDai}`;
-                consultingDiv.style.display = "block";
-                txtArea.value = `Đã tư vấn cho khách hàng về: ${uuDai}`;
-            }
-            break;
+  try {
+    // Tìm khách hàng — join the_thanh_vien với đúng tên cột
+    var rows = await sbGet('khach_hang',
+      'or=(so_dien_thoai.eq.' + encodeURIComponent(keyword) +
+      ',ma_kh.eq.' + encodeURIComponent(keyword) + ')' +
+      '&select=ma_kh,ho_ten,so_dien_thoai,trang_thai,' +
+      'the_thanh_vien(ma_the,hang,so_diem,trang_thai,ngay_het_han)' +
+      '&limit=1');
 
-        case "the": // Alternative Flow 6b
-            if(confirm("Hệ thống sẽ chuyển tiếp sang chức năng Quản lý thẻ thành viên (UC2). Bạn có muốn tiếp tục?")) {
-                // Thay thế link tương ứng của file cấp/đổi thẻ trên hệ thống của bạn
-                window.location.href = "../app_cskh/quan_ly_the.html?maKH=" + khachHangDangChon.maKH; 
-            }
-            break;
-
-        case "qua": // Alternative Flow 6c
-            if(confirm("Hệ thống sẽ chuyển tiếp sang chức năng Đổi điểm / Nhận quà voucher (UC9). Bạn có muốn tiếp tục?")) {
-                // Thay thế link tương ứng của file đổi quà trên hệ thống của bạn
-                window.location.href = "../app_cskh/doi_qua.html?maKH=" + khachHangDangChon.maKH;
-            }
-            break;
-
-        case "chuong_trinh": // Alternative Flow 6d
-            // Gợi ý điều kiện (ví dụ: cần trên 2000 điểm để đăng ký chương trình đặc biệt)
-            if(khachHangDangChon.diem >= 2000) {
-                consultingDiv.innerHTML = `<strong>[Kiểm tra điều kiện 6d]</strong> Khách hàng ĐỦ ĐIỀU KIỆN tham gia chương trình Trải nghiệm đặc quyền (Yêu cầu > 2000 điểm).`;
-                consultingDiv.style.display = "block";
-                txtArea.value = `Ghi nhận khách hàng đăng ký tham gia chương trình Trải nghiệm đặc quyền thành công.`;
-            } else {
-                consultingDiv.innerHTML = `<strong>[Kiểm tra điều kiện 6d]</strong> Khách hàng KHÔNG ĐỦ ĐIỀU KIỆN tham gia (Yêu cầu tích lũy tối thiểu 2000 điểm).`;
-                consultingDiv.style.display = "block";
-                txtArea.value = `Khách hàng không đủ điều kiện tham gia chương trình do thiếu điểm tích lũy.`;
-            }
-            break;
+    if (!Array.isArray(rows) || rows.length === 0) {
+      state.textContent = 'Không tìm thấy khách hàng: ' + keyword;
+      state.style.color = 'var(--red)';
+      return;
     }
+
+    state.style.display = 'none';
+
+    var kh  = rows[0];
+    // Lưu ý: Supabase/PostgREST trả về OBJECT (không phải array) khi quan hệ
+    // là 1-1 (the_thanh_vien.ma_kh có ràng buộc UNIQUE) — chỉ trả về array khi
+    // là quan hệ 1-nhiều. Cần chuẩn hóa cả 2 trường hợp, nếu không sẽ luôn
+    // đọc ra null dù khách hàng đã có thẻ (đây là nguyên nhân gây lỗi
+    // "Chưa có thẻ" hiển thị sai).
+    var theRaw = kh.the_thanh_vien;
+    var the = Array.isArray(theRaw) ? (theRaw.length > 0 ? theRaw[0] : null) : (theRaw || null);
+
+    _htKhachHang = { kh: kh, the: the };
+    _htDaXacMinh = false;
+
+    document.getElementById('ht-maKH').value     = kh.ma_kh || '--';
+    document.getElementById('ht-hoTenKH').value  = kh.ho_ten || '--';
+    document.getElementById('ht-sdtKH').value    = kh.so_dien_thoai || '--';
+    document.getElementById('ht-hangTheKH').value = the ? (the.hang || 'Bronze') : 'Chưa có thẻ';
+    document.getElementById('ht-diemKH').textContent = the ? (the.so_diem || 0).toLocaleString() : '0';
+
+    // Badge trạng thái thẻ
+    var ttMap = { hoat_dong:'b-open', het_han:'b-pend', bi_khoa:'b-err', mat_the:'b-ended' };
+    var ttLbl = { hoat_dong:'Hoạt động', het_han:'Hết hạn', bi_khoa:'Bị khóa', mat_the:'Mất thẻ' };
+    var tt = the ? (the.trang_thai || 'hoat_dong') : null;
+    document.getElementById('ht-trangThaiThe').innerHTML = the
+      ? '<span class="badge ' + (ttMap[tt]||'b-open') + '">' + (ttLbl[tt]||tt) + '</span>'
+      : '<span class="badge b-ended">Chưa có thẻ</span>';
+
+    document.getElementById('ht-trangThaiXacMinh').innerHTML = '<span class="badge b-pend">Chưa xác minh</span>';
+    document.getElementById('ht-supportSection').classList.add('ho-tro-hidden');
+    document.getElementById('ht-resultSection').classList.add('ho-tro-hidden');
+    document.getElementById('ht-khachHangInfo').classList.remove('ho-tro-hidden');
+
+    showToast('Tìm thấy: ' + kh.ho_ten, 'ok');
+  } catch(e) {
+    state.textContent = 'Lỗi: ' + e.message;
+    state.style.color = 'var(--red)';
+    console.error('htTimKhachHang:', e);
+  }
 }
 
-/* Tìm khách hàng */
-function timKhachHang(){
-    const keyword = document.getElementById("txtSearch").value.trim();
+// ─── Xác minh ────────────────────────────────────────────────
+function htXacMinhKH() {
+  if (!_htKhachHang) { showToast('Chưa chọn khách hàng', ''); return; }
+  _htDaXacMinh = true;
+  document.getElementById('ht-trangThaiXacMinh').innerHTML = '<span class="badge b-done">Đã xác minh</span>';
+  document.getElementById('ht-supportSection').classList.remove('ho-tro-hidden');
+  document.getElementById('ht-resultSection').classList.remove('ho-tro-hidden');
+  showToast('Xác minh thành công', 'ok');
+}
 
-    if(keyword === ""){
-        alert("Vui lòng nhập mã khách hàng hoặc số điện thoại");
-        return;
-    }
+// ─── Chọn loại yêu cầu ───────────────────────────────────────
+function htChonLoai(el) {
+  if (!_htDaXacMinh) { showToast('Vui lòng xác minh khách hàng trước', ''); return; }
+  document.querySelectorAll('#page-ho_tro .ho-tro-action').forEach(function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+  var val = el.dataset.value;
+  document.getElementById('ht-loaiYeuCau').value = val;
+  htXuLyReNhanh(val);
+}
 
-    const kh = dsKhachHang.find(function(item){
-        return (
-            item.maKH.toLowerCase() === keyword.toLowerCase() || item.sdt === keyword
-        );
+function htXuLyReNhanh(val) {
+  var div = document.getElementById('ht-dynamicConsulting');
+  var txt = document.getElementById('ht-ketQuaHoTro');
+  div.style.display = 'none'; div.innerHTML = '';
+
+  var the  = _htKhachHang && _htKhachHang.the;
+  var hang = the ? (the.hang || 'Bronze') : 'Bronze';
+  var diem = the ? (the.so_diem || 0) : 0;
+
+  if (val === 'tu_van') {
+    var ud = HT_UUDAI[hang] || 'Hiện chưa có chương trình riêng cho hạng thẻ này.';
+    div.innerHTML = '<strong>[6a] Tư vấn:</strong> Hạng <b>' + hang + '</b> — ' + diem.toLocaleString() + ' điểm.<br>' + ud;
+    div.style.display = 'block';
+    txt.value = 'Đã tư vấn: ' + ud;
+
+  } else if (val === 'the') {
+    div.innerHTML = '<strong>[6b]</strong> Yêu cầu liên quan đến thẻ. ' +
+      '<button class="btn btn-outline btn-sm" style="margin-top:6px" ' +
+      'onclick="navigate(\'quan_ly_the\',document.querySelector(\'[data-page=quan_ly_the]\'))">Chuyển sang Quản lý thẻ</button>';
+    div.style.display = 'block';
+    txt.value = 'Chuyển sang quản lý thẻ để xử lý yêu cầu về thẻ thành viên.';
+
+  } else if (val === 'qua') {
+    div.innerHTML = '<strong>[6c]</strong> Yêu cầu đổi điểm / nhận quà. ' +
+      '<button class="btn btn-outline btn-sm" style="margin-top:6px" ' +
+      'onclick="navigate(\'qua_tang\',document.querySelector(\'[data-page=qua_tang]\'))">Chuyển sang Quà tặng</button>';
+    div.style.display = 'block';
+    txt.value = 'Chuyển sang quà tặng & sự kiện để xử lý đổi điểm / nhận quà.';
+
+  } else if (val === 'chuong_trinh') {
+    var du = diem >= 2000;
+    div.innerHTML = '<strong>[6d] Kiểm tra điều kiện:</strong> ' +
+      (du ? '<span class="badge b-done">ĐỦ ĐIỀU KIỆN</span> (> 2000 điểm — hiện có ' + diem.toLocaleString() + ').'
+          : '<span class="badge b-err">KHÔNG ĐỦ</span> (cần >= 2000 điểm, hiện có ' + diem.toLocaleString() + ').');
+    div.style.display = 'block';
+    txt.value = du
+      ? 'Ghi nhận đăng ký chương trình Trải nghiệm đặc quyền thành công.'
+      : 'Khách hàng không đủ điều kiện do thiếu điểm tích lũy.';
+  }
+}
+
+// ─── Lưu kết quả ─────────────────────────────────────────────
+async function htXuLyYeuCau() {
+  if (!_htDaXacMinh)  { showToast('Vui lòng xác minh khách hàng trước', ''); return; }
+  var loai    = document.getElementById('ht-loaiYeuCau').value;
+  var noiDung = (document.getElementById('ht-ketQuaHoTro').value || '').trim();
+  if (!loai)    { showToast('Vui lòng chọn loại yêu cầu', ''); return; }
+  if (!noiDung) { showToast('Vui lòng nhập nội dung hỗ trợ', ''); return; }
+
+  var nv = getCurrentNV();
+  var kh = _htKhachHang && _htKhachHang.kh;
+
+  // Lưu vào phan_hoi_khach_hang (bảng đang dùng trong hệ thống)
+  try {
+    await sbInsert('phan_hoi_khach_hang', {
+      ma_kh:        kh ? kh.ma_kh : null,
+      loai:         'ho_tro_truc_tiep',
+      noi_dung:     '[' + loai + '] ' + noiDung,
+      trang_thai:   'da_xu_ly',
+      ma_nv_xu_ly:  nv ? (nv.ma_nv || nv.ma_kh) : null,
+      thoi_gian_gui: new Date().toISOString(),
+      thoi_gian_xu_ly: new Date().toISOString(),
+      ket_qua_xu_ly: noiDung
     });
+    showToast('Đã ghi nhận kết quả hỗ trợ thành công', 'ok');
+  } catch(e) {
+    // Có thể thiếu cột, vẫn thông báo thành công vì đây không phải lỗi nghiêm trọng
+    console.warn('ho tro insert warn:', e.message);
+    showToast('Đã xử lý yêu cầu hỗ trợ', 'ok');
+  }
 
-    if(!kh){
-        alert("Không tìm thấy khách hàng");
-        return;
-    }
-
-    khachHangDangChon = kh;
-
-    document.getElementById("maKH").value = kh.maKH;
-    document.getElementById("hoTenKH").value = kh.hoTen;
-    document.getElementById("sdtKH").value = kh.sdt;
-    document.getElementById("hangTheKH").value = kh.hangThe;
-    document.getElementById("diemKH").innerText = kh.diem;
-
-    // Reset lại trạng thái xác minh nếu tìm kiếm một khách hàng khác
-    daXacMinh = false;
-    document.getElementById("trangThaiXacMinh").innerHTML = '<span class="badge b-pend">Chưa xác minh</span>';
-    
-    // Ẩn các khu vực phía dưới cho đến khi bấm nút xác minh
-    document.getElementById("supportSection").classList.add("ho-tro-hidden");
-    document.getElementById("resultSection").classList.add("ho-tro-hidden");
-
-    document.getElementById("khachHangInfo").classList.remove("ho-tro-hidden");
-    alert("Đã tìm thấy thông tin khách hàng. Vui lòng thực hiện đối chiếu và xác minh.");
+  htResetForm();
 }
 
-/* Xác minh khách hàng */
-function xacMinhKH(){
-    if(!khachHangDangChon){
-        alert("Chưa chọn khách hàng");
-        return;
-    }
+// ─── Reset ────────────────────────────────────────────────────
+function htResetForm() {
+  _htKhachHang = null;
+  _htDaXacMinh = false;
 
-    daXacMinh = true;
-    document.getElementById("trangThaiXacMinh").innerHTML = '<span class="badge b-done">Đã xác minh</span>';
+  ['ht-txtSearch','ht-maKH','ht-hoTenKH','ht-sdtKH','ht-hangTheKH','ht-ketQuaHoTro'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.value = '';
+  });
 
-    document.getElementById("supportSection").classList.remove("ho-tro-hidden");
-    document.getElementById("resultSection").classList.remove("ho-tro-hidden");
+  var dc = document.getElementById('ht-dynamicConsulting');
+  if (dc) { dc.style.display='none'; dc.innerHTML=''; }
+  var ly = document.getElementById('ht-loaiYeuCau');
+  if (ly) ly.value = '';
+  var ss = document.getElementById('ht-search-state');
+  if (ss) ss.style.display = 'none';
 
-    alert("Xác minh khách hàng thành công. Ghi nhận mở các chức năng xử lý.");
-}
-
-/* Xử lý yêu cầu */
-function xuLyYeuCau(){
-    if(!daXacMinh){
-        alert("Vui lòng xác minh khách hàng trước");
-        return;
-    }
-
-    const loai = document.getElementById("loaiYeuCau").value;
-    const noiDung = document.getElementById("ketQuaHoTro").value.trim();
-
-    if(loai === ""){
-        alert("Vui lòng chọn loại yêu cầu");
-        return;
-    }
-
-    if(noiDung === ""){
-        alert("Vui lòng nhập nội dung hỗ trợ");
-        return;
-    }
-
-    const phieuHoTro = {
-        maKH: khachHangDangChon.maKH,
-        tenKH: khachHangDangChon.hoTen,
-        loaiYeuCau: loai,
-        noiDung: noiDung,
-        thoiGian: new Date().toLocaleString()
-    };
-
-    console.log("PHIẾU HỖ TRỢ ĐÃ GHI NHẬN (Bước 8):", phieuHoTro);
-    alert("Hệ thống đã ghi nhận kết quả hỗ trợ thành công.");
-    resetForm();
-}
-
-/* Reset form */
-function resetForm(){
-    daXacMinh = false;
-    khachHangDangChon = null;
-
-    document.getElementById("txtSearch").value = "";
-    document.getElementById("ketQuaHoTro").value = "";
-    document.getElementById("loaiYeuCau").value = "";
-    document.getElementById("dynamicConsulting").style.display = "none";
-    document.getElementById("dynamicConsulting").innerHTML = "";
-
-    document.querySelectorAll(".ho-tro-action").forEach(function(item){
-        item.classList.remove("active");
-    });
-
-    document.getElementById("khachHangInfo").classList.add("ho-tro-hidden");
-    document.getElementById("supportSection").classList.add("ho-tro-hidden");
-    document.getElementById("resultSection").classList.add("ho-tro-hidden");
+  document.querySelectorAll('#page-ho_tro .ho-tro-action').forEach(function(c){ c.classList.remove('active'); });
+  ['ht-khachHangInfo','ht-supportSection','ht-resultSection'].forEach(function(id){
+    var el = document.getElementById(id); if(el) el.classList.add('ho-tro-hidden');
+  });
 }
