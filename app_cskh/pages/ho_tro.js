@@ -50,8 +50,13 @@ async function htTimKhachHang() {
     state.style.display = 'none';
 
     var kh  = rows[0];
-    var the = Array.isArray(kh.the_thanh_vien) && kh.the_thanh_vien.length > 0
-              ? kh.the_thanh_vien[0] : null;
+    // Lưu ý: Supabase/PostgREST trả về OBJECT (không phải array) khi quan hệ
+    // là 1-1 (the_thanh_vien.ma_kh có ràng buộc UNIQUE) — chỉ trả về array khi
+    // là quan hệ 1-nhiều. Cần chuẩn hóa cả 2 trường hợp, nếu không sẽ luôn
+    // đọc ra null dù khách hàng đã có thẻ (đây là nguyên nhân gây lỗi
+    // "Chưa có thẻ" hiển thị sai).
+    var theRaw = kh.the_thanh_vien;
+    var the = Array.isArray(theRaw) ? (theRaw.length > 0 ? theRaw[0] : null) : (theRaw || null);
 
     _htKhachHang = { kh: kh, the: the };
     _htDaXacMinh = false;
